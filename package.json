@@ -1,0 +1,76 @@
+{
+  "name": "markdown-link-check",
+  "version": "0.0.0",
+  "description": "checks the all of the hyperlinks in a markdown text to determine if they are alive or dead",
+  "bin": {
+    "markdown-link-check": "markdown-link-check"
+  },
+  "main": "index.js",
+  "scripts": {
+    "pretest": "jshint index.js markdown-link-check",
+    "test": "mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tcort/markdown-link-check.git"
+  },
+  "keywords": [
+    "markdown",
+    "md",
+    "link",
+    "hyperlink",
+    "href",
+    "check",
+    "checker"
+  ],
+  "author": "Thomas Cort <linuxgeek@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tcort/markdown-link-check/issues"
+  },
+  "homepage": "https://github.com/tcort/markdown-link-check#readme",
+  "dependencies": {
+    "async": "^1.5.2",
+    "chalk": "^1.1.1",
+    "commander": "^2.9.0",
+    "link-check": "^2.0.0",
+    "markdown-link-extractor": "^1.0.0",
+    "request": "^2.67.0",
+    "lodash": "^4.0.0"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^2.3.4",
+    "jshint": "^2.9.1-rc3",
+    "express": "^4.13.3"
+  },
+  "jshintConfig": {
+    "bitwise": true,
+    "curly": true,
+    "eqeqeq": true,
+    "forin": true,
+    "freeze": true,
+    "globalstrict": true,
+    "immed": true,
+    "indent": 4,
+    "moz": true,
+    "newcap": true,
+    "noarg": true,
+    "node": true,
+    "noempty": true,
+    "nonew": true,
+    "trailing": true,
+    "undef": true,
+    "smarttabs": true,
+    "strict": true,
+    "validthis": true,
+    "globals": {
+      "describe": false,
+      "it": false,
+      "before": false,
+      "beforeEach": false,
+      "after": false,
+      "afterEach": false
+    }
+  }
+}
