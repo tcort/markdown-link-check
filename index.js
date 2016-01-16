@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var async = require('async');
-var linkCheck = require('../link-check');
+var linkCheck = require('link-check');
 var markdownLinkExtractor = require('markdown-link-extractor');
 
 module.exports = function markdownLinkCheck(markdown, callback) {
