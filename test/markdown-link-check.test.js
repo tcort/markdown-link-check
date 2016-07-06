@@ -27,6 +27,13 @@ describe('markdown-link-check', function () {
         app.get('/foo/bar', function (req, res) {
             res.json({foo:'bar'});
         });
+
+        app.get('/hello.jpg', function (req, res) {
+            res.sendFile('hello.jpg', {
+                root: __dirname,
+                dotfiles: 'deny'
+            });
+        });
         
         var server = http.createServer(app);
         server.listen(0 /* random open port */, 'localhost', function serverListen(err) {
@@ -43,7 +50,7 @@ describe('markdown-link-check', function () {
         markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl), function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
-            expect(results.length).to.be(5);
+            expect(results.length).to.be(6);
 
             expect(results[0].statusCode).to.be(200);
             expect(results[0].status).to.be('alive');
@@ -59,6 +66,9 @@ describe('markdown-link-check', function () {
 
             expect(results[4].statusCode).to.be(200);
             expect(results[4].status).to.be('alive');
+
+            expect(results[5].statusCode).to.be(200);
+            expect(results[5].status).to.be('alive');
 
             done();
         });

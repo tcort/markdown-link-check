@@ -7,3 +7,5 @@ This is a test file:
 * [dns-resolution-fail](http://example.example.example.com/) (dead)
 * [nohead-get-ok](%%BASE_URL%%/nohead) (alive)
 * [redirect](%%BASE_URL%%/foo/redirect) (alive)
+
+![img](%%BASE_URL%%/hello.jpg) (alive)
