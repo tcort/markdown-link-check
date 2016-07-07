@@ -7,16 +7,27 @@ var fs = require('fs');
 var markdownLinkCheck = require('./');
 var program = require('commander');
 var request = require('request');
+var url = require('url');
 
 var statusLabels = {
     alive: chalk.green('✓'),
     dead: chalk.red('✖')
 };
 
+var opts = {};
 var stream = process.stdin; // read from stdin unless a filename is given
 program.arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
     if (/https?:/.test(filenameOrUrl)) {
         stream = request.get(filenameOrUrl);
+        try { // extract baseUrl from supplied URL
+            var parsed = url.parse(filenameOrUrl);
+            delete parsed.search;
+            delete parsed.hash;
+            if (parsed.pathname.lastIndexOf('/') !== -1) {
+                parsed.pathname = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/') + 1);
+            }
+            opts.baseUrl = url.format(parsed);
+        } catch (err) { /* ignore error */ }
     } else {
         stream = fs.createReadStream(filenameOrUrl);
     }
@@ -26,7 +37,7 @@ var markdown = ''; // collect the markdown data, then process it
 stream.on('data', function (chunk) {
     markdown += chunk.toString();
 }).on('end', function () {
-    markdownLinkCheck(markdown, function (err, results) {
+    markdownLinkCheck(markdown, opts, function (err, results) {
         results.forEach(function (result) {
             console.log('[%s] %s', statusLabels[result.status], result.link);
         });

@@ -9,3 +9,4 @@ This is a test file:
 * [redirect](%%BASE_URL%%/foo/redirect) (alive)
 
 ![img](%%BASE_URL%%/hello.jpg) (alive)
+![img](hello.jpg) (alive)

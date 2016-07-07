@@ -15,7 +15,7 @@ To install the command line tool globally, run:
 
 ## API
 
-### markdownLinkCheck(markdown, callback)
+### markdownLinkCheck(markdown, [opts,] callback)
 
 Given a string containing `markdown` formatted text and a `callback`,
 extract all of the links and check if they're alive or dead. Call the
@@ -24,6 +24,8 @@ extract all of the links and check if they're alive or dead. Call the
 Parameters:
 
 * `markdown` string containing markdown formatted text.
+* `opts` optional options object containing any of the following optional fields:
+ * `baseUrl` the base URL for relative links.
 * `callback` function which accepts `(err, results)`.
  * `err` an Error object when the operation cannot be completed, otherwise `null`.
  * `results` an array of objects with the following properties:

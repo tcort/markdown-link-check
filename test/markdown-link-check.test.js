@@ -47,10 +47,10 @@ describe('markdown-link-check', function () {
     });
 
     it('should check the links in sample.md', function (done) {
-        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl), function (err, results) {
+        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl), { baseUrl: baseUrl }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
-            expect(results.length).to.be(6);
+            expect(results.length).to.be(7);
 
             expect(results[0].statusCode).to.be(200);
             expect(results[0].status).to.be('alive');
@@ -69,6 +69,9 @@ describe('markdown-link-check', function () {
 
             expect(results[5].statusCode).to.be(200);
             expect(results[5].status).to.be('alive');
+
+            expect(results[6].statusCode).to.be(200);
+            expect(results[6].status).to.be('alive');
 
             done();
         });
