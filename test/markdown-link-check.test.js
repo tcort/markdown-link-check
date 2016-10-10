@@ -50,28 +50,24 @@ describe('markdown-link-check', function () {
         markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl), { baseUrl: baseUrl }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
-            expect(results.length).to.be(7);
 
-            expect(results[0].statusCode).to.be(200);
-            expect(results[0].status).to.be('alive');
+            var expected = [
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 404, status:  'dead' },
+                { statusCode:   0, status:  'dead' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 400, status:  'dead' },
+            ];
+            expect(results.length).to.be(expected.length);
 
-            expect(results[1].statusCode).to.be(404);
-            expect(results[1].status).to.be('dead');
-
-            expect(results[2].statusCode).to.be(0);
-            expect(results[2].status).to.be('dead');
-
-            expect(results[3].statusCode).to.be(200);
-            expect(results[3].status).to.be('alive');
-
-            expect(results[4].statusCode).to.be(200);
-            expect(results[4].status).to.be('alive');
-
-            expect(results[5].statusCode).to.be(200);
-            expect(results[5].status).to.be('alive');
-
-            expect(results[6].statusCode).to.be(200);
-            expect(results[6].status).to.be('alive');
+            for (var i = 0; i < results.length; i++) {
+                expect(results[i].statusCode).to.be(expected[i].statusCode);
+                expect(results[i].status).to.be(expected[i].status);
+            }
 
             done();
         });

@@ -1,7 +1,8 @@
 # markdown-link-check
 
 Extracts links from markdown texts and checks whether each link is
-alive (`200 OK`) or dead.
+alive (`200 OK`) or dead. `mailto:` links are validated with
+[isemail](https://www.npmjs.com/package/isemail).
 
 ## Installation
 

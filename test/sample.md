@@ -10,3 +10,8 @@ This is a test file:
 
 ![img](%%BASE_URL%%/hello.jpg) (alive)
 ![img](hello.jpg) (alive)
+
+Here are some e-mail addresses:
+
+* [valid](mailto:linuxgeek@gmail.com)
+* [invalid](mailto:foo@bar@baz)
