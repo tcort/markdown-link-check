@@ -72,4 +72,26 @@ describe('markdown-link-check', function () {
             done();
         });
     });
+
+    it('should handle thousands of links (this test takes up to a minute)', function (done) {
+        this.timeout(60000);
+
+        var md = '';
+        var nlinks = 10000;
+        for (var i = 0; i < nlinks; i++) {
+            md += '[test](' + baseUrl + '/foo/bar?i=' + i + ')\n';
+        }
+        markdownLinkCheck(md, function (err, results) {
+            expect(err).to.be(null);
+            expect(results).to.be.an('array');
+            expect(results).to.have.length(nlinks);
+
+            for (var i = 0; i < results.length; i++) {
+                expect(results[i].statusCode).to.be(200);
+                expect(results[i].status).to.be('alive');
+            }
+
+            done();
+        });
+    });
 });

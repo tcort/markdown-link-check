@@ -12,7 +12,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         opts = {};
     }
 
-    async.map(_.uniq(markdownLinkExtractor(markdown)), function (link, callback) {
+    async.mapLimit(_.uniq(markdownLinkExtractor(markdown)), 2, function (link, callback) {
         linkCheck(link, opts, callback);
     }, callback);
 };
