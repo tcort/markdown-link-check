@@ -2,6 +2,7 @@
 
 This is a test file:
 
+* [redirect-loop](%%BASE_URL%%/loop) (dead)
 * [valid](%%BASE_URL%%/foo/bar) (alive)
 * [invalid](%%BASE_URL%%/foo/dead) (dead)
 * [dns-resolution-fail](http://example.example.example.com/) (dead)

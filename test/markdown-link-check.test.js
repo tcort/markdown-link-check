@@ -28,6 +28,10 @@ describe('markdown-link-check', function () {
             res.json({foo:'bar'});
         });
 
+        app.get('/loop', function (req, res) {
+            res.redirect('/loop');
+        });
+
         app.get('/hello.jpg', function (req, res) {
             res.sendFile('hello.jpg', {
                 root: __dirname,
@@ -52,6 +56,7 @@ describe('markdown-link-check', function () {
             expect(results).to.be.an('array');
 
             var expected = [
+                { statusCode:   0, status:  'dead' },
                 { statusCode: 200, status: 'alive' },
                 { statusCode: 404, status:  'dead' },
                 { statusCode:   0, status:  'dead' },
