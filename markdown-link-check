@@ -14,7 +14,7 @@ var statusLabels = {
     dead: chalk.red('✖')
 };
 
-var error = false
+var error = false;
 var opts = {};
 var stream = process.stdin; // read from stdin unless a filename is given
 program.arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
@@ -40,7 +40,9 @@ stream.on('data', function (chunk) {
 }).on('end', function () {
     markdownLinkCheck(markdown, opts, function (err, results) {
         results.forEach(function (result) {
-            if(result.status === 'dead') error = true;
+            if(result.status === 'dead') {
+                error = true;
+            }
             console.log('[%s] %s', statusLabels[result.status], result.link);
         });
         if(error) {
