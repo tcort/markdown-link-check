@@ -10,7 +10,7 @@ var markdownLinkCheck = require('../');
 describe('markdown-link-check', function () {
 
     var baseUrl;
-    
+
     before(function (done) {
         var app = express();
 
@@ -38,7 +38,7 @@ describe('markdown-link-check', function () {
                 dotfiles: 'deny'
             });
         });
-        
+
         var server = http.createServer(app);
         server.listen(0 /* random open port */, 'localhost', function serverListen(err) {
             if (err) {
@@ -86,7 +86,7 @@ describe('markdown-link-check', function () {
         for (var i = 0; i < nlinks; i++) {
             md += '[test](' + baseUrl + '/foo/bar?i=' + i + ')\n';
         }
-        markdownLinkCheck(md, function (err, results) {
+        markdownLinkCheck(md, { baseUrl: baseUrl }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
             expect(results).to.have.length(nlinks);
