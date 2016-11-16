@@ -15,11 +15,11 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         opts = {};
     }
 
-    var isSourceRelative = isRelativeUrl(opts.baseUrl)
+    var isSourceRelative = isRelativeUrl(opts.baseUrl);
 
     async.mapLimit(_.uniq(markdownLinkExtractor(markdown)), 2, function (link, callback) {
         if (isSourceRelative && isRelativeUrl(link)) {
-            var resolvedLink = url.resolve(opts.baseUrl, link)
+            var resolvedLink = url.resolve(opts.baseUrl, link);
 
             fs.access(resolvedLink, fs.constants.F_OK, function (err) {
               var result = {};
@@ -30,8 +30,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
 
               callback(err, result);
             });
-        }
-        else {
+        } else {
             linkCheck(link, opts, callback);
         }
     }, callback);

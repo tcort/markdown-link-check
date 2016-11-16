@@ -31,7 +31,7 @@ program.arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
         } catch (err) { /* ignore error */ }
     } else {
         stream = fs.createReadStream(filenameOrUrl);
-        opts.baseUrl = filenameOrUrl
+        opts.baseUrl = filenameOrUrl;
     }
 }).parse(process.argv);
 
