@@ -78,6 +78,28 @@ describe('markdown-link-check', function () {
         });
     });
 
+    it('should check the links in file.md', function (done) {
+        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'file.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + __dirname), { baseUrl: baseUrl }, function (err, results) {
+            expect(err).to.be(null);
+            expect(results).to.be.an('array');
+
+            var expected = [
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 404, status:  'dead' },
+            ];
+
+            expect(results.length).to.be(expected.length);
+
+            for (var i = 0; i < results.length; i++) {
+                expect(results[i].statusCode).to.be(expected[i].statusCode);
+                expect(results[i].status).to.be(expected[i].status);
+            }
+
+            done();
+        });
+    });
+
     it('should handle thousands of links (this test takes up to a minute)', function (done) {
         this.timeout(60000);
 
