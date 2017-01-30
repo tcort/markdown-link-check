@@ -8,6 +8,7 @@ var markdownLinkCheck = require('./');
 var program = require('commander');
 var request = require('request');
 var url = require('url');
+var path = require('path');
 
 var statusLabels = {
     alive: chalk.green('✓'),
@@ -30,6 +31,7 @@ program.arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
             opts.baseUrl = url.format(parsed);
         } catch (err) { /* ignore error */ }
     } else {
+        opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
         stream = fs.createReadStream(filenameOrUrl);
     }
 }).parse(process.argv);
