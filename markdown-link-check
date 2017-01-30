@@ -31,7 +31,7 @@ program.arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
             opts.baseUrl = url.format(parsed);
         } catch (err) { /* ignore error */ }
     } else {
-        opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl))
+        opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
         stream = fs.createReadStream(filenameOrUrl);
     }
 }).parse(process.argv);
