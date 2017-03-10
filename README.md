@@ -1,5 +1,10 @@
 # markdown-link-check
 
+[![Build Status](https://travis-ci.org/tcort/markdown-link-check.svg?branch=master)](https://travis-ci.org/tcort/markdown-link-check)
+[![npm version](https://img.shields.io/npm/v/markdown-link-check.svg)](https://www.npmjs.com/package/markdown-link-check)
+[![npm downloads](https://img.shields.io/npm/dt/markdown-link-check.svg)](https://www.npmjs.com/package/markdown-link-check)
+[![License](https://img.shields.io/badge/license-ISC-blue.svg)](https://raw.githubusercontent.com/tcort/markdown-link-check/master/LICENSE.md)
+
 Extracts links from markdown texts and checks whether each link is
 alive (`200 OK`) or dead. `mailto:` links are validated with
 [isemail](https://www.npmjs.com/package/isemail).
