@@ -18,7 +18,7 @@ var statusLabels = {
 var error = false;
 var opts = {};
 var stream = process.stdin; // read from stdin unless a filename is given
-program.arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
+program.option('-p, --progress', 'show progress bar').arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
     if (/https?:/.test(filenameOrUrl)) {
         stream = request.get(filenameOrUrl);
         try { // extract baseUrl from supplied URL
@@ -35,6 +35,8 @@ program.arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
         stream = fs.createReadStream(filenameOrUrl);
     }
 }).parse(process.argv);
+
+opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
 
 var markdown = ''; // collect the markdown data, then process it
 stream.on('data', function (chunk) {

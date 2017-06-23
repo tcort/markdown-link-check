@@ -27,6 +27,7 @@ Parameters:
 * `markdown` string containing markdown formatted text.
 * `opts` optional options object containing any of the following optional fields:
  * `baseUrl` the base URL for relative links.
+ * `showProgressBar` enable an ASCII progress bar.
 * `callback` function which accepts `(err, results)`.
  * `err` an Error object when the operation cannot be completed, otherwise `null`.
  * `results` an array of objects with the following properties:
@@ -70,10 +71,18 @@ If not supplied, the tool reads from standard input.
 
     cat *.md | markdown-link-check
 
-##### Command Line Switch
-Add a `--progress` or `-p` switch to view progress. (Optional)
+#### Usage
 
-    markdown-link-check ./README.md -p
+```
+
+  Usage: markdown-link-check [options] [filenameOrUrl]
+
+  Options:
+
+    -h, --help      output usage information
+    -p, --progress  show progress bar
+
+```
 
 ## Testing
 
