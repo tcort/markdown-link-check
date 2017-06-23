@@ -70,6 +70,11 @@ If not supplied, the tool reads from standard input.
 
     cat *.md | markdown-link-check
 
+##### Command Line Switch
+Add a `--progress` or `-p` switch to view progress. (Optional)
+
+    markdown-link-check ./README.md -p
+
 ## Testing
 
     npm test
