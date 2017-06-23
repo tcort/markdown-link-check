@@ -1,6 +1,6 @@
 {
   "name": "markdown-link-check",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "checks the all of the hyperlinks in a markdown text to determine if they are alive or dead",
   "bin": {
     "markdown-link-check": "markdown-link-check"
@@ -36,7 +36,8 @@
     "link-check": "^4.0.2",
     "markdown-link-extractor": "^1.1.0",
     "request": "^2.79.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "progress":"^2.0.0"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
