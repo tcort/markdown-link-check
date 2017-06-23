@@ -25,9 +25,11 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
     }
 
     async.mapLimit(linksCollection, 2, function (link, callback) {
-        linkCheck(link, opts, callback);
-        if (opts.showProgressBar) {
-            bar.tick();
-        }
+        linkCheck(link, opts, function (err, result) {
+            if (opts.showProgressBar) {
+                bar.tick();
+            }
+            callback(err, result);
+        });
     }, callback);
 };
