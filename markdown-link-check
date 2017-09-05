@@ -43,6 +43,9 @@ stream.on('data', function (chunk) {
     markdown += chunk.toString();
 }).on('end', function () {
     markdownLinkCheck(markdown, opts, function (err, results) {
+        if (results.length === 0){
+            console.log(chalk.yellow('No hyperlinks found!'));
+        }
         results.forEach(function (result) {
             if(result.status === 'dead') {
                 error = true;
