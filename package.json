@@ -33,7 +33,7 @@
     "async": "^2.5.0",
     "chalk": "^2.1.0",
     "commander": "^2.11.0",
-    "link-check": "^4.3.0",
+    "link-check": "^4.3.2",
     "markdown-link-extractor": "^1.1.0",
     "request": "^2.83.0",
     "lodash": "^4.17.4",
