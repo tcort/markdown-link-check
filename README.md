@@ -26,15 +26,15 @@ Parameters:
 
 * `markdown` string containing markdown formatted text.
 * `opts` optional options object containing any of the following optional fields:
- * `baseUrl` the base URL for relative links.
- * `showProgressBar` enable an ASCII progress bar.
+  * `baseUrl` the base URL for relative links.
+  * `showProgressBar` enable an ASCII progress bar.
 * `callback` function which accepts `(err, results)`.
- * `err` an Error object when the operation cannot be completed, otherwise `null`.
- * `results` an array of objects with the following properties:
-  * `link` the `link` provided as input
-  * `status` a string set to either `alive` or `dead`.
-  * `statusCode` the HTTP status code. Set to `0` if no HTTP status code was returned (e.g. when the server is down).
-  * `err` any connection error that occurred, otherwise `null`.
+  * `err` an Error object when the operation cannot be completed, otherwise `null`.
+  * `results` an array of objects with the following properties:
+    * `link` the `link` provided as input
+    * `status` a string set to either `alive` or `dead`.
+    * `statusCode` the HTTP status code. Set to `0` if no HTTP status code was returned (e.g. when the server is down).
+    * `err` any connection error that occurred, otherwise `null`.
 
 ## Examples
 
