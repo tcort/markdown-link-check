@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "jshint index.js markdown-link-check",
-    "test": "mocha -R spec"
+    "test": "mocha -R spec --exit"
   },
   "repository": {
     "type": "git",
@@ -33,17 +33,17 @@
     "async": "^2.5.0",
     "chalk": "^2.1.0",
     "commander": "^2.11.0",
-    "link-check": "^4.1.0",
+    "link-check": "^4.3.0",
     "markdown-link-extractor": "^1.1.0",
-    "request": "^2.81.0",
+    "request": "^2.83.0",
     "lodash": "^4.17.4",
     "progress": "^2.0.0"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^3.5.0",
+    "mocha": "^4.0.1",
     "jshint": "^2.9.5",
-    "express": "^4.15.4"
+    "express": "^4.16.1"
   },
   "jshintConfig": {
     "bitwise": true,
