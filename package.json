@@ -30,10 +30,10 @@
   },
   "homepage": "https://github.com/tcort/markdown-link-check#readme",
   "dependencies": {
-    "async": "^2.5.0",
-    "chalk": "^2.1.0",
+    "async": "^2.6.0",
+    "chalk": "^2.3.0",
     "commander": "^2.11.0",
-    "link-check": "^4.3.2",
+    "link-check": "^4.3.3",
     "markdown-link-extractor": "^1.1.0",
     "request": "^2.83.0",
     "lodash": "^4.17.4",
@@ -43,7 +43,7 @@
     "expect.js": "^0.3.1",
     "mocha": "^4.0.1",
     "jshint": "^2.9.5",
-    "express": "^4.16.1"
+    "express": "^4.16.2"
   },
   "jshintConfig": {
     "bitwise": true,
