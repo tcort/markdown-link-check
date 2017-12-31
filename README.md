@@ -61,18 +61,22 @@ markdownLinkCheck('[example](http://example.com)', function (err, results) {
 The command line tool optionally takes 1 argument, the file name or http/https URL.
 If not supplied, the tool reads from standard input.
 
-#### Check links from a local markdown file
-
-    markdown-link-check ./README.md
-
 #### Check links from a markdown file hosted on the web
 
     markdown-link-check https://github.com/tcort/markdown-link-check/blob/master/README.md
 
+#### Check links from a local markdown file
+
+    markdown-link-check ./README.md
+
+#### Check links from a local markdown folder (recursive)
+
+    find . -name \*.md -exec markdown-link-check {} \;
+
 #### Check links from standard input
 
     cat *.md | markdown-link-check
-
+    
 #### Usage
 
 ```
