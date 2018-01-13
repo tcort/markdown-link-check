@@ -71,7 +71,7 @@ If not supplied, the tool reads from standard input.
 
 #### Check links from a local markdown folder (recursive)
 
-    find . -name \*.md -exec markdown-link-check {} \;
+    find . -name \*.md -exec echo "File: {}" \; -exec markdown-link-check {} \;
 
 #### Check links from standard input
 
