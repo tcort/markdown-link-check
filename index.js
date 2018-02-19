@@ -1,6 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
 var async = require('async');
 var linkCheck = require('link-check');
 var markdownLinkExtractor = require('markdown-link-extractor');
@@ -14,7 +13,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
     }
 
     var bar;
-    var linksCollection = _.uniq(markdownLinkExtractor(markdown));
+    var linksCollection = Array.from(new Set(markdownLinkExtractor(markdown)));
     if (opts.showProgressBar) {
         bar = new ProgressBar('Checking... [:bar] :percent', {
             complete: '=',

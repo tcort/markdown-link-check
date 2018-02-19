@@ -36,7 +36,6 @@
     "link-check": "^4.3.3",
     "markdown-link-extractor": "^1.1.1",
     "request": "^2.83.0",
-    "lodash": "^4.17.4",
     "progress": "^2.0.0"
   },
   "devDependencies": {
