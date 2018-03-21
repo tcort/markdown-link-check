@@ -17,8 +17,10 @@ var statusLabels = {
 
 var error = false;
 var opts = {};
+var filenameForOutput = '';
 var stream = process.stdin; // read from stdin unless a filename is given
 program.option('-p, --progress', 'show progress bar').arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
+    filenameForOutput = filenameOrUrl;
     if (/https?:/.test(filenameOrUrl)) {
         stream = request.get(filenameOrUrl);
         try { // extract baseUrl from supplied URL
@@ -42,6 +44,9 @@ var markdown = ''; // collect the markdown data, then process it
 stream.on('data', function (chunk) {
     markdown += chunk.toString();
 }).on('end', function () {
+    if (filenameForOutput) {
+        console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
+    }
     markdownLinkCheck(markdown, opts, function (err, results) {
         if (results.length === 0){
             console.log(chalk.yellow('No hyperlinks found!'));
