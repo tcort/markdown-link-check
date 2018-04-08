@@ -76,10 +76,10 @@ If not supplied, the tool reads from standard input.
 #### Check links from standard input
 
     cat *.md | markdown-link-check
-    
+
 #### Usage
 
-```
+```shell
 
   Usage: markdown-link-check [options] [filenameOrUrl]
 
