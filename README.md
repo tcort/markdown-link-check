@@ -16,6 +16,18 @@ To install the command line tool globally, run:
 
     npm install -g markdown-link-check
 
+---
+
+## Run using Docker
+
+Build a Docker image:
+
+    docker build --tag markdown-link-check .
+
+Pipe your `README.md` file to `docker run`:
+
+    docker run --rm -i markdown-link-check < README.md
+
 ## API
 
 ### markdownLinkCheck(markdown, [opts,] callback)
