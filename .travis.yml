@@ -3,4 +3,12 @@ node_js:
  - "node"
  - "6"
  - "4"
-sudo: false
+
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build --tag markdown-link-check .
+  - docker run markdown-link-check
