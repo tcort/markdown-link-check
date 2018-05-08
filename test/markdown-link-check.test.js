@@ -51,20 +51,45 @@ describe('markdown-link-check', function () {
     });
 
     it('should check the links in sample.md', function (done) {
-        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl), { baseUrl: baseUrl }, function (err, results) {
+        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl), { baseUrl: baseUrl, domainHeaders: [{ domain: 'httpbin.org', headers: { 'Authorization': 'Basic Zm9vOmJhcg==', 'Foo': 'Bar' }}] }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
 
             var expected = [
+                // redirect-loop
                 { statusCode:   0, status:  'dead' },
+
+                // valid
                 { statusCode: 200, status: 'alive' },
+
+                // invalid
                 { statusCode: 404, status:  'dead' },
+
+                // dns-resolution-fail
                 { statusCode:   0, status:  'dead' },
+
+                // nohead-get-ok
                 { statusCode: 200, status: 'alive' },
+
+                // redirect
                 { statusCode: 200, status: 'alive' },
+
+                // valid-external
                 { statusCode: 200, status: 'alive' },
+
+                // valid-external-basic-auth
                 { statusCode: 200, status: 'alive' },
+
+                // hello image
                 { statusCode: 200, status: 'alive' },
+
+                // hello image
+                { statusCode: 200, status: 'alive' },
+
+                // valid e-mail
+                { statusCode: 200, status:  'alive' },
+
+                // invalid e-mail
                 { statusCode: 400, status:  'dead' },
             ];
             expect(results.length).to.be(expected.length);

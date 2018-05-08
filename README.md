@@ -40,6 +40,7 @@ Parameters:
 * `opts` optional options object containing any of the following optional fields:
   * `baseUrl` the base URL for relative links.
   * `showProgressBar` enable an ASCII progress bar.
+  * `domainHeaders` to apply domain specific headers, see example below.
 * `callback` function which accepts `(err, results)`.
   * `err` an Error object when the operation cannot be completed, otherwise `null`.
   * `results` an array of objects with the following properties:
@@ -58,6 +59,24 @@ Parameters:
 var markdownLinkCheck = require('markdown-link-check');
 
 markdownLinkCheck('[example](http://example.com)', function (err, results) {
+    if (err) {
+        console.error('Error', err);
+        return;
+    }
+    results.forEach(function (result) {
+        console.log('%s is %s', result.link, result.status);
+    });
+});
+```
+
+**Using domain specific headers:**
+
+```js
+'use strict';
+
+var markdownLinkCheck = require('markdown-link-check');
+
+markdownLinkCheck('[example](http://example.com)', { domainHeaders: [{ domain: 'example.com', headers: { 'Authorization': 'Basic Zm9vOmJhcg==' }}] }, function (err, results) {
     if (err) {
         console.error('Error', err);
         return;
@@ -88,7 +107,7 @@ If not supplied, the tool reads from standard input.
 #### Check links from standard input
 
     cat *.md | markdown-link-check
-    
+
 #### Usage
 
 ```
@@ -97,10 +116,27 @@ If not supplied, the tool reads from standard input.
 
   Options:
 
-    -h, --help      output usage information
-    -p, --progress  show progress bar
+    -h, --help             output usage information
+    -p, --progress         show progress bar
+    -c, --config [config]  apply a config file (JSON), holding e.g. domain specific header configuration
 
 ```
+
+##### Config file format
+
+`config.json`:
+
+    {
+        "domainHeaders": [
+            {
+                "domain": "example.com",
+                "headers": {
+                    "Authorization": "Basic Zm9vOmJhcg==",
+                    "Foo": "Bar"
+                }
+            }
+        ]
+    }
 
 ## Testing
 

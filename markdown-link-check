@@ -19,7 +19,8 @@ var error = false;
 var opts = {};
 var filenameForOutput = '';
 var stream = process.stdin; // read from stdin unless a filename is given
-program.option('-p, --progress', 'show progress bar').arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
+
+program.option('-p, --progress', 'show progress bar').option('-c, --config [config]', 'apply a config file (JSON), holding e.g. domain specific header configuration').arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
     filenameForOutput = filenameOrUrl;
     if (/https?:/.test(filenameOrUrl)) {
         stream = request.get(filenameOrUrl);
@@ -47,6 +48,35 @@ stream.on('data', function (chunk) {
     if (filenameForOutput) {
         console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
     }
+
+    if (program.config) {
+        fs.access(program.config, fs.constants.R_OK, function (err) {
+            if (!err) {
+                let configStream = fs.createReadStream(program.config);
+                let configData = '';
+                
+                configStream.on('data', function (chunk) {
+                    configData += chunk.toString();
+                }).on('end', function () {
+                    let config = JSON.parse(configData);
+
+                    opts.domainHeaders = config.domainHeaders;
+    
+                    runMarkdownLinkCheck(markdown, opts);
+                });
+            }
+            else {
+                console.error(chalk.red('\nERROR: Config file not accessible.'));
+                process.exit(1);
+            }
+        });
+    }
+    else {
+        runMarkdownLinkCheck(markdown, opts);
+    }
+});
+
+function runMarkdownLinkCheck(markdown, opts) {
     markdownLinkCheck(markdown, opts, function (err, results) {
         if (results.length === 0){
             console.log(chalk.yellow('No hyperlinks found!'));
@@ -62,4 +92,4 @@ stream.on('data', function (chunk) {
             process.exit(1);
         }
     });
-});
+}

@@ -8,6 +8,8 @@ This is a test file:
 * [dns-resolution-fail](http://example.example.example.com/) (dead)
 * [nohead-get-ok](%%BASE_URL%%/nohead) (alive)
 * [redirect](%%BASE_URL%%/foo/redirect) (alive)
+* [valid-external](http://google.de) (alive)
+* [valid-external-basic-auth](https://httpbin.org/basic-auth/foo/bar) (alive)
 
 ![img](%%BASE_URL%%/hello.jpg) (alive)
 ![img](hello.jpg) (alive)

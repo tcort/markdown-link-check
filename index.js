@@ -25,6 +25,21 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
     }
 
     async.mapLimit(linksCollection, 2, function (link, callback) {
+        // Make sure it is not undefined and that the appropriate headers are always recalculated for a given link.
+        opts.headers = {};
+        
+        if (opts.domainHeaders) {
+            for (let domainHeader of opts.domainHeaders) {
+                if (link.indexOf(domainHeader.domain) !== -1) {
+                    Object.assign(opts.headers, domainHeader.headers);
+                }
+            }
+        }
+
+        // if (!_.isEmpty(opts.headers)) {
+        //     console.log("\nChecking " + link + " with headers " + JSON.stringify(opts.headers) + "\n");
+        // }
+
         linkCheck(link, opts, function (err, result) {
             if (opts.showProgressBar) {
                 bar.tick();
