@@ -53,6 +53,8 @@ Parameters:
 
 ### Module
 
+**Basic usage:**
+
 ```js
 'use strict';
 
@@ -69,14 +71,14 @@ markdownLinkCheck('[example](http://example.com)', function (err, results) {
 });
 ```
 
-**Using URL specific headers:**
+**With options, for example using URL specific headers:**
 
 ```js
 'use strict';
 
 var markdownLinkCheck = require('markdown-link-check');
 
-markdownLinkCheck('[example](http://example.com)', { httpHeaders: [{ urls: ['example.com'], headers: { 'Authorization': 'Basic Zm9vOmJhcg==' }}] }, function (err, results) {
+markdownLinkCheck('[example](http://example.com)', { httpHeaders: [{ urls: ['http://example.com'], headers: { 'Authorization': 'Basic Zm9vOmJhcg==' }}] }, function (err, results) {
     if (err) {
         console.error('Error', err);
         return;
