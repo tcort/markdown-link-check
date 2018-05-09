@@ -35,7 +35,7 @@ describe('markdown-link-check', function () {
             else {
                 res.sendStatus(401);
             }
-        })
+        });
 
         app.get('/loop', function (req, res) {
             res.redirect('/loop');
