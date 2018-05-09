@@ -40,7 +40,7 @@ Parameters:
 * `opts` optional options object containing any of the following optional fields:
   * `baseUrl` the base URL for relative links.
   * `showProgressBar` enable an ASCII progress bar.
-  * `domainHeaders` to apply domain specific headers, see example below.
+  * `httpHeaders` to apply url specific headers, see example below.
 * `callback` function which accepts `(err, results)`.
   * `err` an Error object when the operation cannot be completed, otherwise `null`.
   * `results` an array of objects with the following properties:
@@ -69,14 +69,14 @@ markdownLinkCheck('[example](http://example.com)', function (err, results) {
 });
 ```
 
-**Using domain specific headers:**
+**Using url specific headers:**
 
 ```js
 'use strict';
 
 var markdownLinkCheck = require('markdown-link-check');
 
-markdownLinkCheck('[example](http://example.com)', { domainHeaders: [{ domain: 'example.com', headers: { 'Authorization': 'Basic Zm9vOmJhcg==' }}] }, function (err, results) {
+markdownLinkCheck('[example](http://example.com)', { httpHeaders: [{ urls: ['example.com'], headers: { 'Authorization': 'Basic Zm9vOmJhcg==' }}] }, function (err, results) {
     if (err) {
         console.error('Error', err);
         return;
@@ -118,7 +118,7 @@ If not supplied, the tool reads from standard input.
 
     -h, --help             output usage information
     -p, --progress         show progress bar
-    -c, --config [config]  apply a config file (JSON), holding e.g. domain specific header configuration
+    -c, --config [config]  apply a config file (JSON), holding e.g. url specific header configuration
 
 ```
 
@@ -127,9 +127,11 @@ If not supplied, the tool reads from standard input.
 `config.json`:
 
     {
-        "domainHeaders": [
+        "httpHeaders": [
             {
-                "domain": "example.com",
+                "urls": [
+                    "https://example.com"
+                ],
                 "headers": {
                     "Authorization": "Basic Zm9vOmJhcg==",
                     "Foo": "Bar"
@@ -137,6 +139,8 @@ If not supplied, the tool reads from standard input.
             }
         ]
     }
+
+`httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
 
 ## Testing
 

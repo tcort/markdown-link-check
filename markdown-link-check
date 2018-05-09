@@ -20,7 +20,7 @@ var opts = {};
 var filenameForOutput = '';
 var stream = process.stdin; // read from stdin unless a filename is given
 
-program.option('-p, --progress', 'show progress bar').option('-c, --config [config]', 'apply a config file (JSON), holding e.g. domain specific header configuration').arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
+program.option('-p, --progress', 'show progress bar').option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration').arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
     filenameForOutput = filenameOrUrl;
     if (/https?:/.test(filenameOrUrl)) {
         stream = request.get(filenameOrUrl);
@@ -60,7 +60,7 @@ stream.on('data', function (chunk) {
                 }).on('end', function () {
                     let config = JSON.parse(configData);
 
-                    opts.domainHeaders = config.domainHeaders;
+                    opts.httpHeaders = config.httpHeaders;
     
                     runMarkdownLinkCheck(markdown, opts);
                 });
