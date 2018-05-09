@@ -40,7 +40,7 @@ Parameters:
 * `opts` optional options object containing any of the following optional fields:
   * `baseUrl` the base URL for relative links.
   * `showProgressBar` enable an ASCII progress bar.
-  * `httpHeaders` to apply url specific headers, see example below.
+  * `httpHeaders` to apply URL specific headers, see example below.
 * `callback` function which accepts `(err, results)`.
   * `err` an Error object when the operation cannot be completed, otherwise `null`.
   * `results` an array of objects with the following properties:
@@ -69,7 +69,7 @@ markdownLinkCheck('[example](http://example.com)', function (err, results) {
 });
 ```
 
-**Using url specific headers:**
+**Using URL specific headers:**
 
 ```js
 'use strict';
@@ -118,7 +118,7 @@ If not supplied, the tool reads from standard input.
 
     -h, --help             output usage information
     -p, --progress         show progress bar
-    -c, --config [config]  apply a config file (JSON), holding e.g. url specific header configuration
+    -c, --config [config]  apply a config file (JSON), holding e.g. URL specific header configuration
 
 ```
 
