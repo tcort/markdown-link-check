@@ -37,7 +37,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         }
 
         // if (!_.isEmpty(opts.headers)) {
-        //     console.log("\nChecking " + link + " with headers " + JSON.stringify(opts.headers) + "\n");
+        //     console.log("Checking " + link + " with headers " + JSON.stringify(opts.headers) + "");
         // }
 
         linkCheck(link, opts, function (err, result) {
