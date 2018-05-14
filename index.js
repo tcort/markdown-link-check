@@ -25,6 +25,22 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
     }
 
     async.mapLimit(linksCollection, 2, function (link, callback) {
+        // Make sure it is not undefined and that the appropriate headers are always recalculated for a given link.
+        opts.headers = {};
+        
+        if (opts.httpHeaders) {
+            for (let httpHeader of opts.httpHeaders) {
+                for (let url of httpHeader.urls) {
+                    if (link.startsWith(url)) {
+                        Object.assign(opts.headers, httpHeader.headers);
+
+                        // The headers of this httpHeader has been applied, the other URLs of this httpHeader don't need to be evaluated any further.
+                        break;
+                    }
+                }
+            }
+        }
+
         linkCheck(link, opts, function (err, result) {
             if (opts.showProgressBar) {
                 bar.tick();

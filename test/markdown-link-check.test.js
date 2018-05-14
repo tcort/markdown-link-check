@@ -28,6 +28,15 @@ describe('markdown-link-check', function () {
             res.json({foo:'bar'});
         });
 
+        app.get('/basic-auth', function (req, res) {
+            if (req.headers["authorization"] === "Basic Zm9vOmJhcg==") {
+                res.sendStatus(200);
+            }
+            else {
+                res.sendStatus(401);
+            }
+        });
+
         app.get('/loop', function (req, res) {
             res.redirect('/loop');
         });
@@ -51,20 +60,42 @@ describe('markdown-link-check', function () {
     });
 
     it('should check the links in sample.md', function (done) {
-        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl), { baseUrl: baseUrl }, function (err, results) {
+        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl), { baseUrl: baseUrl, httpHeaders: [{ urls: [baseUrl + '/basic-auth'], headers: { 'Authorization': 'Basic Zm9vOmJhcg==', 'Foo': 'Bar' }}] }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
 
             var expected = [
+                // redirect-loop
                 { statusCode:   0, status:  'dead' },
+
+                // valid
                 { statusCode: 200, status: 'alive' },
+
+                // invalid
                 { statusCode: 404, status:  'dead' },
+
+                // dns-resolution-fail
                 { statusCode:   0, status:  'dead' },
+
+                // nohead-get-ok
                 { statusCode: 200, status: 'alive' },
+
+                // redirect
                 { statusCode: 200, status: 'alive' },
+
+                // basic-auth
                 { statusCode: 200, status: 'alive' },
+
+                // hello image
                 { statusCode: 200, status: 'alive' },
+
+                // hello image
                 { statusCode: 200, status: 'alive' },
+
+                // valid e-mail
+                { statusCode: 200, status:  'alive' },
+
+                // invalid e-mail
                 { statusCode: 400, status:  'dead' },
             ];
             expect(results.length).to.be(expected.length);
