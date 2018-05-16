@@ -27,7 +27,18 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
     async.mapLimit(linksCollection, 2, function (link, callback) {
         // Make sure it is not undefined and that the appropriate headers are always recalculated for a given link.
         opts.headers = {};
-        
+
+        if (opts.ignoreUrls) {
+            for (let ignoreUrl of opts.ignoreUrls) {
+                if (link.startsWith(ignoreUrl)) {
+                    if (opts.showProgressBar) {
+                        bar.tick();
+                    }
+                    return;
+                }
+            }
+        }
+
         if (opts.httpHeaders) {
             for (let httpHeader of opts.httpHeaders) {
                 for (let url of httpHeader.urls) {

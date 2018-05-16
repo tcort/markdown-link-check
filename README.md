@@ -139,10 +139,15 @@ If not supplied, the tool reads from standard input.
                     "Foo": "Bar"
                 }
             }
+        ],
+        "ignoreUrls": [
+            "http://amazon.com"
         ]
     }
 
 `httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
+
+`ignoreUrls`: The links where the link **starts with** one of the supplied URLs in the array will be skipped from checking. Can be used to skip internal server URLs when running on public CI/CD, or with websites that flag the checker as a DDoS attack.
 
 ## Testing
 

@@ -54,14 +54,15 @@ stream.on('data', function (chunk) {
             if (!err) {
                 let configStream = fs.createReadStream(program.config);
                 let configData = '';
-                
+
                 configStream.on('data', function (chunk) {
                     configData += chunk.toString();
                 }).on('end', function () {
                     let config = JSON.parse(configData);
 
                     opts.httpHeaders = config.httpHeaders;
-    
+                    opts.ignoreUrls = config.ignoreUrls;
+
                     runMarkdownLinkCheck(markdown, opts);
                 });
             }
