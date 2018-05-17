@@ -118,9 +118,10 @@ If not supplied, the tool reads from standard input.
 
   Options:
 
-    -h, --help             output usage information
     -p, --progress         show progress bar
     -c, --config [config]  apply a config file (JSON), holding e.g. URL specific header configuration
+    -q, --quiet            display errors only
+    -h, --help             output usage information
 
 ```
 
