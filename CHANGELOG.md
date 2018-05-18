@@ -3,6 +3,7 @@
 ## Version 3.5.0
 
 * introduce `--quiet` mode that displays errors (dead links) only
+* support for ignore patterns to skip the link check for certain links
 
 ## Version 3.4.0
 

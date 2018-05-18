@@ -12,7 +12,8 @@ var path = require('path');
 
 var statusLabels = {
     alive: chalk.green('✓'),
-    dead: chalk.red('✖')
+    dead: chalk.red('✖'),
+    ignored: chalk.gray('/')
 };
 
 var error = false;
@@ -66,6 +67,7 @@ stream.on('data', function (chunk) {
                 }).on('end', function () {
                     let config = JSON.parse(configData);
 
+                    opts.ignorePatterns = config.ignorePatterns
                     opts.httpHeaders = config.httpHeaders;
     
                     runMarkdownLinkCheck(markdown, opts);
