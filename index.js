@@ -25,6 +25,23 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
     }
 
     async.mapLimit(linksCollection, 2, function (link, callback) {
+        if (opts.ignorePatterns) {
+            let shouldIgnore = opts.ignorePatterns.some(function(ignorePattern) {
+                return ignorePattern.pattern instanceof RegExp ? ignorePattern.pattern.test(link) : (new RegExp(ignorePattern.pattern)).test(link) ? true : false;
+            });
+        
+            if (shouldIgnore) {
+                let linkCheckResult = {};
+
+                linkCheckResult.link = link;
+                linkCheckResult.statusCode = 0;
+                linkCheckResult.status = 'ignored';
+                
+                callback(null, linkCheckResult);
+                return;
+            }
+        }
+
         // Make sure it is not undefined and that the appropriate headers are always recalculated for a given link.
         opts.headers = {};
         

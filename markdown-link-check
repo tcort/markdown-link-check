@@ -12,7 +12,8 @@ var path = require('path');
 
 var statusLabels = {
     alive: chalk.green('✓'),
-    dead: chalk.red('✖')
+    dead: chalk.red('✖'),
+    ignored: chalk.gray('/')
 };
 
 var error = false;
@@ -20,7 +21,12 @@ var opts = {};
 var filenameForOutput = '';
 var stream = process.stdin; // read from stdin unless a filename is given
 
-program.option('-p, --progress', 'show progress bar').option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration').arguments('[filenameOrUrl]').action(function (filenameOrUrl) {
+program
+    .option('-p, --progress', 'show progress bar')
+    .option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration')
+    .option('-q, --quiet', 'displays errors only')
+    .arguments('[filenameOrUrl]')
+    .action(function (filenameOrUrl) {
     filenameForOutput = filenameOrUrl;
     if (/https?:/.test(filenameOrUrl)) {
         stream = request.get(filenameOrUrl);
@@ -40,6 +46,7 @@ program.option('-p, --progress', 'show progress bar').option('-c, --config [conf
 }).parse(process.argv);
 
 opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
+opts.quiet = (program.quiet === true);
 
 var markdown = ''; // collect the markdown data, then process it
 stream.on('data', function (chunk) {
@@ -60,6 +67,7 @@ stream.on('data', function (chunk) {
                 }).on('end', function () {
                     let config = JSON.parse(configData);
 
+                    opts.ignorePatterns = config.ignorePatterns;
                     opts.httpHeaders = config.httpHeaders;
     
                     runMarkdownLinkCheck(markdown, opts);
@@ -85,6 +93,12 @@ function runMarkdownLinkCheck(markdown, opts) {
             if(result.status === 'dead') {
                 error = true;
             }
+
+            // Skip messages for non-deadlinks in quiet mode.
+            if (opts.quiet && result.status !== 'dead') {
+                return;
+            }
+
             console.log('[%s] %s', statusLabels[result.status], result.link);
         });
         if(error) {

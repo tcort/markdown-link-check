@@ -41,11 +41,12 @@ Parameters:
   * `baseUrl` the base URL for relative links.
   * `showProgressBar` enable an ASCII progress bar.
   * `httpHeaders` to apply URL specific headers, see example below.
+  * `ignorePatterns` an array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match. Example: `[{ pattern: /foo/ }]`
 * `callback` function which accepts `(err, results)`.
   * `err` an Error object when the operation cannot be completed, otherwise `null`.
   * `results` an array of objects with the following properties:
     * `link` the `link` provided as input
-    * `status` a string set to either `alive` or `dead`.
+    * `status` a string set to either `alive`, `ignored` or `dead`.
     * `statusCode` the HTTP status code. Set to `0` if no HTTP status code was returned (e.g. when the server is down).
     * `err` any connection error that occurred, otherwise `null`.
 
@@ -118,9 +119,10 @@ If not supplied, the tool reads from standard input.
 
   Options:
 
-    -h, --help             output usage information
     -p, --progress         show progress bar
     -c, --config [config]  apply a config file (JSON), holding e.g. URL specific header configuration
+    -q, --quiet            display errors only
+    -h, --help             output usage information
 
 ```
 
@@ -129,6 +131,9 @@ If not supplied, the tool reads from standard input.
 `config.json`:
 
     {
+        "ignorePatterns": [
+            { pattern: "^http://example.net" }
+        ]
         "httpHeaders": [
             {
                 "urls": [
@@ -142,6 +147,7 @@ If not supplied, the tool reads from standard input.
         ]
     }
 
+`ignorePatterns`: An array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match.
 `httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
 
 ## Testing
