@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.5.1
+
+* don't show 'No hyperlinks found!' when quiet
+
 ## Version 3.5.0
 
 * introduce `--quiet` mode that displays errors (dead links) only
