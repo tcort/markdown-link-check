@@ -86,7 +86,7 @@ stream.on('data', function (chunk) {
 
 function runMarkdownLinkCheck(markdown, opts) {
     markdownLinkCheck(markdown, opts, function (err, results) {
-        if (results.length === 0){
+        if (results.length === 0 && !opts.quiet) {
             console.log(chalk.yellow('No hyperlinks found!'));
         }
         results.forEach(function (result) {
