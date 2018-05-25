@@ -34,7 +34,7 @@
     "chalk": "^2.4.1",
     "commander": "^2.15.1",
     "link-check": "^4.4.1",
-    "markdown-link-extractor": "^1.1.1",
+    "markdown-link-extractor": "^1.1.2",
     "request": "^2.87.0",
     "lodash": "^4.17.10",
     "progress": "^2.0.0"

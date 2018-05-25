@@ -48,6 +48,10 @@ describe('markdown-link-check', function () {
             });
         });
         
+        app.get('/foo\\(a=b.42\\).aspx', function (req, res) {
+            res.json({a:'b'});
+        });
+
         var server = http.createServer(app);
         server.listen(0 /* random open port */, 'localhost', function serverListen(err) {
             if (err) {
@@ -152,6 +156,17 @@ describe('markdown-link-check', function () {
                 expect(results[i].status).to.be('alive');
             }
 
+            done();
+        });
+    });
+
+    it('should handle links with parens', function (done) {
+        markdownLinkCheck('[test](' + baseUrl + '/foo\(a=b.42\).aspx)', function (err, results) {
+            expect(err).to.be(null);
+            expect(results).to.be.an('array');
+            expect(results).to.have.length(1);
+            expect(results[0].statusCode).to.be(200);
+            expect(results[0].status).to.be('alive');
             done();
         });
     });
