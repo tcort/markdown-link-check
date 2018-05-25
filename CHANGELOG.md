@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.5.2
+
+* support for parentheses in URLs
+
 ## Version 3.5.1
 
 * don't show 'No hyperlinks found!' when quiet
