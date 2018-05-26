@@ -10,3 +10,4 @@ RUN set -ex; \
 # Bundle app source
 COPY . /src
 RUN npm test
+ENTRYPOINT [ "/src/markdown-link-check" ]
