@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.5.3
+
+* docker run fixes
+
 ## Version 3.5.2
 
 * support for parentheses in URLs
