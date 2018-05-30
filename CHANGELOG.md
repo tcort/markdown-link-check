@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.5.4
+
+* update markdown-link-extractor dependency to support image links with image size attributes
+
 ## Version 3.5.3
 
 * docker run fixes
