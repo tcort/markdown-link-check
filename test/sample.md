@@ -16,5 +16,5 @@ This is a test file:
 
 Here are some e-mail addresses:
 
-* [valid](mailto:linuxgeek@gmail.com)
+* [valid](mailto:linuxgeek@gmail.com?subject=test)
 * [invalid](mailto:foo@bar@baz)
