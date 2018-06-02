@@ -42,6 +42,13 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             }
         }
 
+        if (opts.replacementPatterns) {
+            for (let replacementPattern of opts.replacementPatterns) {
+                let pattern = replacementPattern.pattern instanceof RegExp ? replacementPattern.pattern : new RegExp(replacementPattern.pattern);
+                link = link.replace(pattern, replacementPattern.replacement);
+            }
+        }
+
         // Make sure it is not undefined and that the appropriate headers are always recalculated for a given link.
         opts.headers = {};
         

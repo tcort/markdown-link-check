@@ -64,7 +64,19 @@ describe('markdown-link-check', function () {
     });
 
     it('should check the links in sample.md', function (done) {
-        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl), { baseUrl: baseUrl, ignorePatterns: [{ pattern: /not-working-and-ignored/ }], httpHeaders: [{ urls: [baseUrl + '/basic-auth'], headers: { 'Authorization': 'Basic Zm9vOmJhcg==', 'Foo': 'Bar' }}] }, function (err, results) {
+        markdownLinkCheck(
+            fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl),
+            {
+                baseUrl: baseUrl,
+                ignorePatterns: [{ pattern: /not-working-and-ignored/ }],
+                replacementPatterns: [{ pattern: /boo/, replacement: "foo" }],
+                httpHeaders: [
+                    {
+                        urls: [baseUrl + '/basic-auth'],
+                        headers: { 'Authorization': 'Basic Zm9vOmJhcg==', 'Foo': 'Bar' }
+                    }
+                ] 
+            }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
 
@@ -92,6 +104,9 @@ describe('markdown-link-check', function () {
 
                 // ignored
                 { statusCode: 0, status: 'ignored' },
+
+                // replaced
+                { statusCode: 200, status: 'alive' },
 
                 // hello image
                 { statusCode: 200, status: 'alive' },
