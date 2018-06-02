@@ -10,7 +10,7 @@ var markdownLinkCheck = require('../');
 describe('markdown-link-check', function () {
 
     var baseUrl;
-    
+
     before(function (done) {
         var app = express();
 
@@ -47,7 +47,7 @@ describe('markdown-link-check', function () {
                 dotfiles: 'deny'
             });
         });
-        
+
         app.get('/foo\\(a=b.42\\).aspx', function (req, res) {
             res.json({a:'b'});
         });
