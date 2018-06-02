@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const async = require('async');
 const linkCheck = require('link-check');
+const LinkCheckResult = require('link-check').LinkCheckResult;
 const markdownLinkExtractor = require('markdown-link-extractor');
 const ProgressBar = require('progress');
 
@@ -29,11 +30,9 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             });
 
             if (shouldIgnore) {
-                callback(null, { // TODO use LinkCheckResult class from link-check here
-                    link: link,
-                    statusCode: 0,
-                    status: 'ignored',
-                });
+                const result = new LinkCheckResult(opts, link, 0, undefined);
+                result.status = 'ignored'; // custom status for ignored links
+                callback(null, result);
                 return;
             }
         }
