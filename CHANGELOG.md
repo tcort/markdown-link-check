@@ -1,5 +1,10 @@
 # Changes
 
+## Version 3.5.5
+
+* better handling of malformed URLs and unsupported protocols.
+* support RFC6068 style hfields in mailto: links.
+
 ## Version 3.5.4
 
 * update markdown-link-extractor dependency to support image links with image size attributes
