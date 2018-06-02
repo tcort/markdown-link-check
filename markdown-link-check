@@ -2,24 +2,23 @@
 
 'use strict';
 
-var chalk = require('chalk');
-var fs = require('fs');
-var markdownLinkCheck = require('./');
-var program = require('commander');
-var request = require('request');
-var url = require('url');
-var path = require('path');
+const chalk = require('chalk');
+const fs = require('fs');
+const markdownLinkCheck = require('./');
+const program = require('commander');
+const request = require('request');
+const url = require('url');
+const path = require('path');
 
-var statusLabels = {
+const statusLabels = {
     alive: chalk.green('✓'),
     dead: chalk.red('✖'),
     ignored: chalk.gray('/')
 };
 
-var error = false;
-var opts = {};
-var filenameForOutput = '';
-var stream = process.stdin; // read from stdin unless a filename is given
+const opts = {};
+let filenameForOutput = '';
+let stream = process.stdin; // read from stdin unless a filename is given
 
 program
     .option('-p, --progress', 'show progress bar')
@@ -31,7 +30,7 @@ program
     if (/https?:/.test(filenameOrUrl)) {
         stream = request.get(filenameOrUrl);
         try { // extract baseUrl from supplied URL
-            var parsed = url.parse(filenameOrUrl);
+            const parsed = url.parse(filenameOrUrl);
             delete parsed.search;
             delete parsed.hash;
             if (parsed.pathname.lastIndexOf('/') !== -1) {
@@ -48,7 +47,7 @@ program
 opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
 opts.quiet = (program.quiet === true);
 
-var markdown = ''; // collect the markdown data, then process it
+let markdown = ''; // collect the markdown data, then process it
 stream.on('data', function (chunk) {
     markdown += chunk.toString();
 }).on('end', function () {
@@ -90,10 +89,6 @@ function runMarkdownLinkCheck(markdown, opts) {
             console.log(chalk.yellow('No hyperlinks found!'));
         }
         results.forEach(function (result) {
-            if(result.status === 'dead') {
-                error = true;
-            }
-
             // Skip messages for non-deadlinks in quiet mode.
             if (opts.quiet && result.status !== 'dead') {
                 return;
@@ -101,7 +96,7 @@ function runMarkdownLinkCheck(markdown, opts) {
 
             console.log('[%s] %s', statusLabels[result.status], result.link);
         });
-        if(error) {
+        if (results.some((result) => result.status === 'dead')) {
             console.error(chalk.red('\nERROR: dead links found!'));
             process.exit(1);
         }

@@ -1,10 +1,10 @@
 'use strict';
 
-var _ = require('lodash');
-var async = require('async');
-var linkCheck = require('link-check');
-var markdownLinkExtractor = require('markdown-link-extractor');
-var ProgressBar = require('progress');
+const _ = require('lodash');
+const async = require('async');
+const linkCheck = require('link-check');
+const markdownLinkExtractor = require('markdown-link-extractor');
+const ProgressBar = require('progress');
 
 module.exports = function markdownLinkCheck(markdown, opts, callback) {
     if (arguments.length === 2 && typeof opts === 'function') {
@@ -13,31 +13,27 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         opts = {};
     }
 
-    var bar;
-    var linksCollection = _.uniq(markdownLinkExtractor(markdown));
-    if (opts.showProgressBar) {
-        bar = new ProgressBar('Checking... [:bar] :percent', {
+    const linksCollection = _.uniq(markdownLinkExtractor(markdown));
+    const bar = (opts.showProgressBar) ?
+        new ProgressBar('Checking... [:bar] :percent', {
             complete: '=',
             incomplete: ' ',
             width: 25,
             total: linksCollection.length
-        });
-    }
+        }) : undefined;
 
     async.mapLimit(linksCollection, 2, function (link, callback) {
         if (opts.ignorePatterns) {
-            let shouldIgnore = opts.ignorePatterns.some(function(ignorePattern) {
+            const shouldIgnore = opts.ignorePatterns.some(function(ignorePattern) {
                 return ignorePattern.pattern instanceof RegExp ? ignorePattern.pattern.test(link) : (new RegExp(ignorePattern.pattern)).test(link) ? true : false;
             });
 
             if (shouldIgnore) {
-                let linkCheckResult = {};
-
-                linkCheckResult.link = link;
-                linkCheckResult.statusCode = 0;
-                linkCheckResult.status = 'ignored';
-
-                callback(null, linkCheckResult);
+                callback(null, { // TODO use LinkCheckResult class from link-check here
+                    link: link,
+                    statusCode: 0,
+                    status: 'ignored',
+                });
                 return;
             }
         }
@@ -46,8 +42,8 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         opts.headers = {};
 
         if (opts.httpHeaders) {
-            for (let httpHeader of opts.httpHeaders) {
-                for (let url of httpHeader.urls) {
+            for (const httpHeader of opts.httpHeaders) {
+                for (const url of httpHeader.urls) {
                     if (link.startsWith(url)) {
                         Object.assign(opts.headers, httpHeader.headers);
 

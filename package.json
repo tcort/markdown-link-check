@@ -46,6 +46,7 @@
     "express": "^4.16.3"
   },
   "jshintConfig": {
+    "esversion": 6,
     "bitwise": true,
     "curly": true,
     "eqeqeq": true,

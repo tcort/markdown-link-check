@@ -1,18 +1,18 @@
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var expect = require('expect.js');
-var http = require('http');
-var express = require('express');
-var markdownLinkCheck = require('../');
+const fs = require('fs');
+const path = require('path');
+const expect = require('expect.js');
+const http = require('http');
+const express = require('express');
+const markdownLinkCheck = require('../');
 
 describe('markdown-link-check', function () {
 
-    var baseUrl;
+    let baseUrl;
 
     before(function (done) {
-        var app = express();
+        const app = express();
 
         app.head('/nohead', function (req, res) {
             res.sendStatus(405); // method not allowed
@@ -52,7 +52,7 @@ describe('markdown-link-check', function () {
             res.json({a:'b'});
         });
 
-        var server = http.createServer(app);
+        const server = http.createServer(app);
         server.listen(0 /* random open port */, 'localhost', function serverListen(err) {
             if (err) {
                 done(err);
@@ -68,7 +68,7 @@ describe('markdown-link-check', function () {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
 
-            var expected = [
+            const expected = [
                 // redirect-loop
                 { statusCode:   0, status:  'dead' },
 
@@ -107,7 +107,7 @@ describe('markdown-link-check', function () {
             ];
             expect(results.length).to.be(expected.length);
 
-            for (var i = 0; i < results.length; i++) {
+            for (let i = 0; i < results.length; i++) {
                 expect(results[i].statusCode).to.be(expected[i].statusCode);
                 expect(results[i].status).to.be(expected[i].status);
             }
@@ -121,7 +121,7 @@ describe('markdown-link-check', function () {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
 
-            var expected = [
+            const expected = [
                 { statusCode: 200, status: 'alive' },
                 { statusCode: 200, status: 'alive' },
                 { statusCode: 404, status:  'dead' },
@@ -129,7 +129,7 @@ describe('markdown-link-check', function () {
 
             expect(results.length).to.be(expected.length);
 
-            for (var i = 0; i < results.length; i++) {
+            for (let i = 0; i < results.length; i++) {
                 expect(results[i].statusCode).to.be(expected[i].statusCode);
                 expect(results[i].status).to.be(expected[i].status);
             }
@@ -141,9 +141,9 @@ describe('markdown-link-check', function () {
     it('should handle thousands of links (this test takes up to a minute)', function (done) {
         this.timeout(60000);
 
-        var md = '';
-        var nlinks = 10000;
-        for (var i = 0; i < nlinks; i++) {
+        let md = '';
+        const nlinks = 10000;
+        for (let i = 0; i < nlinks; i++) {
             md += '[test](' + baseUrl + '/foo/bar?i=' + i + ')\n';
         }
         markdownLinkCheck(md, function (err, results) {
@@ -151,7 +151,7 @@ describe('markdown-link-check', function () {
             expect(results).to.be.an('array');
             expect(results).to.have.length(nlinks);
 
-            for (var i = 0; i < results.length; i++) {
+            for (let i = 0; i < results.length; i++) {
                 expect(results[i].statusCode).to.be(200);
                 expect(results[i].status).to.be('alive');
             }
