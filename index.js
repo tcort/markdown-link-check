@@ -57,7 +57,13 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             if (opts.showProgressBar) {
                 bar.tick();
             }
-            callback(err, result);
+
+            if (err) {
+                result = new LinkCheckResult(opts, link, 500, err);
+                result.status = 'error'; // custom status for errored links
+            }
+
+            callback(null, result);
         });
     }, callback);
 };

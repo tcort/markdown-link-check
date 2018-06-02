@@ -104,6 +104,12 @@ describe('markdown-link-check', function () {
 
                 // invalid e-mail
                 { statusCode: 400, status:  'dead' },
+
+                // invalid protocol
+                { statusCode: 500, status:  'error' },
+
+                // invalid protocol
+                { statusCode: 500, status:  'error' },
             ];
             expect(results.length).to.be(expected.length);
 

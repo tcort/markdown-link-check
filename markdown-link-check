@@ -13,7 +13,8 @@ const path = require('path');
 const statusLabels = {
     alive: chalk.green('✓'),
     dead: chalk.red('✖'),
-    ignored: chalk.gray('/')
+    ignored: chalk.gray('/'),
+    error: chalk.yellow('⚠'),
 };
 
 const opts = {};
@@ -85,6 +86,12 @@ stream.on('data', function (chunk) {
 
 function runMarkdownLinkCheck(markdown, opts) {
     markdownLinkCheck(markdown, opts, function (err, results) {
+        if (err) {
+            console.error(chalk.red('\nERROR: something went wrong!'));
+            console.error(err.stack);
+            process.exit(1);
+        }
+
         if (results.length === 0 && !opts.quiet) {
             console.log(chalk.yellow('No hyperlinks found!'));
         }

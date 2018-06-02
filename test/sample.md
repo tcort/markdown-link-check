@@ -18,3 +18,8 @@ Here are some e-mail addresses:
 
 * [valid](mailto:linuxgeek@gmail.com?subject=test)
 * [invalid](mailto:foo@bar@baz)
+
+Here are some invalid protocols:
+
+* [hhttppss](hhttppss://example.org)
+* [applesauce](applesauce://example.org)
