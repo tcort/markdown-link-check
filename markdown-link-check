@@ -68,6 +68,7 @@ stream.on('data', function (chunk) {
                     let config = JSON.parse(configData);
 
                     opts.ignorePatterns = config.ignorePatterns;
+                    opts.replacementPatterns = config.replacementPatterns;
                     opts.httpHeaders = config.httpHeaders;
     
                     runMarkdownLinkCheck(markdown, opts);

@@ -10,6 +10,7 @@ This is a test file:
 * [redirect](%%BASE_URL%%/foo/redirect) (alive)
 * [basic-auth](%%BASE_URL%%/basic-auth) (alive)
 * [ignored](%%BASE_URL%%/something/not-working-and-ignored/something) (ignored)
+* [replaced](%%BASE_URL%%/boo/bar)
 
 ![img](%%BASE_URL%%/hello.jpg) (alive)
 ![img](hello.jpg) (alive)

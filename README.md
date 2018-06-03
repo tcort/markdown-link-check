@@ -42,6 +42,7 @@ Parameters:
   * `showProgressBar` enable an ASCII progress bar.
   * `httpHeaders` to apply URL specific headers, see example below.
   * `ignorePatterns` an array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match. Example: `[{ pattern: /foo/ }]`
+  * `replacementPatterns` an array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. Example: `[{ pattern: /^.attachments/, replacement: "file://some/conventional/folder/.attachments" }]`
 * `callback` function which accepts `(err, results)`.
   * `err` an Error object when the operation cannot be completed, otherwise `null`.
   * `results` an array of objects with the following properties:
@@ -120,7 +121,7 @@ If not supplied, the tool reads from standard input.
   Options:
 
     -p, --progress         show progress bar
-    -c, --config [config]  apply a config file (JSON), holding e.g. URL specific header configuration
+    -c, --config [config]  apply a configuration file (JSON)
     -q, --quiet            display errors only
     -h, --help             output usage information
 
@@ -130,10 +131,24 @@ If not supplied, the tool reads from standard input.
 
 `config.json`:
 
+* `ignorePatterns`: An array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match.
+* `replacementPatterns`: An array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown.
+* `httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
+
+**Example:**
+
     {
         "ignorePatterns": [
-            { pattern: "^http://example.net" }
-        ]
+            {
+                "pattern": "^http://example.net"
+            }
+        ],
+        "replacementPatterns": [
+            {
+                "pattern": "^.attachments",
+                "replacement": "file://some/conventional/folder/.attachments"
+            }
+        ],
         "httpHeaders": [
             {
                 "urls": [
@@ -147,8 +162,7 @@ If not supplied, the tool reads from standard input.
         ]
     }
 
-`ignorePatterns`: An array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match.
-`httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
+
 
 ## Testing
 
