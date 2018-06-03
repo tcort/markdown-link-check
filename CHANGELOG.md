@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.6.0
+
+* replacement patterns
+
 ## Version 3.5.5
 
 * better handling of malformed URLs and unsupported protocols.
