@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.6.1
+
+* ignore query string in links to local files
+
 ## Version 3.6.0
 
 * replacement patterns
