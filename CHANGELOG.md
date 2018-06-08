@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.6.2
+
+* fix crash when 1st link is ignored/replaced
+
 ## Version 3.6.1
 
 * ignore query string in links to local files
