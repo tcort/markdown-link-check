@@ -25,6 +25,7 @@ program
     .option('-p, --progress', 'show progress bar')
     .option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration')
     .option('-q, --quiet', 'displays errors only')
+    .option('-v, --verbose', 'displays detailed error information')
     .arguments('[filenameOrUrl]')
     .action(function (filenameOrUrl) {
     filenameForOutput = filenameOrUrl;
@@ -47,6 +48,7 @@ program
 
 opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
 opts.quiet = (program.quiet === true);
+opts.verbose = (program.verbose === true);
 
 let markdown = ''; // collect the markdown data, then process it
 stream.on('data', function (chunk) {
@@ -102,7 +104,16 @@ function runMarkdownLinkCheck(markdown, opts) {
                 return;
             }
 
-            console.log('[%s] %s', statusLabels[result.status], result.link);
+            if (opts.verbose) {
+                if (result.err) {
+                    console.log('[%s] %s → Status: %s %s', statusLabels[result.status], result.link, result.statusCode, result.err);
+                } else {
+                    console.log('[%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
+                }
+            }
+            else {
+                console.log('[%s] %s', statusLabels[result.status], result.link);
+            }
         });
         if (results.some((result) => result.status === 'dead')) {
             console.error(chalk.red('\nERROR: dead links found!'));
