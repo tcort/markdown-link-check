@@ -57,7 +57,7 @@ stream.on('data', function (chunk) {
     }
 
     if (program.config) {
-        fs.access(program.config, fs.constants.R_OK, function (err) {
+        fs.access(program.config, (fs.constants || fs).R_OK, function (err) {
             if (!err) {
                 let configStream = fs.createReadStream(program.config);
                 let configData = '';
