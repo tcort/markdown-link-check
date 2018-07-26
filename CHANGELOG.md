@@ -1,5 +1,11 @@
 # Changes
 
+## Version 3.7.0
+
+* Add verbose mode for showing detailed error information #55
+* Fix issue with fs constants #53
+* Fix invalid argument errors #54
+
 ## Version 3.6.2
 
 * fix crash when 1st link is ignored/replaced
