@@ -60,7 +60,7 @@ program
                 process.exit(1);
             }
         });
-        fs.access(filenameOrUrl, fs.constants.F_OK, function(fileerror){
+        fs.access(filenameOrUrl, (fs.constants || fs).F_OK, function(fileerror){
             if (fileerror){
                 console.error(chalk.red('\nERROR: File not found! Please provide a vaild filename as an argument.'));
                 process.exit(1);
