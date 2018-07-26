@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.7.1
+
+* Fix accessing fs.constants.F_OK #58
+
 ## Version 3.7.0
 
 * Add verbose mode for showing detailed error information #55
