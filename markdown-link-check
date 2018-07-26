@@ -29,7 +29,19 @@ program
     .action(function (filenameOrUrl) {
     filenameForOutput = filenameOrUrl;
     if (/https?:/.test(filenameOrUrl)) {
-        stream = request.get(filenameOrUrl);
+        request(filenameOrUrl, function (error, response, body) {
+            if (error) {
+                console.error(chalk.red('\nERROR: Unable to connect! Please provide a vaild URL as an argument.'));
+                process.exit(1);
+            }
+            else if (response.statusCode === 404){
+                console.error(chalk.red('\nERROR: 404 - File not found! Please provide a vaild URL as an argument.'));
+                process.exit(1);
+            } else {
+                stream = request.get(filenameOrUrl);
+            }
+
+        });
         try { // extract baseUrl from supplied URL
             const parsed = url.parse(filenameOrUrl);
             delete parsed.search;
@@ -38,11 +50,26 @@ program
                 parsed.pathname = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/') + 1);
             }
             opts.baseUrl = url.format(parsed);
-        } catch (err) { /* ignore error */ }
+        } catch (err) { /* ignore error */ 
+            }
     } else {
-        opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
-        stream = fs.createReadStream(filenameOrUrl);
+        fs.stat(filenameOrUrl, function(error , stats){
+            if (stats.isDirectory()){
+                console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a vaild filename as an argument.'));
+                process.exit(1);
+            }
+        });
+        fs.access(filenameOrUrl, fs.constants.F_OK, function(fileerror){
+            if (fileerror){
+                console.error(chalk.red('\nERROR: File not found! Please provide a vaild filename as an argument.'));
+                process.exit(1);
+            } else {
+                opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
+                stream = fs.createReadStream(filenameOrUrl);
+            }
+          });
     }
+        
 }).parse(process.argv);
 
 opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
