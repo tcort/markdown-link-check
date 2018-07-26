@@ -123,6 +123,7 @@ If not supplied, the tool reads from standard input.
     -p, --progress         show progress bar
     -c, --config [config]  apply a configuration file (JSON)
     -q, --quiet            display errors only
+    -v, --verbose          displays detailed error information 
     -h, --help             output usage information
 
 ```
