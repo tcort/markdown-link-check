@@ -51,7 +51,7 @@ program
                 parsed.pathname = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/') + 1);
             }
             opts.baseUrl = url.format(parsed);
-        } catch (err) { /* ignore error */ 
+        } catch (err) { /* ignore error */
             }
     } else {
         fs.stat(filenameOrUrl, function(error , stats){
@@ -70,7 +70,7 @@ program
             }
           });
     }
-        
+
 }).parse(process.argv);
 
 opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
@@ -90,7 +90,7 @@ stream.on('data', function (chunk) {
             if (!err) {
                 let configStream = fs.createReadStream(program.config);
                 let configData = '';
-                
+
                 configStream.on('data', function (chunk) {
                     configData += chunk.toString();
                 }).on('end', function () {
@@ -99,7 +99,7 @@ stream.on('data', function (chunk) {
                     opts.ignorePatterns = config.ignorePatterns;
                     opts.replacementPatterns = config.replacementPatterns;
                     opts.httpHeaders = config.httpHeaders;
-    
+
                     runMarkdownLinkCheck(markdown, opts);
                 });
             }
