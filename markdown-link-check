@@ -55,20 +55,13 @@ program
             }
     } else {
         fs.stat(filenameOrUrl, function(error , stats){
-            if (stats.isDirectory()){
-                console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
+            if (!error && stats.isDirectory()){
+                console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a vaild filename as an argument.'));
                 process.exit(1);
             }
         });
-        fs.access(filenameOrUrl, (fs.constants || fs).F_OK, function(fileerror){
-            if (fileerror){
-                console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
-                process.exit(1);
-            } else {
-                opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
-                stream = fs.createReadStream(filenameOrUrl);
-            }
-          });
+        opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
+        stream = fs.createReadStream(filenameOrUrl);
     }
 
 }).parse(process.argv);
@@ -78,9 +71,20 @@ opts.quiet = (program.quiet === true);
 opts.verbose = (program.verbose === true);
 
 let markdown = ''; // collect the markdown data, then process it
-stream.on('data', function (chunk) {
+
+stream
+  .on('data', function (chunk) {
     markdown += chunk.toString();
-}).on('end', function () {
+  })
+  .on('error', function(error) {
+    if (error.code === 'ENOENT') {
+      console.error(chalk.red('\nERROR: File not found! Please provide a vaild filename as an argument.'));
+    } else {
+      console.error(chalk.red(error));
+    }
+    return process.exit(1);
+  })
+  .on('end', function () {
     if (filenameForOutput) {
         console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
     }
