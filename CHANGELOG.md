@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.7.2
+
+* Fix fs access anti pattern #62
+
 ## Version 3.7.1
 
 * Fix accessing fs.constants.F_OK #58
