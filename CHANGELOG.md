@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.7.3
+
+* update dependencies #74
+
 ## Version 3.7.2
 
 * Fix fs access anti pattern #62
