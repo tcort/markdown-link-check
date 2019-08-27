@@ -43,6 +43,7 @@ Parameters:
   * `httpHeaders` to apply URL specific headers, see example below.
   * `ignorePatterns` an array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match. Example: `[{ pattern: /foo/ }]`
   * `replacementPatterns` an array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. Example: `[{ pattern: /^.attachments/, replacement: "file://some/conventional/folder/.attachments" }]`
+  * `ignoreDisable` if this is `true` then disable comments are ignored.
 * `callback` function which accepts `(err, results)`.
   * `err` an Error object when the operation cannot be completed, otherwise `null`.
   * `results` an array of objects with the following properties:
@@ -50,6 +51,15 @@ Parameters:
     * `status` a string set to either `alive`, `ignored` or `dead`.
     * `statusCode` the HTTP status code. Set to `0` if no HTTP status code was returned (e.g. when the server is down).
     * `err` any connection error that occurred, otherwise `null`.
+
+#### Disable comments
+
+You can write html comments to disable markdown-link-check for parts of the text.
+
+`<!-- markdown-link-check-disable -->` disables markdown link check.
+`<!-- markdown-link-check-enable -->` reenables markdown link check.
+`<!-- markdown-link-check-disable-next-line -->` disables markdown link check for the next line.
+`<!-- markdown-link-check-disable-line -->` disables markdown link check for this line.
 
 ## Examples
 

@@ -14,6 +14,15 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         opts = {};
     }
 
+    markdown = [
+        /(<!--[ \t]+markdown-link-check-disable[ \t]+-->[\S\s]*?<!--[ \t]+markdown-link-check-enable[ \t]+-->)/mg,
+        /(<!--[ \t]+markdown-link-check-disable[ \t]+-->[\S\s]*(?!<!--[ \t]+markdown-link-check-enable[ \t]+-->))/mg,
+        /(<!--[ \t]+markdown-link-check-disable-next-line[ \t]+-->\r?\n[^\r\n]*)/mg,
+        /([^\r\n]*<!--[ \t]+markdown-link-check-disable-line[ \t]+-->[^\r\n]*)/mg
+    ].reduce(function(_markdown, disablePattern) {
+        return _markdown.replace(new RegExp(disablePattern), '');
+    }, markdown);
+    
     const linksCollection = _.uniq(markdownLinkExtractor(markdown));
     const bar = (opts.showProgressBar) ?
         new ProgressBar('Checking... [:bar] :percent', {
