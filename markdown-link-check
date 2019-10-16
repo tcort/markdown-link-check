@@ -103,6 +103,7 @@ stream
                     opts.ignorePatterns = config.ignorePatterns;
                     opts.replacementPatterns = config.replacementPatterns;
                     opts.httpHeaders = config.httpHeaders;
+                    opts.ignoreDisable = config.ignoreDisable;
 
                     runMarkdownLinkCheck(markdown, opts);
                 });
