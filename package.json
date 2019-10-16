@@ -34,10 +34,10 @@
     "chalk": "^2.4.2",
     "commander": "^2.20.0",
     "link-check": "^4.4.5",
+    "lodash": "^4.17.15",
     "markdown-link-extractor": "^1.2.1",
-    "request": "^2.88.0",
-    "lodash": "^4.17.11",
-    "progress": "^2.0.3"
+    "progress": "^2.0.3",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
