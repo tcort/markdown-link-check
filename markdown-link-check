@@ -147,8 +147,13 @@ function runMarkdownLinkCheck(markdown, opts) {
                 console.log('[%s] %s', statusLabels[result.status], result.link);
             }
         });
+        console.log('\n%s links checked.', results.length);
         if (results.some((result) => result.status === 'dead')) {
-            console.error(chalk.red('\nERROR: dead links found!'));
+            let deadLinks = results.filter(result => { return result.status === 'dead'; });
+            console.error(chalk.red('\nERROR: %s dead links found!'), deadLinks.length);
+            deadLinks.forEach(function (result) {
+                console.log('[%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
+            });
             process.exit(1);
         }
     });
