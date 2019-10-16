@@ -8,7 +8,7 @@ alive (`200 OK`) or dead. `mailto:` links are validated with
 
 To add the module to your project, run:
 
-    npm install --save markdown-link-check
+    npm install --save-dev markdown-link-check
 
 To install the command line tool globally, run:
 
