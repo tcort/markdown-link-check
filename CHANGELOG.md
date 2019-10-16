@@ -1,5 +1,12 @@
 # Changes
 
+## Version 3.8.0
+
+* update dependencies #81
+* Surface dead links in results output #82
+* Add support for disable comments #83
+* Suggest `--save-dev` rather than `--save` in `README.md` #63
+
 ## Version 3.7.3
 
 * update dependencies #74
