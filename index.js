@@ -24,8 +24,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             return _markdown.replace(new RegExp(disablePattern), '');
         }, markdown);
     }
-    
-    console.log(markdown);
+
     const linksCollection = _.uniq(markdownLinkExtractor(markdown));
     const bar = (opts.showProgressBar) ?
         new ProgressBar('Checking... [:bar] :percent', {
