@@ -4,6 +4,7 @@ const _ = require('lodash');
 const async = require('async');
 const linkCheck = require('link-check');
 const LinkCheckResult = require('link-check').LinkCheckResult;
+const marked = require('marked');
 const markdownLinkExtractor = require('markdown-link-extractor');
 const ProgressBar = require('progress');
 
@@ -33,6 +34,21 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             width: 25,
             total: linksCollection.length
         }) : undefined;
+
+    const missingReferences = new Set();
+    const usedReferences = new Set();
+    const tokens = marked.lexer(markdown);
+    const references = tokens.links;
+    tokens.links = new Proxy({}, {
+        get: function (target, name) {
+            if (name in references) {
+                usedReferences.add(name);
+            } else {
+                missingReferences.add(name);
+            }
+        }
+    });
+    marked.parser(tokens)
 
     async.mapLimit(linksCollection, 2, function (link, callback) {
         if (opts.ignorePatterns) {
@@ -83,5 +99,22 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
 
             callback(null, result);
         });
-    }, callback);
+    }, function (err, results) {
+        if (results !== null) {
+            missingReferences.forEach(function (name) {
+                const result = new LinkCheckResult(opts, name + " (undefined reference)", 0, undefined);
+                result.status = 'error';
+                results.push(result);
+            });
+            Object.keys(tokens.links).forEach(function (name) {
+                if (!usedReferences.has(name)) {
+                    const result = new LinkCheckResult(opts, name + " (unused reference)", 0, undefined);
+                    result.status = 'error';
+                    results.push(result);
+                }
+            });
+        }
+
+        callback(err, results);
+    });
 };

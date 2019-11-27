@@ -125,6 +125,18 @@ describe('markdown-link-check', function () {
 
                 // invalid protocol
                 { statusCode: 500, status:  'error' },
+
+                // missing reference (no name)
+                { statusCode: 0, status: 'error' },
+
+                // missing reference (implicit)
+                { statusCode: 0, status: 'error' },
+
+                // missing reference (explicit)
+                { statusCode: 0, status: 'error' },
+
+                // unused reference
+                { statusCode: 0, status: 'error' },
             ];
             expect(results.length).to.be(expected.length);
 

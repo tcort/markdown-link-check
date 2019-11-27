@@ -35,6 +35,7 @@
     "commander": "^3.0.2",
     "link-check": "^4.4.6",
     "markdown-link-extractor": "^1.2.2",
+    "marked": "^0.7.0",
     "request": "^2.88.0",
     "lodash": "^4.17.15",
     "progress": "^2.0.3"
