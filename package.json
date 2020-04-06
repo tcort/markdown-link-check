@@ -33,19 +33,19 @@
     "markdown-link-check"
   ],
   "dependencies": {
-    "async": "^3.1.0",
-    "chalk": "^2.4.2",
-    "commander": "^3.0.2",
-    "link-check": "^4.4.6",
-    "markdown-link-extractor": "^1.2.2",
-    "request": "^2.88.0",
+    "async": "^3.2.0",
+    "chalk": "^4.0.0",
+    "commander": "^5.0.0",
+    "link-check": "^4.5.0",
+    "markdown-link-extractor": "^1.2.3",
+    "request": "^2.88.2",
     "lodash": "^4.17.15",
     "progress": "^2.0.3"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^6.2.1",
-    "jshint": "^2.10.2",
+    "mocha": "^7.1.1",
+    "jshint": "^2.11.0",
     "express": "^4.17.1"
   },
   "jshintConfig": {

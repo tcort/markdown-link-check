@@ -1,5 +1,10 @@
 # Changes
 
+## Version 3.8.1
+
+* update dependencies
+* Remove unnecessary files in the package published to npmjs #92
+
 ## Version 3.8.0
 
 * update dependencies #81
