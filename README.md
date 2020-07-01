@@ -26,6 +26,10 @@ Pipe your `README.md` file to `docker run`:
 
     docker run --rm -i markdown-link-check < README.md
 
+## Run in a GitHub action
+
+Please head on to [github-action-markdown-link-check](https://github.com/gaurav-nelson/github-action-markdown-link-check).
+
 ## API
 
 ### markdownLinkCheck(markdown, [opts,] callback)
@@ -148,31 +152,32 @@ If not supplied, the tool reads from standard input.
 
 **Example:**
 
-    {
-        "ignorePatterns": [
-            {
-                "pattern": "^http://example.net"
-            }
-        ],
-        "replacementPatterns": [
-            {
-                "pattern": "^.attachments",
-                "replacement": "file://some/conventional/folder/.attachments"
-            }
-        ],
-        "httpHeaders": [
-            {
-                "urls": [
-                    "https://example.com"
-                ],
-                "headers": {
-                    "Authorization": "Basic Zm9vOmJhcg==",
-                    "Foo": "Bar"
-                }
-            }
-        ]
-    }
-
+```json
+{
+	"ignorePatterns": [
+		{
+			"pattern": "^http://example.net"
+		}
+	],
+	"replacementPatterns": [
+		{
+			"pattern": "^.attachments",
+			"replacement": "file://some/conventional/folder/.attachments"
+		}
+	],
+	"httpHeaders": [
+		{
+			"urls": [
+				"https://example.com"
+			],
+			"headers": {
+				"Authorization": "Basic Zm9vOmJhcg==",
+				"Foo": "Bar"
+			}
+		}
+	]
+}
+```
 
 
 ## Testing
