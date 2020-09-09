@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.8.3
+
+* update dependencies (Fixes #86)
+
 ## Version 3.8.2
 
 * update dependencies
