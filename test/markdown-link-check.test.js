@@ -82,7 +82,7 @@ describe('markdown-link-check', function () {
             done();
         });
     });
-    
+
     it('should check the links in sample.md', function (done) {
         markdownLinkCheck(
             fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl),
@@ -95,7 +95,9 @@ describe('markdown-link-check', function () {
                         urls: [baseUrl + '/basic-auth'],
                         headers: { 'Authorization': 'Basic Zm9vOmJhcg==', 'Foo': 'Bar' }
                     }
-                ]
+                ],
+                "aliveStatusCodes":[200, 206],
+                "retryOn429":true
             }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');

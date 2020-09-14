@@ -21,11 +21,17 @@ const opts = {};
 let filenameForOutput = '';
 let stream = process.stdin; // read from stdin unless a filename is given
 
+function commaSeparatedList(value, dummyPrevious) {
+  return value.split(',');
+}
+
 program
     .option('-p, --progress', 'show progress bar')
     .option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration')
     .option('-q, --quiet', 'displays errors only')
     .option('-v, --verbose', 'displays detailed error information')
+    .option('-a, --alive <HTTP code>', 'comma separated list of HTTP code to be considerered as alive', commaSeparatedList)
+    .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
     .arguments('[filenameOrUrl]')
     .action(function (filenameOrUrl) {
     filenameForOutput = filenameOrUrl;
@@ -69,6 +75,8 @@ program
 opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
 opts.quiet = (program.quiet === true);
 opts.verbose = (program.verbose === true);
+opts.retryOn429 = (program.retry === true);
+opts.aliveStatusCodes = program.alive;
 
 let markdown = ''; // collect the markdown data, then process it
 
