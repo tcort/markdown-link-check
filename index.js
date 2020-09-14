@@ -71,7 +71,11 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             }
         }
 
+        opts.retryOn429 = true;
+        opts.aliveStatusCodes = [200,206];
+
         linkCheck(link, opts, function (err, result) {
+
             if (opts.showProgressBar) {
                 bar.tick();
             }

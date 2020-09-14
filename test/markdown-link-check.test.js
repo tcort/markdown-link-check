@@ -9,16 +9,36 @@ const markdownLinkCheck = require('../');
 
 describe('markdown-link-check', function () {
 
+    // add a longer timeout on tests so we can really test real cases.
+    // Mocha default is 2s, make it 5s here.
+    this.timeout(5000);
+
     let baseUrl;
 
     before(function (done) {
         const app = express();
+
+        var laterRetryCount = 0;
 
         app.head('/nohead', function (req, res) {
             res.sendStatus(405); // method not allowed
         });
         app.get('/nohead', function (req, res) {
             res.sendStatus(200);
+        });
+
+        app.get('/partial', function (req, res) {
+            res.sendStatus(206);
+        });
+
+        app.get('/later', function (req, res) {
+            if(laterRetryCount<2){
+              laterRetryCount++;
+              res.append('retry-after', '2s');
+              res.sendStatus(429);
+            }else{
+              res.sendStatus(200);
+            }
         });
 
         app.get('/foo/redirect', function (req, res) {
@@ -62,7 +82,7 @@ describe('markdown-link-check', function () {
             done();
         });
     });
-
+    
     it('should check the links in sample.md', function (done) {
         markdownLinkCheck(
             fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl),
@@ -75,7 +95,7 @@ describe('markdown-link-check', function () {
                         urls: [baseUrl + '/basic-auth'],
                         headers: { 'Authorization': 'Basic Zm9vOmJhcg==', 'Foo': 'Bar' }
                     }
-                ] 
+                ]
             }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
@@ -107,6 +127,12 @@ describe('markdown-link-check', function () {
 
                 // replaced
                 { statusCode: 200, status: 'alive' },
+
+                // request rate limit return 429, retry later and get 200
+                { statusCode: 200, status: 'alive' },
+
+                // partial
+                { statusCode: 206, status: 'alive' },
 
                 // hello image
                 { statusCode: 200, status: 'alive' },
