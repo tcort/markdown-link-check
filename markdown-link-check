@@ -21,8 +21,10 @@ const opts = {};
 let filenameForOutput = '';
 let stream = process.stdin; // read from stdin unless a filename is given
 
-function commaSeparatedList(value, dummyPrevious) {
-  return value.split(',');
+function commaSeparatedCodesList(value, dummyPrevious) {
+    return value.split(',').map(function(item) {
+      return parseInt(item, 10);
+    });
 }
 
 program
@@ -30,7 +32,7 @@ program
     .option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration')
     .option('-q, --quiet', 'displays errors only')
     .option('-v, --verbose', 'displays detailed error information')
-    .option('-a, --alive <HTTP code>', 'comma separated list of HTTP code to be considerered as alive', commaSeparatedList)
+    .option('-a, --alive <code>', 'comma separated list of HTTP codes to be considered as alive', commaSeparatedCodesList)
     .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
     .arguments('[filenameOrUrl]')
     .action(function (filenameOrUrl) {
