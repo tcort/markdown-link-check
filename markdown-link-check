@@ -112,6 +112,8 @@ stream
                     opts.replacementPatterns = config.replacementPatterns;
                     opts.httpHeaders = config.httpHeaders;
                     opts.ignoreDisable = config.ignoreDisable;
+                    opts.retryOn429 = config.retryOn429;
+                    opts.aliveStatusCodes = config.aliveStatusCodes;
 
                     runMarkdownLinkCheck(markdown, opts);
                 });
