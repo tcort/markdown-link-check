@@ -48,6 +48,9 @@ Parameters:
   * `ignorePatterns` an array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match. Example: `[{ pattern: /foo/ }]`
   * `replacementPatterns` an array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. Example: `[{ pattern: /^.attachments/, replacement: "file://some/conventional/folder/.attachments" }]`
   * `ignoreDisable` if this is `true` then disable comments are ignored.
+  * `retryOn429` if this is `true` then retry request when response is an HTTP code 429 and retry within the delay indicated by `retry-after` header.
+  * `aliveStatusCodes` a list of HTTP codes to consider as alive.
+    Example: `[200,206]`
 * `callback` function which accepts `(err, results)`.
   * `err` an Error object when the operation cannot be completed, otherwise `null`.
   * `results` an array of objects with the following properties:
@@ -129,17 +132,16 @@ If not supplied, the tool reads from standard input.
 #### Usage
 
 ```
+Usage: markdown-link-check [options] [filenameOrUrl]
 
-  Usage: markdown-link-check [options] [filenameOrUrl]
-
-  Options:
-
-    -p, --progress         show progress bar
-    -c, --config [config]  apply a configuration file (JSON)
-    -q, --quiet            display errors only
-    -v, --verbose          displays detailed error information 
-    -h, --help             output usage information
-
+Options:
+  -p, --progress         show progress bar
+  -c, --config [config]  apply a config file (JSON), holding e.g. url specific header configuration
+  -q, --quiet            displays errors only
+  -v, --verbose          displays detailed error information
+  -a, --alive <code>     comma separated list of HTTP code to be considered as alive
+  -r, --retry            retry after the duration indicated in 'retry-after' header when HTTP code is 429
+  -h, --help             display help for command
 ```
 
 ##### Config file format
@@ -149,6 +151,8 @@ If not supplied, the tool reads from standard input.
 * `ignorePatterns`: An array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match.
 * `replacementPatterns`: An array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown.
 * `httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
+* `retryOn429` if this is `true` then retry request when response is an HTTP code 429 and retry within the delay indicated by `retry-after` header.
+* `aliveStatusCodes` a list of HTTP codes to consider as alive.
 
 **Example:**
 
@@ -175,7 +179,9 @@ If not supplied, the tool reads from standard input.
 				"Foo": "Bar"
 			}
 		}
-	]
+	],
+  "retryOn429":true,
+  "aliveStatusCodes":[200, 206]
 }
 ```
 
