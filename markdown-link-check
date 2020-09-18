@@ -21,11 +21,19 @@ const opts = {};
 let filenameForOutput = '';
 let stream = process.stdin; // read from stdin unless a filename is given
 
+function commaSeparatedCodesList(value, dummyPrevious) {
+    return value.split(',').map(function(item) {
+      return parseInt(item, 10);
+    });
+}
+
 program
     .option('-p, --progress', 'show progress bar')
     .option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration')
     .option('-q, --quiet', 'displays errors only')
     .option('-v, --verbose', 'displays detailed error information')
+    .option('-a, --alive <code>', 'comma separated list of HTTP codes to be considered as alive', commaSeparatedCodesList)
+    .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
     .arguments('[filenameOrUrl]')
     .action(function (filenameOrUrl) {
     filenameForOutput = filenameOrUrl;
@@ -69,6 +77,8 @@ program
 opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
 opts.quiet = (program.quiet === true);
 opts.verbose = (program.verbose === true);
+opts.retryOn429 = (program.retry === true);
+opts.aliveStatusCodes = program.alive;
 
 let markdown = ''; // collect the markdown data, then process it
 
@@ -104,6 +114,8 @@ stream
                     opts.replacementPatterns = config.replacementPatterns;
                     opts.httpHeaders = config.httpHeaders;
                     opts.ignoreDisable = config.ignoreDisable;
+                    opts.retryOn429 = config.retryOn429;
+                    opts.aliveStatusCodes = config.aliveStatusCodes;
 
                     runMarkdownLinkCheck(markdown, opts);
                 });

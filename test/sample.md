@@ -11,6 +11,8 @@ This is a test file:
 * [basic-auth](%%BASE_URL%%/basic-auth) (alive)
 * [ignored](%%BASE_URL%%/something/not-working-and-ignored/something) (ignored)
 * [replaced](%%BASE_URL%%/boo/bar)
+* [later](%%BASE_URL%%/later)
+* [partial](%%BASE_URL%%/partial)
 
 ![img](%%BASE_URL%%/hello.jpg) (alive)
 ![img](hello.jpg) (alive)

@@ -72,6 +72,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         }
 
         linkCheck(link, opts, function (err, result) {
+
             if (opts.showProgressBar) {
                 bar.tick();
             }
