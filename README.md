@@ -22,9 +22,9 @@ Build a Docker image:
 
     docker build --tag markdown-link-check .
 
-Pipe your `README.md` file to `docker run`:
+Add current directory with your `README.md` file as read only volume to `docker run`:
 
-    docker run --rm -i markdown-link-check < README.md
+    docker run -v ${PWD}:/tmp:ro --rm -i markdown-link-check /tmp/README.md
 
 ## Run in a GitHub action
 
@@ -124,10 +124,6 @@ If not supplied, the tool reads from standard input.
 #### Check links from a local markdown folder (recursive)
 
     find . -name \*.md -exec markdown-link-check {} \;
-
-#### Check links from standard input
-
-    cat *.md | markdown-link-check
 
 #### Usage
 
