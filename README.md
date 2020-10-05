@@ -1,3 +1,5 @@
+![Test library workflow status](https://github.com/tcort/markdown-link-check/workflows/Test%20library/badge.svg)
+
 # markdown-link-check
 
 Extracts links from markdown texts and checks whether each link is
