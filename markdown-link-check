@@ -64,7 +64,7 @@ program
     } else {
         fs.stat(filenameOrUrl, function(error , stats){
             if (!error && stats.isDirectory()){
-                console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a vaild filename as an argument.'));
+                console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
                 process.exit(1);
             }
         });
@@ -88,7 +88,7 @@ stream
   })
   .on('error', function(error) {
     if (error.code === 'ENOENT') {
-      console.error(chalk.red('\nERROR: File not found! Please provide a vaild filename as an argument.'));
+      console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
     } else {
       console.error(chalk.red(error));
     }
