@@ -36,11 +36,11 @@
     "async": "^3.2.0",
     "chalk": "^4.1.0",
     "commander": "^6.1.0",
-    "link-check": "^4.5.1",
-    "markdown-link-extractor": "^1.2.6",
-    "request": "^2.88.2",
+    "link-check": "^4.5.2",
     "lodash": "^4.17.20",
-    "progress": "^2.0.3"
+    "markdown-link-extractor": "^1.2.6",
+    "progress": "^2.0.3",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
