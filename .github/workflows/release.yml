@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  release:
+    types: created
+
+jobs:
+  docker-build-and-publish:
+    name: "Docker: Build & Publish"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Config: Registry"
+        run: echo ::set-env name=REGISTRY::ghcr.io
+      - name: "Config: Image Name"
+        run: echo ::set-env name=IMAGE_NAME::${{ github.repository_owner }}/$(basename ${{ github.repository }})
+      - name: "Config: Image URL"
+        run: echo ::set-env name=IMAGE_URL::${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        # Derriving semver tags this way is hacky, but the action doesn't seem to think you would want to set
+        # both latest AND semver...
+      - name: "Config: Semver Tags"
+        run: |
+          echo ::set-env name=SEMVER_TAGS::$(echo ${{ github.ref }} \
+          | sed -e "s/refs\/tags\///g" \
+          | sed -E "s/v?([0-9]+)\.([0-9]+)\.([0-9]+)(-[a-zA-Z]+(\.[0-9]+)?)?/\1.\2.\3\4\,\1.\2\4\,\1\4/g")
+      - name: "Repo: Checkout"
+        uses: actions/checkout@v2
+      - name: "Docker: Build & Publish"
+        id: build
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: ${{ env.IMAGE_NAME }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PUBLISH_TOKEN }}
+          tags: latest,stable,${{ env.SEMVER_TAGS }}
+      - name: "Config: Full Image URL"
+        run: echo ::set-env name=FULL_SNAPSHOT_URL::${{ env.IMAGE_URL }}:${{ steps.build.outputs.tag }}
