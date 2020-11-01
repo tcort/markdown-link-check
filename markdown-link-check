@@ -113,6 +113,7 @@ stream
                     opts.ignorePatterns = config.ignorePatterns;
                     opts.replacementPatterns = config.replacementPatterns;
                     opts.httpHeaders = config.httpHeaders;
+                    opts.timeout = config.timeout;
                     opts.ignoreDisable = config.ignoreDisable;
                     opts.retryOn429 = config.retryOn429;
                     opts.aliveStatusCodes = config.aliveStatusCodes;
