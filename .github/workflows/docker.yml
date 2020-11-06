@@ -1,0 +1,56 @@
+name: Docker
+
+on:
+  pull_request:
+    paths-ignore:
+      - '.**'
+  push:
+    paths-ignore:
+      - '.**'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-and-publish:
+    name: Build & Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Config: Registry"
+        run: echo ::set-env name=REGISTRY::ghcr.io
+      - name: "Config: Image Name"
+        run: echo ::set-env name=IMAGE_NAME::${{ github.repository_owner }}/$(basename ${{ github.repository }})
+      - name: "Config: Image URL"
+        run: echo ::set-env name=IMAGE_URL::${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: "Repo: Checkout"
+        uses: actions/checkout@v2
+      - name: "Docker: Build & Publish"
+        id: build
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: ${{ env.IMAGE_NAME }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PUBLISH_TOKEN }}
+          snapshot: true
+      - name: "Config: Full Image URL"
+        run: echo ::set-env name=FULL_SNAPSHOT_URL::${{ env.IMAGE_URL }}:${{ steps.build.outputs.snapshot-tag }}
+      - name: "Feedback: Commit Comment"
+        uses: peter-evans/commit-comment@v1
+        with:
+          body: |
+           :tada: **Docker testing image published**
+
+           **URL:** `${{ env.FULL_SNAPSHOT_URL }}`
+
+           To use the image:
+           ```
+           docker pull ${{ env.FULL_SNAPSHOT_URL }}
+           ```
+
+           Additionally, the most recent build for this branch is tagged `${{ steps.build.outputs.tag }}`, to use it:
+
+            ```
+           docker pull ${{ env.IMAGE_URL }}:${{ steps.build.outputs.tag }}
+           ```

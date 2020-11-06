@@ -8,7 +8,7 @@ const express = require('express');
 const markdownLinkCheck = require('../');
 
 describe('markdown-link-check', function () {
-
+    const MAX_RETRY_COUNT = 5;
     // add a longer timeout on tests so we can really test real cases.
     // Mocha default is 2s, make it 5s here.
     this.timeout(5000);
@@ -32,11 +32,14 @@ describe('markdown-link-check', function () {
         });
 
         app.get('/later', function (req, res) {
-            if(laterRetryCount<2){
+            if(laterRetryCount<MAX_RETRY_COUNT){
               laterRetryCount++;
-              res.append('retry-after', '2s');
+              if(laterRetryCount !== 2) {
+                  res.append('retry-after', '2s');
+              }
               res.sendStatus(429);
             }else{
+              laterRetryCount = 0;
               res.sendStatus(200);
             }
         });
@@ -97,7 +100,9 @@ describe('markdown-link-check', function () {
                     }
                 ],
                 "aliveStatusCodes":[200, 206],
-                "retryOn429":true
+                "retryOn429":true,
+                "retryCount": MAX_RETRY_COUNT,
+                "fallbackRetryDelay": "500ms"
             }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');

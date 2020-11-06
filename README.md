@@ -51,6 +51,8 @@ Parameters:
   * `replacementPatterns` an array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. Example: `[{ pattern: /^.attachments/, replacement: "file://some/conventional/folder/.attachments" }]`
   * `ignoreDisable` if this is `true` then disable comments are ignored.
   * `retryOn429` if this is `true` then retry request when response is an HTTP code 429 after the duration indicated by `retry-after` header.
+  * `retryCount` the number of retries to be made on a 429 response. Default `2`.
+  * `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
   * `aliveStatusCodes` a list of HTTP codes to consider as alive.
     Example: `[200,206]`
 * `callback` function which accepts `(err, results)`.
@@ -150,6 +152,8 @@ Options:
 * `replacementPatterns`: An array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown.
 * `httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
 * `retryOn429` if this is `true` then retry request when response is an HTTP code 429 after the duration indicated by `retry-after` header.
+* `retryCount` the number of retries to be made on a 429 response. Default `2`.
+* `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
 * `aliveStatusCodes` a list of HTTP codes to consider as alive.
 
 **Example:**
@@ -179,6 +183,8 @@ Options:
 		}
 	],
   "retryOn429":true,
+  "retryCount": 5,
+  "fallbackRetryDelay": "30s",
   "aliveStatusCodes":[200, 206]
 }
 ```

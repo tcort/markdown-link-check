@@ -116,6 +116,8 @@ stream
                     opts.timeout = config.timeout;
                     opts.ignoreDisable = config.ignoreDisable;
                     opts.retryOn429 = config.retryOn429;
+                    opts.retryCount = config.retryCount;
+                    opts.fallbackRetryDelay = config.fallbackRetryDelay;
                     opts.aliveStatusCodes = config.aliveStatusCodes;
 
                     runMarkdownLinkCheck(markdown, opts);
