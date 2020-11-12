@@ -160,32 +160,30 @@ Options:
 
 ```json
 {
-	"ignorePatterns": [
-		{
-			"pattern": "^http://example.net"
-		}
-	],
-	"replacementPatterns": [
-		{
-			"pattern": "^.attachments",
-			"replacement": "file://some/conventional/folder/.attachments"
-		}
-	],
-	"httpHeaders": [
-		{
-			"urls": [
-				"https://example.com"
-			],
-			"headers": {
-				"Authorization": "Basic Zm9vOmJhcg==",
-				"Foo": "Bar"
-			}
-		}
-	],
-  "retryOn429":true,
+  "ignorePatterns": [
+    {
+      "pattern": "^http://example.net"
+    }
+  ],
+  "replacementPatterns": [
+    {
+      "pattern": "^.attachments",
+      "replacement": "file://some/conventional/folder/.attachments"
+    }
+  ],
+  "httpHeaders": [
+    {
+      "urls": ["https://example.com"],
+      "headers": {
+        "Authorization": "Basic Zm9vOmJhcg==",
+        "Foo": "Bar"
+      }
+    }
+  ],
+  "retryOn429": true,
   "retryCount": 5,
   "fallbackRetryDelay": "30s",
-  "aliveStatusCodes":[200, 206]
+  "aliveStatusCodes": [200, 206]
 }
 ```
 
