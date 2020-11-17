@@ -18,11 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Config: Registry"
-        run: echo ::set-env name=REGISTRY::ghcr.io
+        run: echo "REGISTRY=ghcr.io" >> $GITHUB_ENV
       - name: "Config: Image Name"
-        run: echo ::set-env name=IMAGE_NAME::${{ github.repository_owner }}/$(basename ${{ github.repository }})
+        run: echo "IMAGE_NAME=${{ github.repository_owner }}/$(basename ${{ github.repository }})" >> $GITHUB_ENV
       - name: "Config: Image URL"
-        run: echo ::set-env name=IMAGE_URL::${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        run: echo "IMAGE_URL=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" >> $GITHUB_ENV
       - name: "Repo: Checkout"
         uses: actions/checkout@v2
       - name: "Docker: Build & Publish"
@@ -35,7 +35,7 @@ jobs:
           password: ${{ secrets.PUBLISH_TOKEN }}
           snapshot: true
       - name: "Config: Full Image URL"
-        run: echo ::set-env name=FULL_SNAPSHOT_URL::${{ env.IMAGE_URL }}:${{ steps.build.outputs.snapshot-tag }}
+        run: echo "FULL_SNAPSHOT_URL=${{ env.IMAGE_URL }}:${{ steps.build.outputs.snapshot-tag }}" >> $GITHUB_ENV
       - name: "Feedback: Commit Comment"
         uses: peter-evans/commit-comment@v1
         with:
