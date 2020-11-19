@@ -1,4 +1,5 @@
 'use strict';
+/* jscpd:ignore-start */
 
 const fs = require('fs');
 const path = require('path');
@@ -32,15 +33,15 @@ describe('markdown-link-check', function () {
         });
 
         app.get('/later', function (req, res) {
-            if(laterRetryCount<MAX_RETRY_COUNT){
-              laterRetryCount++;
-              if(laterRetryCount !== 2) {
-                  res.append('retry-after', '2s');
-              }
-              res.sendStatus(429);
-            }else{
-              laterRetryCount = 0;
-              res.sendStatus(200);
+            if (laterRetryCount < MAX_RETRY_COUNT) {
+                laterRetryCount++;
+                if (laterRetryCount !== 2) {
+                    res.append('retry-after', '2s');
+                }
+                res.sendStatus(429);
+            } else {
+                laterRetryCount = 0;
+                res.sendStatus(200);
             }
         });
 
@@ -48,7 +49,7 @@ describe('markdown-link-check', function () {
             res.redirect('/foo/bar');
         });
         app.get('/foo/bar', function (req, res) {
-            res.json({foo:'bar'});
+            res.json({ foo: 'bar' });
         });
 
         app.get('/basic-auth', function (req, res) {
@@ -72,7 +73,7 @@ describe('markdown-link-check', function () {
         });
 
         app.get('/foo\\(a=b.42\\).aspx', function (req, res) {
-            res.json({a:'b'});
+            res.json({ a: 'b' });
         });
 
         const server = http.createServer(app);
@@ -99,75 +100,75 @@ describe('markdown-link-check', function () {
                         headers: { 'Authorization': 'Basic Zm9vOmJhcg==', 'Foo': 'Bar' }
                     }
                 ],
-                "aliveStatusCodes":[200, 206],
-                "retryOn429":true,
+                "aliveStatusCodes": [200, 206],
+                "retryOn429": true,
                 "retryCount": MAX_RETRY_COUNT,
                 "fallbackRetryDelay": "500ms"
             }, function (err, results) {
-            expect(err).to.be(null);
-            expect(results).to.be.an('array');
+                expect(err).to.be(null);
+                expect(results).to.be.an('array');
 
-            const expected = [
-                // redirect-loop
-                { statusCode:   0, status:  'dead' },
+                const expected = [
+                    // redirect-loop
+                    { statusCode: 0, status: 'dead' },
 
-                // valid
-                { statusCode: 200, status: 'alive' },
+                    // valid
+                    { statusCode: 200, status: 'alive' },
 
-                // invalid
-                { statusCode: 404, status:  'dead' },
+                    // invalid
+                    { statusCode: 404, status: 'dead' },
 
-                // dns-resolution-fail
-                { statusCode:   0, status:  'dead' },
+                    // dns-resolution-fail
+                    { statusCode: 0, status: 'dead' },
 
-                // nohead-get-ok
-                { statusCode: 200, status: 'alive' },
+                    // nohead-get-ok
+                    { statusCode: 200, status: 'alive' },
 
-                // redirect
-                { statusCode: 200, status: 'alive' },
+                    // redirect
+                    { statusCode: 200, status: 'alive' },
 
-                // basic-auth
-                { statusCode: 200, status: 'alive' },
+                    // basic-auth
+                    { statusCode: 200, status: 'alive' },
 
-                // ignored
-                { statusCode: 0, status: 'ignored' },
+                    // ignored
+                    { statusCode: 0, status: 'ignored' },
 
-                // replaced
-                { statusCode: 200, status: 'alive' },
+                    // replaced
+                    { statusCode: 200, status: 'alive' },
 
-                // request rate limit return 429, retry later and get 200
-                { statusCode: 200, status: 'alive' },
+                    // request rate limit return 429, retry later and get 200
+                    { statusCode: 200, status: 'alive' },
 
-                // partial
-                { statusCode: 206, status: 'alive' },
+                    // partial
+                    { statusCode: 206, status: 'alive' },
 
-                // hello image
-                { statusCode: 200, status: 'alive' },
+                    // hello image
+                    { statusCode: 200, status: 'alive' },
 
-                // hello image
-                { statusCode: 200, status: 'alive' },
+                    // hello image
+                    { statusCode: 200, status: 'alive' },
 
-                // valid e-mail
-                { statusCode: 200, status:  'alive' },
+                    // valid e-mail
+                    { statusCode: 200, status: 'alive' },
 
-                // invalid e-mail
-                { statusCode: 400, status:  'dead' },
+                    // invalid e-mail
+                    { statusCode: 400, status: 'dead' },
 
-                // invalid protocol
-                { statusCode: 500, status:  'error' },
+                    // invalid protocol
+                    { statusCode: 500, status: 'error' },
 
-                // invalid protocol
-                { statusCode: 500, status:  'error' },
-            ];
-            expect(results.length).to.be(expected.length);
+                    // invalid protocol
+                    { statusCode: 500, status: 'error' },
+                ];
+                expect(results.length).to.be(expected.length);
 
-            for (let i = 0; i < results.length; i++) {
-                expect(results[i].statusCode).to.be(expected[i].statusCode);
-                expect(results[i].status).to.be(expected[i].status);
-            }
+                for (let i = 0; i < results.length; i++) {
+                    expect(results[i].statusCode).to.be(expected[i].statusCode);
+                    expect(results[i].status).to.be(expected[i].status);
+                }
 
-            done();
-        });
+                done();
+            });
     });
 
     it('should check the links in file.md', function (done) {
@@ -178,7 +179,7 @@ describe('markdown-link-check', function () {
             const expected = [
                 { statusCode: 200, status: 'alive' },
                 { statusCode: 200, status: 'alive' },
-                { statusCode: 404, status:  'dead' },
+                { statusCode: 404, status: 'dead' },
             ];
 
             expect(results.length).to.be(expected.length);
@@ -215,7 +216,7 @@ describe('markdown-link-check', function () {
     });
 
     it('should handle links with parens', function (done) {
-        markdownLinkCheck('[test](' + baseUrl + '/foo\(a=b.42\).aspx)', function (err, results) {
+        markdownLinkCheck('[test](' + baseUrl + '/foo(a=b.42).aspx)', function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
             expect(results).to.have.length(1);
@@ -225,3 +226,4 @@ describe('markdown-link-check', function () {
         });
     });
 });
+/* jscpd:ignore-end */

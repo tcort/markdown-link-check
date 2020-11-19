@@ -1,5 +1,14 @@
 # Changes
 
+## UNRELEASED
+
+* Add **Other tools** section in README + [Mega-Linter](https://nvuillam.github.io/mega-linter/)
+* Activate [Mega-Linter](https://nvuillam.github.io/mega-linter/) in repository as GitHub Action
+  * Add .cspell.json for whitelisted unknown words
+  * Add .eslintrc.yml for Eslint javascript linter
+  * Fixes for detected issues
+  * Add Mega-Linter Badge
+
 ## Version 3.8.3
 
 * update dependencies (Fixes #86)
