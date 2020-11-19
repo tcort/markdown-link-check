@@ -30,7 +30,7 @@ Docker images are built with each release. Use the `stable` tag for the current 
 Add current directory with your `README.md` file as read only volume to `docker run`:
 
 ```shell
-    docker run -v ${PWD}:/tmp:ro --rm -i ghcr.io/tcort/markdown-link-check:stable /tmp/README.md
+docker run -v ${PWD}:/tmp:ro --rm -i ghcr.io/tcort/markdown-link-check:stable /tmp/README.md
 ```
 
 Alternatively, if you wish to target a specific release, images are tagged with semantic versions (i.e. `3`, `3.8`, `3.8.3`)
@@ -144,7 +144,7 @@ markdown-link-check ./README.md
 #### Check links from a local markdown folder (recursive)
 
 ```shell
-    find . -name \*.md -exec markdown-link-check {} \;
+find . -name \*.md -exec markdown-link-check {} \;
 ```
 
 #### Usage
