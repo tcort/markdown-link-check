@@ -10,11 +10,15 @@ alive (`200 OK`) or dead. `mailto:` links are validated with
 
 To add the module to your project, run:
 
-    npm install --save-dev markdown-link-check
+```shell
+npm install --save-dev markdown-link-check
+```
 
 To install the command line tool globally, run:
 
-    npm install -g markdown-link-check
+```shell
+npm install -g markdown-link-check
+```
 
 ---
 
@@ -24,13 +28,19 @@ Docker images are built with each release. Use the `stable` tag for the current 
 
 Add current directory with your `README.md` file as read only volume to `docker run`:
 
-    docker run -v ${PWD}:/tmp:ro --rm -i ghcr.io/tcort/markdown-link-check:stable /tmp/README.md
+```shell
+docker run -v ${PWD}:/tmp:ro --rm -i ghcr.io/tcort/markdown-link-check:stable /tmp/README.md
+```
 
 Alternatively, if you wish to target a specific release, images are tagged with semantic versions (i.e. `3`, `3.8`, `3.8.3`)
 
 ## Run in a GitHub action
 
 Please head on to [github-action-markdown-link-check](https://github.com/gaurav-nelson/github-action-markdown-link-check).
+
+## Run in other tools
+
+- [Mega-Linter](https://nvuillam.github.io/mega-linter/): Linters aggregator [including markdown-link-check](https://nvuillam.github.io/mega-linter/descriptors/markdown_markdown_link_check/)
 
 ## API
 
@@ -120,19 +130,25 @@ If not supplied, the tool reads from standard input.
 
 #### Check links from a markdown file hosted on the web
 
-    markdown-link-check https://github.com/tcort/markdown-link-check/blob/master/README.md
+```shell
+markdown-link-check https://github.com/tcort/markdown-link-check/blob/master/README.md
+```
 
 #### Check links from a local markdown file
 
-    markdown-link-check ./README.md
+```shell
+markdown-link-check ./README.md
+```
 
 #### Check links from a local markdown folder (recursive)
 
-    find . -name \*.md -exec markdown-link-check {} \;
+```shell
+find . -name \*.md -exec markdown-link-check {} \;
+```
 
 #### Usage
 
-```
+```shell
 Usage: markdown-link-check [options] [filenameOrUrl]
 
 Options:
@@ -192,7 +208,9 @@ Options:
 
 ## Testing
 
-    npm test
+```shell
+npm test
+```
 
 ## License
 
