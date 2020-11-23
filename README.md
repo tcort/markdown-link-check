@@ -1,6 +1,7 @@
-![Test library workflow status](https://github.com/tcort/markdown-link-check/workflows/Test%20library/badge.svg)
-
 # markdown-link-check
+
+![Test library workflow status](https://github.com/tcort/markdown-link-check/workflows/Test%20library/badge.svg)
+[![Mega-Linter](https://github.com/nvuillam/markdown-link-check/workflows/Mega-Linter/badge.svg?branch=master)](https://nvuillam.github.io/mega-linter)
 
 Extracts links from markdown texts and checks whether each link is
 alive (`200 OK`) or dead. `mailto:` links are validated with

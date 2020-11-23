@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 Copyright (c) 2016, 2017, 2018, 2019 Thomas Cort <linuxgeek@gmail.com>
 
 Permission to use, copy, modify, and distribute this software for any
