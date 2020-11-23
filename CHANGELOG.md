@@ -1,9 +1,5 @@
 # Changes
 
-## UNRELEASED
-
-* Add **Other tools** section in README + [Mega-Linter](https://nvuillam.github.io/mega-linter/)
-
 ## Version 3.8.3
 
 * update dependencies (Fixes #86)
