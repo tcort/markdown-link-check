@@ -1,5 +1,15 @@
 # Changes
 
+## Version 3.8.4
+
+* #106 / #114 / #126 better 429 handling
+* #129 / #135 add timeout option
+* #122 fix typo
+* #139 add other tools and linters
+* #121 / #132 github actions
+* #110 / #127 / #113 / #133 / #140 docker images 
+* update dependencies
+
 ## Version 3.8.3
 
 * update dependencies (Fixes #86)
