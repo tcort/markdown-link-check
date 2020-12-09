@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.8.5
+
+* #142 update link-check dependency
+
 ## Version 3.8.4
 
 * #106 / #114 / #126 better 429 handling
