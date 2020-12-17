@@ -192,6 +192,31 @@ describe('markdown-link-check', function () {
         });
     });
 
+    it('should check the links in local-file.md', function (done) {
+        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'local-file.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + __dirname), {baseUrl: 'file://' + __dirname, projectBaseUrl: 'file://' + __dirname + "/..",replacementPatterns: [{ pattern: '^/', replacement: "{{BASEURL}}/"}]}, function (err, results) {
+            expect(err).to.be(null);
+            expect(results).to.be.an('array');
+
+            const expected = [
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 400, status:  'dead' },
+                { statusCode: 400, status:  'dead' },
+            ];
+
+            expect(results.length).to.be(expected.length);
+
+            for (let i = 0; i < results.length; i++) {
+                expect(results[i].statusCode).to.be(expected[i].statusCode);
+                expect(results[i].status).to.be(expected[i].status);
+            }
+
+            done();
+        });
+    });
+
     it('should handle thousands of links (this test takes up to a minute)', function (done) {
         this.timeout(60000);
 

@@ -79,6 +79,8 @@ opts.quiet = (program.quiet === true);
 opts.verbose = (program.verbose === true);
 opts.retryOn429 = (program.retry === true);
 opts.aliveStatusCodes = program.alive;
+// set the projectBaseUrl to the current working directory, so that `{{BASEURL}}` can be resolved to the project root.
+opts.projectBaseUrl = `file://${process.cwd()}`;
 
 let markdown = ''; // collect the markdown data, then process it
 

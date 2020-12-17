@@ -51,7 +51,9 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         if (opts.replacementPatterns) {
             for (let replacementPattern of opts.replacementPatterns) {
                 let pattern = replacementPattern.pattern instanceof RegExp ? replacementPattern.pattern : new RegExp(replacementPattern.pattern);
-                link = link.replace(pattern, replacementPattern.replacement);
+                // replace the `{{BASEURL}}` with the opts.projectBaseUrl. Helpful to build absolute urls "relative" to project roots
+                const replacement = replacementPattern.replacement.replace('{{BASEURL}}', opts.projectBaseUrl);
+                link = link.replace(pattern, replacement);
             }
         }
 
