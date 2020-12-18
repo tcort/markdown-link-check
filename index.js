@@ -7,6 +7,41 @@ const LinkCheckResult = require('link-check').LinkCheckResult;
 const markdownLinkExtractor = require('markdown-link-extractor');
 const ProgressBar = require('progress');
 
+const envVarPatternMatcher = /(?<pattern>{{env\.(?<name>[a-zA-Z0-9\-_]+)}})/;
+
+/*
+ * Performs some special replacements for the following patterns:
+ * - {{BASEURL}} - to be replaced with opts.projectBaseUrl
+ * - {{env.<env_var_name>}} - to be replaced with the environment variable specified with <env_var_name>
+ */
+function performSpecialReplacements(str, opts) {
+    // replace the `{{BASEURL}}` with the opts.projectBaseUrl. Helpful to build absolute urls "relative" to project roots
+    str = str.replace('{{BASEURL}}', opts.projectBaseUrl);
+
+    // replace {{env.<env_var_name>}} with the corresponding environment variable or an empty string if none is set.
+    var envVarMatch;
+    do {
+        envVarMatch = envVarPatternMatcher.exec(str);
+
+        if(!envVarMatch) {
+            break;
+        }
+
+        var envVarPattern = envVarMatch.groups.pattern;
+        var envVarName = envVarMatch.groups.name;
+
+        var envVarPatternReplacement = '';
+
+        if(envVarName in process.env) {
+            envVarPatternReplacement = process.env[envVarName];
+        }
+
+        str = str.replace(envVarPattern, envVarPatternReplacement);
+    } while (true);
+
+    return str;
+}
+
 module.exports = function markdownLinkCheck(markdown, opts, callback) {
     if (arguments.length === 2 && typeof opts === 'function') {
         // optional 'opts' not supplied.
@@ -51,9 +86,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         if (opts.replacementPatterns) {
             for (let replacementPattern of opts.replacementPatterns) {
                 let pattern = replacementPattern.pattern instanceof RegExp ? replacementPattern.pattern : new RegExp(replacementPattern.pattern);
-                // replace the `{{BASEURL}}` with the opts.projectBaseUrl. Helpful to build absolute urls "relative" to project roots
-                const replacement = replacementPattern.replacement.replace('{{BASEURL}}', opts.projectBaseUrl);
-                link = link.replace(pattern, replacement);
+                link = link.replace(pattern, performSpecialReplacements(replacementPattern.replacement, opts));
             }
         }
 
@@ -62,6 +95,12 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
 
         if (opts.httpHeaders) {
             for (const httpHeader of opts.httpHeaders) {
+                if (httpHeader.headers) {
+                    for (const header of Object.keys(httpHeader.headers)) {
+                        httpHeader.headers[header] = performSpecialReplacements(httpHeader.headers[header], opts);
+                    }
+                }
+
                 for (const url of httpHeader.urls) {
                     if (link.startsWith(url)) {
                         Object.assign(opts.headers, httpHeader.headers);

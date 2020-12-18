@@ -249,4 +249,94 @@ describe('markdown-link-check', function () {
             done();
         });
     });
+
+    it('should enrich http headers with environment variables', function (done) {
+        process.env.BASIC_AUTH_TOKEN = 'Zm9vOmJhcg==';
+        markdownLinkCheck(
+            fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl),
+            {
+                baseUrl: baseUrl,
+                httpHeaders: [
+                    {
+                        urls: [baseUrl + '/basic-auth'],
+                        headers: { 'Authorization': 'Basic {{env.BASIC_AUTH_TOKEN}}', 'Foo': 'Bar' }
+                    }
+                ],
+                "aliveStatusCodes":[200, 206],
+                "retryOn429":true,
+                "retryCount": MAX_RETRY_COUNT,
+                "fallbackRetryDelay": "500ms"
+            }, function (err, results) {
+            expect(err).to.be(null);
+            done();
+        });
+    });
+
+    it('should enrich pattern replacement strings with environment variables', function (done) {
+        process.env.WORKSPACE = 'file://' + __dirname + '/..';
+        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'local-file.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + __dirname), {baseUrl: 'file://' + __dirname, projectBaseUrl: 'file://' + __dirname + "/..",replacementPatterns: [{ pattern: '^/', replacement: "{{env.WORKSPACE}}/"}]}, function (err, results) {
+            expect(err).to.be(null);
+            expect(results).to.be.an('array');
+
+            const expected = [
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 400, status:  'dead' },
+                { statusCode: 400, status:  'dead' },
+            ];
+
+            expect(results.length).to.be(expected.length);
+
+            for (let i = 0; i < results.length; i++) {
+                expect(results[i].statusCode).to.be(expected[i].statusCode);
+                expect(results[i].status).to.be(expected[i].status);
+            }
+
+            done();
+        });
+    });
+
+
+    it('should correctly resolve special replacement patterns', function (done) {
+        process.env.MixedCase = 'hello.jpg';
+        process.env.UPPERCASE = 'hello.jpg';
+        process.env.lowercase = 'hello.jpg';
+        process.env['WITH-Special_Characters-123'] = 'hello.jpg';
+
+        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'special-replacements.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + __dirname), {baseUrl: 'file://' + __dirname, projectBaseUrl: 'file://' + __dirname + "/..",replacementPatterns: [
+            {pattern: '^/', replacement: "{{BASEURL}}/"},
+            {pattern: '%%ENVVAR_MIXEDCASE_TEST%%', replacement: "{{env.MixedCase}}"},
+            {pattern: '%%ENVVAR_UPPERCASE_TEST%%', replacement: "{{env.UPPERCASE}}"},
+            {pattern: '%%ENVVAR_LOWERCASE_TEST%%', replacement: "{{env.lowercase}}"},
+            {pattern: '%%ENVVAR_WITHSPECIALCHARACTERS_TEST%%', replacement: "{{env.WITH-Special_Characters-123}}"},
+            {pattern: '%%ENVVAR_NONEXISTENT_TEST%%', replacement: "{{env.ThisIsSomethingThatHopefullyDoesntExist}}"}
+        ]}, function (err, results) {
+            expect(err).to.be(null);
+            expect(results).to.be.an('array');
+
+            const expected = [
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' }
+            ];
+
+            expect(results.length).to.be(expected.length);
+
+            for (let i = 0; i < results.length; i++) {
+                expect(results[i].statusCode).to.be(expected[i].statusCode);
+                expect(results[i].status).to.be(expected[i].status);
+            }
+
+            done();
+        });
+    });
 });
