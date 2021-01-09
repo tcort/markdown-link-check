@@ -1,6 +1,6 @@
 {
   "name": "markdown-link-check",
-  "version": "3.8.5",
+  "version": "3.8.6",
   "description": "checks the all of the hyperlinks in a markdown text to determine if they are alive or dead",
   "bin": {
     "markdown-link-check": "markdown-link-check"
