@@ -1,5 +1,10 @@
 # Changes
 
+## Version 3.8.6
+
+* support env vars in http headers (#146)
+* add `{{BASEURL}}` as replacement pattern (#145)
+
 ## Version 3.8.5
 
 * #142 update link-check dependency
