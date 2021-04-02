@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.8.7
+
+* update dependencies #161
+
 ## Version 3.8.6
 
 * support env vars in http headers (#146)
