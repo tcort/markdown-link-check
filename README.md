@@ -160,6 +160,7 @@ Options:
   -a, --alive <code>     comma separated list of HTTP code to be considered as alive
   -r, --retry            retry after the duration indicated in 'retry-after' header when HTTP code is 429
   -h, --help             display help for command
+  -V, --version          display version string (e.g. `1.2.3`)
 ```
 
 ##### Config file format

@@ -9,6 +9,7 @@ const program = require('commander');
 const request = require('request');
 const url = require('url');
 const path = require('path');
+const pkg = require('./package.json');
 
 const statusLabels = {
     alive: chalk.green('✓'),
@@ -28,6 +29,7 @@ function commaSeparatedCodesList(value, dummyPrevious) {
 }
 
 program
+    .version(pkg.version)
     .option('-p, --progress', 'show progress bar')
     .option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration')
     .option('-q, --quiet', 'displays errors only')
