@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.8.8
+
+* Update docs with respect to recursive scan
+
 ## Version 3.8.7
 
 * update dependencies #161
