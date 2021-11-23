@@ -1,0 +1,5 @@
+- id: markdown-link-check
+  name: markdown-link-check
+  entry: markdown-link-check
+  language: node
+  types: [markdown]
