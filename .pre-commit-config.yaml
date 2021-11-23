@@ -1,0 +1,7 @@
+repos:
+  - repo: .
+    rev: HEAD
+    hooks:
+      - id: markdown-link-check
+        files: 'test-.*\.md$'
+        args: ["--quiet"]
