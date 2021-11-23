@@ -19,8 +19,14 @@ const statusLabels = {
 };
 
 const opts = {};
-let filenameForOutput = '';
-let stream = process.stdin; // read from stdin unless a filename is given
+class Input {
+  constructor(filenameForOutput, stream) {
+      this.filenameForOutput = filenameForOutput;
+      this.stream = stream;
+  }
+};
+
+let inputs = [];
 
 function commaSeparatedCodesList(value, dummyPrevious) {
     return value.split(',').map(function(item) {
@@ -36,42 +42,48 @@ program
     .option('-v, --verbose', 'displays detailed error information')
     .option('-a, --alive <code>', 'comma separated list of HTTP codes to be considered as alive', commaSeparatedCodesList)
     .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
-    .arguments('[filenameOrUrl]')
-    .action(function (filenameOrUrl) {
-    filenameForOutput = filenameOrUrl;
-    if (/https?:/.test(filenameOrUrl)) {
-        request(filenameOrUrl, function (error, response, body) {
-            if (error) {
-                console.error(chalk.red('\nERROR: Unable to connect! Please provide a valid URL as an argument.'));
-                process.exit(1);
-            }
-            else if (response.statusCode === 404){
-                console.error(chalk.red('\nERROR: 404 - File not found! Please provide a valid URL as an argument.'));
-                process.exit(1);
-            } else {
-                stream = request.get(filenameOrUrl);
-            }
+    .arguments('[filenamesOrUrls...]')
+    .action(function (filenamesOrUrls) {
+    if (!filenamesOrUrls.length) {
+        // read from stdin unless a filename is given
+        inputs.push(new Input('', process.stdin))
+    }
 
-        });
-        try { // extract baseUrl from supplied URL
-            const parsed = url.parse(filenameOrUrl);
-            delete parsed.search;
-            delete parsed.hash;
-            if (parsed.pathname.lastIndexOf('/') !== -1) {
-                parsed.pathname = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/') + 1);
-            }
-            opts.baseUrl = url.format(parsed);
-        } catch (err) { /* ignore error */
-            }
-    } else {
-        fs.stat(filenameOrUrl, function(error , stats){
-            if (!error && stats.isDirectory()){
-                console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
-                process.exit(1);
-            }
-        });
-        opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
-        stream = fs.createReadStream(filenameOrUrl);
+    for (const filenameOrUrl of filenamesOrUrls) {
+        if (/https?:/.test(filenameOrUrl)) {
+            request(filenameOrUrl, function (error, response, body) {
+                if (error) {
+                    console.error(chalk.red('\nERROR: Unable to connect! Please provide a valid URL as an argument.'));
+                    process.exit(1);
+                }
+                else if (response.statusCode === 404){
+                    console.error(chalk.red('\nERROR: 404 - File not found! Please provide a valid URL as an argument.'));
+                    process.exit(1);
+                } else {
+                    inputs.push(new Input(filenameOrUrl, request.get(filenameOrUrl)))
+                }
+
+            });
+            try { // extract baseUrl from supplied URL
+                const parsed = url.parse(filenameOrUrl);
+                delete parsed.search;
+                delete parsed.hash;
+                if (parsed.pathname.lastIndexOf('/') !== -1) {
+                    parsed.pathname = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/') + 1);
+                }
+                opts.baseUrl = url.format(parsed);
+            } catch (err) { /* ignore error */
+                }
+        } else {
+            fs.stat(filenameOrUrl, function(error , stats){
+                if (!error && stats.isDirectory()){
+                    console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
+                    process.exit(1);
+                }
+            });
+            opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
+            inputs.push(new Input(filenameOrUrl, fs.createReadStream(filenameOrUrl)))
+          }
     }
 
 }).parse(process.argv);
@@ -84,66 +96,16 @@ opts.aliveStatusCodes = program.alive;
 // set the projectBaseUrl to the current working directory, so that `{{BASEURL}}` can be resolved to the project root.
 opts.projectBaseUrl = `file://${process.cwd()}`;
 
-let markdown = ''; // collect the markdown data, then process it
-
-stream
-  .on('data', function (chunk) {
-    markdown += chunk.toString();
-  })
-  .on('error', function(error) {
-    if (error.code === 'ENOENT') {
-      console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
-    } else {
-      console.error(chalk.red(error));
-    }
-    return process.exit(1);
-  })
-  .on('end', function () {
-    if (filenameForOutput) {
-        console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
-    }
-
-    if (program.config) {
-        fs.access(program.config, (fs.constants || fs).R_OK, function (err) {
-            if (!err) {
-                let configStream = fs.createReadStream(program.config);
-                let configData = '';
-
-                configStream.on('data', function (chunk) {
-                    configData += chunk.toString();
-                }).on('end', function () {
-                    let config = JSON.parse(configData);
-
-                    opts.ignorePatterns = config.ignorePatterns;
-                    opts.replacementPatterns = config.replacementPatterns;
-                    opts.httpHeaders = config.httpHeaders;
-                    opts.timeout = config.timeout;
-                    opts.ignoreDisable = config.ignoreDisable;
-                    opts.retryOn429 = config.retryOn429;
-                    opts.retryCount = config.retryCount;
-                    opts.fallbackRetryDelay = config.fallbackRetryDelay;
-                    opts.aliveStatusCodes = config.aliveStatusCodes;
-
-                    runMarkdownLinkCheck(markdown, opts);
-                });
-            }
-            else {
-                console.error(chalk.red('\nERROR: Config file not accessible.'));
-                process.exit(1);
-            }
-        });
-    }
-    else {
-        runMarkdownLinkCheck(markdown, opts);
-    }
-});
-
-function runMarkdownLinkCheck(markdown, opts) {
+async function runMarkdownLinkCheck(markdown, filenameForOutput, opts) {
+  try {
+    await new Promise((resolve, reject) => {
     markdownLinkCheck(markdown, opts, function (err, results) {
+        console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
+
         if (err) {
             console.error(chalk.red('\nERROR: something went wrong!'));
             console.error(err.stack);
-            process.exit(1);
+            reject();
         }
 
         if (results.length === 0 && !opts.quiet) {
@@ -173,7 +135,91 @@ function runMarkdownLinkCheck(markdown, opts) {
             deadLinks.forEach(function (result) {
                 console.log('[%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
             });
-            process.exit(1);
+            reject();
         }
-    });
+        resolve();
+      });
+  });
+  } catch (err) {
+    return false;
+  }
+
+  return true;
 }
+
+async function processFile(stream, filenameForOutput) {
+  let markdown = ''; // collect the markdown data, then process it
+
+  try {
+    await new Promise((resolve, reject) => {
+    stream
+      .on('data', function (chunk) {
+        markdown += chunk.toString();
+      })
+      .on('error', function(error) {
+        if (error.code === 'ENOENT') {
+          console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
+        } else {
+          console.error(chalk.red(error));
+        }
+        return process.exit(1);
+      })
+      .on('end', async function () {
+        if (program.config) {
+            fs.access(program.config, (fs.constants || fs).R_OK, function (err) {
+                if (!err) {
+                    let configStream = fs.createReadStream(program.config);
+                    let configData = '';
+
+                    configStream.on('data', function (chunk) {
+                        configData += chunk.toString();
+                    }).on('end', function () {
+                        let config = JSON.parse(configData);
+
+                        opts.ignorePatterns = config.ignorePatterns;
+                        opts.replacementPatterns = config.replacementPatterns;
+                        opts.httpHeaders = config.httpHeaders;
+                        opts.timeout = config.timeout;
+                        opts.ignoreDisable = config.ignoreDisable;
+                        opts.retryOn429 = config.retryOn429;
+                        opts.retryCount = config.retryCount;
+                        opts.fallbackRetryDelay = config.fallbackRetryDelay;
+                        opts.aliveStatusCodes = config.aliveStatusCodes;
+                    });
+                }
+                else {
+                    console.error(chalk.red('\nERROR: Config file not accessible.'));
+                    process.exit(1);
+                }
+            });
+        }
+
+        if (await runMarkdownLinkCheck(markdown, filenameForOutput, opts)) {
+          resolve();
+        }
+        else {
+          reject();
+        }
+      });
+    });
+  } catch (err) {
+      return false;
+  }
+
+  return true;
+}
+
+async function main() {
+  let isOk = true;
+  for (const input of inputs) {
+    if (!await processFile(input.stream, input.filenameForOutput)) {
+      isOk = false;
+    }
+  }
+
+  if (!isOk) {
+    process.exit(1);
+  }
+}
+
+main();
