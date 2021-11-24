@@ -143,9 +143,14 @@ markdown-link-check ./README.md
 
 #### Check links from a local markdown folder (recursive)
 
+Avoid using `find -exec` because it will swallow the error from each consecutive run.
+Instead, use `xargs`:
 ```shell
-find . -name \*.md -exec markdown-link-check {} \;
+find . -name \*.md -print0 | xargs -0 -n1 markdown-link-check
 ```
+
+There is an [open issue](https://github.com/tcort/markdown-link-check/issues/78) for allowing the tool to specify
+multiple files on the command line.
 
 #### Usage
 
