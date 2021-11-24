@@ -13,5 +13,7 @@ RUN set -ex; \
     npm install
 # Bundle app source
 COPY . /src
+RUN ln -s /src/markdown-link-check /usr/local/bin/markdown-link-check
+# hadolint ignore=DL3059
 RUN npm test
-ENTRYPOINT [ "/src/markdown-link-check" ]
+ENTRYPOINT [ "markdown-link-check" ]
