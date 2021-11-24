@@ -1,5 +1,14 @@
 # Changes
 
+## Version 3.9.0
+
+* #149 add -V, --version command line flags (@tcort)
+* #164 indent console output (@brandones)
+* #170 pre-commit support (@janosh)
+* #173 update docs (@karl-johan-grahn)
+* #174 Symlink executable into PATH (@carlsmedstad)
+* #177 upgrade command line tool from request to needle (@tcort)
+
 ## Version 3.8.8
 
 * Update docs with respect to recursive scan
