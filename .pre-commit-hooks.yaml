@@ -1,0 +1,7 @@
+- id: markdown-link-check
+  name: Markdown Link Check
+  description: Extracts links from markdown texts and checks they're all alive (i.e. return status 200 OK).
+  entry: markdown-link-check
+  language: node
+  types: [markdown]
+  stages: [commit, push, manual]
