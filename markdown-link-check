@@ -105,59 +105,56 @@ function getInputs() {
 }
 
 async function processInput(filenameForOutput, stream, opts) {
-    return new Promise((resolve, reject) => {
-        let markdown = ''; // collect the markdown data, then process it
+    let markdown = ''; // collect the markdown data, then process it
 
-        stream
-            .on('data', function (chunk) {
-                markdown += chunk.toString();
-            })
-            .on('error', function(error) {
-                if (error.code === 'ENOENT') {
-                    console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
-                } else {
-                    console.error(chalk.red(error));
-                }
-                return process.exit(1);
-            })
-            .on('end', async function () {
-                if (filenameForOutput) {
-                    console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
-                }
+    stream.on('error', function(error) {
+        if (error.code === 'ENOENT') {
+            console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
+        } else {
+            console.error(chalk.red(error));
+        }
+        return process.exit(1);
+    })
 
-                if (program.config) {
-                    fs.access(program.config, (fs.constants || fs).R_OK, function (err) {
-                        if (!err) {
-                            let configStream = fs.createReadStream(program.config);
-                            let configData = '';
+    for await (const chunk of stream) {
+        markdown += chunk.toString();
+    }
 
-                            configStream.on('data', function (chunk) {
-                                configData += chunk.toString();
-                            }).on('end', function () {
-                                let config = JSON.parse(configData);
+    if (filenameForOutput) {
+        console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
+    }
 
-                                opts.ignorePatterns = config.ignorePatterns;
-                                opts.replacementPatterns = config.replacementPatterns;
-                                opts.httpHeaders = config.httpHeaders;
-                                opts.timeout = config.timeout;
-                                opts.ignoreDisable = config.ignoreDisable;
-                                opts.retryOn429 = config.retryOn429;
-                                opts.retryCount = config.retryCount;
-                                opts.fallbackRetryDelay = config.fallbackRetryDelay;
-                                opts.aliveStatusCodes = config.aliveStatusCodes;
-                            });
-                        }
-                        else {
-                            console.error(chalk.red('\nERROR: Config file not accessible.'));
-                            process.exit(1);
-                        }
-                    });
-                }
+    if (program.config) {
+        fs.access(program.config, (fs.constants || fs).R_OK, function (err) {
+            if (!err) {
+                let configStream = fs.createReadStream(program.config);
+                let configData = '';
 
-                await runMarkdownLinkCheck(markdown, opts).catch(() => reject());
-                resolve();
-            });
-    });
+                configStream.on('data', function (chunk) {
+                    configData += chunk.toString();
+                }).on('end', function () {
+                    let config = JSON.parse(configData);
+
+                    opts.ignorePatterns = config.ignorePatterns;
+                    opts.replacementPatterns = config.replacementPatterns;
+                    opts.httpHeaders = config.httpHeaders;
+                    opts.timeout = config.timeout;
+                    opts.ignoreDisable = config.ignoreDisable;
+                    opts.retryOn429 = config.retryOn429;
+                    opts.retryCount = config.retryCount;
+                    opts.fallbackRetryDelay = config.fallbackRetryDelay;
+                    opts.aliveStatusCodes = config.aliveStatusCodes;
+                });
+            }
+            else {
+                console.error(chalk.red('\nERROR: Config file not accessible.'));
+                process.exit(1);
+            }
+        });
+    }
+
+    await runMarkdownLinkCheck(markdown, opts).catch(() => reject());
+    resolve();
 }
 
 async function runMarkdownLinkCheck(markdown, opts) {
