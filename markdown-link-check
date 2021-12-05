@@ -106,101 +106,101 @@ function getInputs() {
 
 async function processInput(filenameForOutput, stream, opts) {
     return new Promise((resolve, reject) => {
-    let markdown = ''; // collect the markdown data, then process it
+        let markdown = ''; // collect the markdown data, then process it
 
-    stream
-        .on('data', function (chunk) {
-            markdown += chunk.toString();
-        })
-        .on('error', function(error) {
-            if (error.code === 'ENOENT') {
-                console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
-            } else {
-                console.error(chalk.red(error));
-            }
-            return process.exit(1);
-        })
-        .on('end', async function () {
-            if (filenameForOutput) {
-                console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
-            }
+        stream
+            .on('data', function (chunk) {
+                markdown += chunk.toString();
+            })
+            .on('error', function(error) {
+                if (error.code === 'ENOENT') {
+                    console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
+                } else {
+                    console.error(chalk.red(error));
+                }
+                return process.exit(1);
+            })
+            .on('end', async function () {
+                if (filenameForOutput) {
+                    console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
+                }
 
-            if (program.config) {
-                fs.access(program.config, (fs.constants || fs).R_OK, function (err) {
-                    if (!err) {
-                        let configStream = fs.createReadStream(program.config);
-                        let configData = '';
+                if (program.config) {
+                    fs.access(program.config, (fs.constants || fs).R_OK, function (err) {
+                        if (!err) {
+                            let configStream = fs.createReadStream(program.config);
+                            let configData = '';
 
-                        configStream.on('data', function (chunk) {
-                            configData += chunk.toString();
-                        }).on('end', function () {
-                            let config = JSON.parse(configData);
+                            configStream.on('data', function (chunk) {
+                                configData += chunk.toString();
+                            }).on('end', function () {
+                                let config = JSON.parse(configData);
 
-                            opts.ignorePatterns = config.ignorePatterns;
-                            opts.replacementPatterns = config.replacementPatterns;
-                            opts.httpHeaders = config.httpHeaders;
-                            opts.timeout = config.timeout;
-                            opts.ignoreDisable = config.ignoreDisable;
-                            opts.retryOn429 = config.retryOn429;
-                            opts.retryCount = config.retryCount;
-                            opts.fallbackRetryDelay = config.fallbackRetryDelay;
-                            opts.aliveStatusCodes = config.aliveStatusCodes;
-                        });
-                    }
-                    else {
-                        console.error(chalk.red('\nERROR: Config file not accessible.'));
-                        process.exit(1);
-                    }
-                });
-            }
+                                opts.ignorePatterns = config.ignorePatterns;
+                                opts.replacementPatterns = config.replacementPatterns;
+                                opts.httpHeaders = config.httpHeaders;
+                                opts.timeout = config.timeout;
+                                opts.ignoreDisable = config.ignoreDisable;
+                                opts.retryOn429 = config.retryOn429;
+                                opts.retryCount = config.retryCount;
+                                opts.fallbackRetryDelay = config.fallbackRetryDelay;
+                                opts.aliveStatusCodes = config.aliveStatusCodes;
+                            });
+                        }
+                        else {
+                            console.error(chalk.red('\nERROR: Config file not accessible.'));
+                            process.exit(1);
+                        }
+                    });
+                }
 
-            await runMarkdownLinkCheck(markdown, opts).catch(() => reject());
-            resolve();
-        });
+                await runMarkdownLinkCheck(markdown, opts).catch(() => reject());
+                resolve();
+            });
     });
 }
 
 async function runMarkdownLinkCheck(markdown, opts) {
     return new Promise((resolve, reject) => {
-    markdownLinkCheck(markdown, opts, function (err, results) {
-        if (err) {
-            console.error(chalk.red('\n  ERROR: something went wrong!'));
-            console.error(err.stack);
-            reject();
-        }
-
-        if (results.length === 0 && !opts.quiet) {
-            console.log(chalk.yellow('  No hyperlinks found!'));
-        }
-        results.forEach(function (result) {
-            // Skip messages for non-deadlinks in quiet mode.
-            if (opts.quiet && result.status !== 'dead') {
-                return;
+        markdownLinkCheck(markdown, opts, function (err, results) {
+            if (err) {
+                console.error(chalk.red('\n  ERROR: something went wrong!'));
+                console.error(err.stack);
+                reject();
             }
 
-            if (opts.verbose) {
-                if (result.err) {
-                    console.log('  [%s] %s → Status: %s %s', statusLabels[result.status], result.link, result.statusCode, result.err);
-                } else {
-                    console.log('  [%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
+            if (results.length === 0 && !opts.quiet) {
+                console.log(chalk.yellow('  No hyperlinks found!'));
+            }
+            results.forEach(function (result) {
+                // Skip messages for non-deadlinks in quiet mode.
+                if (opts.quiet && result.status !== 'dead') {
+                    return;
                 }
-            }
-            else {
-                console.log('  [%s] %s', statusLabels[result.status], result.link);
-            }
-        });
-        console.log('\n  %s links checked.', results.length);
-        if (results.some((result) => result.status === 'dead')) {
-            let deadLinks = results.filter(result => { return result.status === 'dead'; });
-            console.error(chalk.red('\n  ERROR: %s dead links found!'), deadLinks.length);
-            deadLinks.forEach(function (result) {
-                console.log('  [%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
-            });
-            reject();
-        }
 
-        resolve();
-    });
+                if (opts.verbose) {
+                    if (result.err) {
+                        console.log('  [%s] %s → Status: %s %s', statusLabels[result.status], result.link, result.statusCode, result.err);
+                    } else {
+                        console.log('  [%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
+                    }
+                }
+                else {
+                    console.log('  [%s] %s', statusLabels[result.status], result.link);
+                }
+            });
+            console.log('\n  %s links checked.', results.length);
+            if (results.some((result) => result.status === 'dead')) {
+                let deadLinks = results.filter(result => { return result.status === 'dead'; });
+                console.error(chalk.red('\n  ERROR: %s dead links found!'), deadLinks.length);
+                deadLinks.forEach(function (result) {
+                    console.log('  [%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
+                });
+                reject();
+            }
+
+            resolve();
+        });
     });
 }
 
