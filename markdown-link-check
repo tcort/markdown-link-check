@@ -104,7 +104,8 @@ function getInputs() {
     return [inputs, opts];
 }
 
-function processInput(filenameForOutput, stream, opts) {
+async function processInput(filenameForOutput, stream, opts) {
+    return new Promise((resolve, reject) => {
     let markdown = ''; // collect the markdown data, then process it
 
     stream
@@ -119,7 +120,7 @@ function processInput(filenameForOutput, stream, opts) {
             }
             return process.exit(1);
         })
-        .on('end', function () {
+        .on('end', async function () {
             if (filenameForOutput) {
                 console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
             }
@@ -144,8 +145,6 @@ function processInput(filenameForOutput, stream, opts) {
                             opts.retryCount = config.retryCount;
                             opts.fallbackRetryDelay = config.fallbackRetryDelay;
                             opts.aliveStatusCodes = config.aliveStatusCodes;
-
-                            runMarkdownLinkCheck(markdown, opts);
                         });
                     }
                     else {
@@ -154,18 +153,20 @@ function processInput(filenameForOutput, stream, opts) {
                     }
                 });
             }
-            else {
-                runMarkdownLinkCheck(markdown, opts);
-            }
+
+            await runMarkdownLinkCheck(markdown, opts).catch(() => reject());
+            resolve();
         });
+    });
 }
 
-function runMarkdownLinkCheck(markdown, opts) {
+async function runMarkdownLinkCheck(markdown, opts) {
+    return new Promise((resolve, reject) => {
     markdownLinkCheck(markdown, opts, function (err, results) {
         if (err) {
             console.error(chalk.red('\n  ERROR: something went wrong!'));
             console.error(err.stack);
-            process.exit(1);
+            reject();
         }
 
         if (results.length === 0 && !opts.quiet) {
@@ -195,15 +196,25 @@ function runMarkdownLinkCheck(markdown, opts) {
             deadLinks.forEach(function (result) {
                 console.log('  [%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
             });
-            process.exit(1);
+            reject();
         }
+
+        resolve();
+    });
     });
 }
 
-function main() {
+async function main() {
     const [inputs, opts] = getInputs();
+
+    let isOk = true;
     for (const input of inputs) {
-        processInput(input.filenameForOutput, input.stream, opts);
+        await processInput(input.filenameForOutput, input.stream, opts)
+            .catch(() => { isOk = false; });
+    }
+
+    if (!isOk) {
+        process.exit(1);
     }
 }
 
