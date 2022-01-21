@@ -23,7 +23,7 @@ class Input {
         this.filenameForOutput = filenameForOutput;
         this.stream = stream;
     }
-};
+}
 
 function commaSeparatedCodesList(value, dummyPrevious) {
     return value.split(',').map(function(item) {
@@ -50,23 +50,26 @@ function getInputs() {
 
             if (!filenamesOrUrls.length) {
                 // read from stdin unless a filename is given
-                inputs.push(new Input(filenameForOutput, process.stdin))
+                inputs.push(new Input(filenameForOutput, process.stdin));
+            }
+
+            function onError(error) {
+                console.error(chalk.red('\nERROR: Unable to connect! Please provide a valid URL as an argument.'));
+                process.exit(1);
+            }
+            function onResponse(response) {
+                if (response.statusCode === 404) {
+                    console.error(chalk.red('\nERROR: 404 - File not found! Please provide a valid URL as an argument.'));
+                    process.exit(1);
+                }
             }
 
             for (const filenameOrUrl of filenamesOrUrls) {
                 filenameForOutput = filenameOrUrl;
                 if (/https?:/.test(filenameOrUrl)) {
                     stream = needle.get(filenameOrUrl);
-                    stream.on('error', function (error) {
-                        console.error(chalk.red('\nERROR: Unable to connect! Please provide a valid URL as an argument.'));
-                        process.exit(1);
-                    });
-                    stream.on('response', function (response) {
-                        if (response.statusCode === 404) {
-                            console.error(chalk.red('\nERROR: 404 - File not found! Please provide a valid URL as an argument.'));
-                            process.exit(1);
-                        }
-                    });
+                    stream.on('error', onError); 
+                    stream.on('response', onResponse);
                     try { // extract baseUrl from supplied URL
                         const parsed = url.parse(filenameOrUrl);
                         delete parsed.search;
@@ -78,17 +81,16 @@ function getInputs() {
                     } catch (err) { /* ignore error */
                         }
                 } else {
-                    fs.stat(filenameOrUrl, function(error , stats){
-                        if (!error && stats.isDirectory()){
-                            console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
-                            process.exit(1);
-                        }
-                    });
+                    const stats = fs.statSync(filenameOrUrl);
+                    if (stats.isDirectory()){
+                        console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
+                        process.exit(1);
+                    }
                     opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
                     stream = fs.createReadStream(filenameOrUrl);
                 }
 
-                inputs.push(new Input(filenameForOutput, stream))
+                inputs.push(new Input(filenameForOutput, stream));
             }
         }
     ).parse(process.argv);
@@ -114,7 +116,7 @@ async function processInput(filenameForOutput, stream, opts) {
             console.error(chalk.red(error));
         }
         return process.exit(1);
-    })
+    });
 
     for await (const chunk of stream) {
         markdown += chunk.toString();
@@ -153,8 +155,7 @@ async function processInput(filenameForOutput, stream, opts) {
         });
     }
 
-    await runMarkdownLinkCheck(markdown, opts).catch(() => reject());
-    resolve();
+    await runMarkdownLinkCheck(markdown, opts);
 }
 
 async function runMarkdownLinkCheck(markdown, opts) {
@@ -205,14 +206,15 @@ async function main() {
     const [inputs, opts] = getInputs();
 
     let isOk = true;
-    for (const input of inputs) {
-        await processInput(input.filenameForOutput, input.stream, opts)
-            .catch(() => { isOk = false; });
+    for await (const input of inputs) {
+        try {
+            await processInput(input.filenameForOutput, input.stream, opts);
+        } catch (err) {
+            isOk = false;
+        }
     }
 
-    if (!isOk) {
-        process.exit(1);
-    }
+    process.exit(isOk ? 0 : 1);
 }
 
 main();
