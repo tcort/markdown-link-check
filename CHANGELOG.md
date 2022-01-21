@@ -1,5 +1,10 @@
 # Changes
 
+## Version 3.9.1
+
+* #78/#179 support multi inputs (@kenji-miyake)
+* #181 Update marked and markdown-link-extractor dependencies
+
 ## Version 3.9.0
 
 * #149 add -V, --version command line flags (@tcort)
