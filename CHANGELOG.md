@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.9.2
+
+* #182 fix issue with markdown-link-check utility.  set baseUrl for each file. (@kenji-miyake)
+
 ## Version 3.9.1
 
 * #78/#179 support multi inputs (@kenji-miyake)
