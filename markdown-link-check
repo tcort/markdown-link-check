@@ -19,9 +19,10 @@ const statusLabels = {
 };
 
 class Input {
-    constructor(filenameForOutput, stream) {
+    constructor(filenameForOutput, stream, opts) {
         this.filenameForOutput = filenameForOutput;
         this.stream = stream;
+        this.opts = opts;
     }
 }
 
@@ -32,7 +33,6 @@ function commaSeparatedCodesList(value, dummyPrevious) {
 }
 
 function getInputs() {
-    const opts = {};
     const inputs = [];
 
     program
@@ -50,7 +50,7 @@ function getInputs() {
 
             if (!filenamesOrUrls.length) {
                 // read from stdin unless a filename is given
-                inputs.push(new Input(filenameForOutput, process.stdin));
+                inputs.push(new Input(filenameForOutput, process.stdin, {}));
             }
 
             function onError(error) {
@@ -66,9 +66,10 @@ function getInputs() {
 
             for (const filenameOrUrl of filenamesOrUrls) {
                 filenameForOutput = filenameOrUrl;
+                let baseUrl = '';
                 if (/https?:/.test(filenameOrUrl)) {
                     stream = needle.get(filenameOrUrl);
-                    stream.on('error', onError); 
+                    stream.on('error', onError);
                     stream.on('response', onResponse);
                     try { // extract baseUrl from supplied URL
                         const parsed = url.parse(filenameOrUrl);
@@ -77,7 +78,7 @@ function getInputs() {
                         if (parsed.pathname.lastIndexOf('/') !== -1) {
                             parsed.pathname = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/') + 1);
                         }
-                        opts.baseUrl = url.format(parsed);
+                        baseUrl = url.format(parsed);
                     } catch (err) { /* ignore error */
                         }
                 } else {
@@ -86,24 +87,26 @@ function getInputs() {
                         console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
                         process.exit(1);
                     }
-                    opts.baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
+                    baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
                     stream = fs.createReadStream(filenameOrUrl);
                 }
 
-                inputs.push(new Input(filenameForOutput, stream));
+                inputs.push(new Input(filenameForOutput, stream, {baseUrl: baseUrl}));
             }
         }
     ).parse(process.argv);
 
-    opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
-    opts.quiet = (program.quiet === true);
-    opts.verbose = (program.verbose === true);
-    opts.retryOn429 = (program.retry === true);
-    opts.aliveStatusCodes = program.alive;
-    // set the projectBaseUrl to the current working directory, so that `{{BASEURL}}` can be resolved to the project root.
-    opts.projectBaseUrl = `file://${process.cwd()}`;
+    for (const input of inputs) {
+        input.opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
+        input.opts.quiet = (program.quiet === true);
+        input.opts.verbose = (program.verbose === true);
+        input.opts.retryOn429 = (program.retry === true);
+        input.opts.aliveStatusCodes = program.alive;
+        // set the projectBaseUrl to the current working directory, so that `{{BASEURL}}` can be resolved to the project root.
+        input.opts.projectBaseUrl = `file://${process.cwd()}`;
+    }
 
-    return [inputs, opts];
+    return inputs;
 }
 
 async function processInput(filenameForOutput, stream, opts) {
@@ -203,12 +206,12 @@ async function runMarkdownLinkCheck(markdown, opts) {
 }
 
 async function main() {
-    const [inputs, opts] = getInputs();
+    const inputs = getInputs();
 
     let isOk = true;
     for await (const input of inputs) {
         try {
-            await processInput(input.filenameForOutput, input.stream, opts);
+            await processInput(input.filenameForOutput, input.stream, input.opts);
         } catch (err) {
             isOk = false;
         }
