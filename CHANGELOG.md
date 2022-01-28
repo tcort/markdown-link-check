@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.9.3
+
+* #184 fix issue with config loading.  (@kenji-miyake)
+
 ## Version 3.9.2
 
 * #182 fix issue with markdown-link-check utility.  set baseUrl for each file. (@kenji-miyake)
@@ -7,7 +11,7 @@
 ## Version 3.9.1
 
 * #78/#179 support multi inputs (@kenji-miyake)
-* #181 Update marked and markdown-link-extractor dependencies
+* #181 Update marked and markdown-link-extractor dependencies. (@tcort)
 
 ## Version 3.9.0
 
