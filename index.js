@@ -60,7 +60,8 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         }, markdown);
     }
 
-    const linksCollection = _.uniq(markdownLinkExtractor(markdown));
+    const { links } = markdownLinkExtractor(markdown);
+    const linksCollection = _.uniq(links);
     const bar = (opts.showProgressBar) ?
         new ProgressBar('Checking... [:bar] :percent', {
             complete: '=',
