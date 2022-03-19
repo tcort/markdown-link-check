@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.10.0
+
+* #91 check anchor links.
+
 ## Version 3.9.3
 
 * #184 fix issue with config loading.  (@kenji-miyake)

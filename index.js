@@ -60,7 +60,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         }, markdown);
     }
 
-    const { links } = markdownLinkExtractor(markdown);
+    const { links, anchors } = markdownLinkExtractor(markdown);
     const linksCollection = _.uniq(links);
     const bar = (opts.showProgressBar) ?
         new ProgressBar('Checking... [:bar] :percent', {
@@ -69,6 +69,8 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             width: 25,
             total: linksCollection.length
         }) : undefined;
+
+    opts.anchors = anchors;
 
     async.mapLimit(linksCollection, 2, function (link, callback) {
         if (opts.ignorePatterns) {

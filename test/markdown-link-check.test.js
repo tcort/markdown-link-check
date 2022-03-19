@@ -339,4 +339,15 @@ describe('markdown-link-check', function () {
             done();
         });
     });
+    it('check hash links', function (done) {
+        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'hash-links.md')).toString(), {}, function (err, result) {
+            expect(err).to.be(null);
+            expect(result).to.eql([
+                { link: '#foo', statusCode: 200, err: null, status: 'alive' },
+                { link: '#bar', statusCode: 200, err: null, status: 'alive' },
+                { link: '#potato', statusCode: 404, err: null, status: 'dead' },
+            ]);
+            done();
+        });
+    });
 });
