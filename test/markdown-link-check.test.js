@@ -346,6 +346,7 @@ describe('markdown-link-check', function () {
                 { link: '#foo', statusCode: 200, err: null, status: 'alive' },
                 { link: '#bar', statusCode: 200, err: null, status: 'alive' },
                 { link: '#potato', statusCode: 404, err: null, status: 'dead' },
+                { link: '#tomato', statusCode: 404, err: null, status: 'alive' },
             ]);
             done();
         });
