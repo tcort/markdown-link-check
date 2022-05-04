@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.10.2
+
+* fix missing dependency
+
 ## Version 3.10.1
 
 * upgrade dependencies

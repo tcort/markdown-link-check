@@ -38,7 +38,7 @@
     "commander": "^6.2.0",
     "link-check": "^5.1.0",
     "lodash": "^4.17.21",
-    "markdown-link-extractor": "^3.0.1",
+    "markdown-link-extractor": "^3.0.2",
     "needle": "^3.1.0",
     "progress": "^2.0.3"
   },
