@@ -1,9 +1,5 @@
 # Changes
 
-## Version 4.0.0
-
-* remove support for checking anchor links.
-
 ## Version 3.10.0
 
 * #91 check anchor links.
