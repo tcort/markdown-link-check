@@ -1,5 +1,11 @@
 # Changes
 
+## Version 3.10.1
+
+* upgrade dependencies
+* fix anchor regressions (@reyang)
+* fix ci build (@chenrui333 @ nschonni)
+
 ## Version 3.10.0
 
 * #91 check anchor links.
