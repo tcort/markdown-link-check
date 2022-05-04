@@ -141,12 +141,6 @@ describe('markdown-link-check', function () {
                 // partial
                 { statusCode: 206, status: 'alive' },
 
-                // hello image
-                { statusCode: 200, status: 'alive' },
-
-                // hello image
-                { statusCode: 200, status: 'alive' },
-
                 // valid e-mail
                 { statusCode: 200, status:  'alive' },
 
@@ -158,6 +152,13 @@ describe('markdown-link-check', function () {
 
                 // invalid protocol
                 { statusCode: 500, status:  'error' },
+
+                // hello image
+                { statusCode: 200, status: 'alive' },
+
+                // hello image
+                { statusCode: 200, status: 'alive' },
+
             ];
             expect(results.length).to.be(expected.length);
 
