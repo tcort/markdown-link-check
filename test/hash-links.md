@@ -20,6 +20,6 @@ There is no section named [Potato](#potato).
 
 There is an anchor named [Tomato](#tomato).
 
-## Header with image ✨
+## Header with special char ✨
 
-Test [header with image](#header-with-image-)
+Test [header with image](#header-with-special-char-)
