@@ -19,3 +19,7 @@ The second section is [Bar](#bar).
 There is no section named [Potato](#potato).
 
 There is an anchor named [Tomato](#tomato).
+
+## Header with image ✨
+
+Test [header with image](#header-with-image-)
