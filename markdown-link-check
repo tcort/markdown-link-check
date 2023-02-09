@@ -103,7 +103,7 @@ function getInputs() {
         input.opts.verbose = (program.verbose === true);
         input.opts.retryOn429 = (program.retry === true);
         input.opts.aliveStatusCodes = program.alive;
-        if (program.projectBaseUrl !== undefined) {
+        if (program.projectBaseUrl) {
             input.opts.projectBaseUrl = `file://${program.projectBaseUrl}`;
         } else {
             // set the default projectBaseUrl to the current working directory, so that `{{BASEURL}}` can be resolved to the project root.
