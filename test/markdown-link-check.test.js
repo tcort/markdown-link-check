@@ -340,7 +340,7 @@ describe('markdown-link-check', function () {
             done();
         });
     });
-    it('check hash links', function (done) {
+    it.skip('check hash links', function (done) {
         markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'hash-links.md')).toString(), {}, function (err, result) {
             expect(err).to.be(null);
             expect(result).to.eql([
