@@ -241,7 +241,7 @@ describe('markdown-link-check', function () {
     });
 
     it('should handle links with parens', function (done) {
-        markdownLinkCheck('[test](' + baseUrl + '/foo\(a=b.42\).aspx)', function (err, results) {
+        markdownLinkCheck('[test](' + baseUrl + '/foo(a=b.42).aspx)', function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
             expect(results).to.have.length(1);
@@ -267,7 +267,7 @@ describe('markdown-link-check', function () {
                 "retryOn429":true,
                 "retryCount": MAX_RETRY_COUNT,
                 "fallbackRetryDelay": "500ms"
-            }, function (err, results) {
+            }, function (err) {
             expect(err).to.be(null);
             done();
         });
