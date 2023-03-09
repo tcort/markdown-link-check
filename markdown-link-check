@@ -151,7 +151,7 @@ async function processInput(filenameForOutput, stream, opts) {
         markdown += chunk.toString();
     }
 
-    if (filenameForOutput) {
+    if (!opts.quiet && filenameForOutput) {
         console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
     }
 
@@ -169,10 +169,10 @@ async function processInput(filenameForOutput, stream, opts) {
         opts.aliveStatusCodes = config.aliveStatusCodes;
     }
 
-    await runMarkdownLinkCheck(markdown, opts);
+    await runMarkdownLinkCheck(filenameForOutput, markdown, opts);
 }
 
-async function runMarkdownLinkCheck(markdown, opts) {
+async function runMarkdownLinkCheck(filenameForOutput, markdown, opts) {
     return new Promise((resolve, reject) => {
         markdownLinkCheck(markdown, opts, function (err, results) {
             if (err) {
@@ -197,14 +197,22 @@ async function runMarkdownLinkCheck(markdown, opts) {
                         console.log('  [%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
                     }
                 }
-                else {
+                else if(!opts.quiet) {
                     console.log('  [%s] %s', statusLabels[result.status], result.link);
                 }
             });
-            console.log('\n  %s links checked.', results.length);
+
+            if(!opts.quiet){
+                console.log('\n  %s links checked.', results.length);
+            }
+
             if (results.some((result) => result.status === 'dead')) {
                 let deadLinks = results.filter(result => { return result.status === 'dead'; });
-                console.error(chalk.red('\n  ERROR: %s dead links found!'), deadLinks.length);
+                if(!opts.quiet){
+                    console.error(chalk.red('\n  ERROR: %s dead links found!'), deadLinks.length);
+                } else {
+                    console.error(chalk.red('\n  ERROR: %s dead links found in %s !'), deadLinks.length, filenameForOutput);
+                }
                 deadLinks.forEach(function (result) {
                     console.log('  [%s] %s → Status: %s', statusLabels[result.status], result.link, result.statusCode);
                 });
