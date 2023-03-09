@@ -40,7 +40,7 @@ Please head on to [github-action-markdown-link-check](https://github.com/gaurav-
 
 ## Run in other tools
 
-- [Mega-Linter](https://nvuillam.github.io/mega-linter/): Linters aggregator [including markdown-link-check](https://nvuillam.github.io/mega-linter/descriptors/markdown_markdown_link_check/)
+- [Mega-Linter](https://megalinter.io/latest/): Linters aggregator [including markdown-link-check](https://megalinter.io/latest/descriptors/markdown_markdown_link_check/)
 
 ## API
 
