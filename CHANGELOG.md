@@ -1,5 +1,19 @@
 # Changes
 
+## Version 3.11.0
+
+* tests: add test for link to a header with special character #227 (@kayman-mk)
+* fix: make --quiet flag only output errors #230 (@tcrasset)
+* feat: Add CLI arg for projectBaseUrl #232 (@pvallone)
+* chore: Add Dependabot for version updates #234 (@nschonni)
+* ci: Add current Node versions to matrix build #235 (@nschonni)
+* ci: Remove disabled Docker workflow #242 (@nschonni)
+* chore: Convert JSHint to ESLint #243 (@nschonni)
+* ci: Use array for release type schema #244 (@nschonni)
+* docs: Add how to run as pre-commit to README #245 (@vorburger)
+* chore: upgrade dependencies (@tcort)
+* fix: broken link in `README.md` (@tcort)
+
 ## Version 3.10.3
 
 * upgrade dependencies
