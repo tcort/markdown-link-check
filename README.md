@@ -38,6 +38,18 @@ Alternatively, if you wish to target a specific release, images are tagged with 
 
 Please head on to [github-action-markdown-link-check](https://github.com/gaurav-nelson/github-action-markdown-link-check).
 
+## Run as a pre-commit hook
+
+To run as a [pre-commit hook](https://pre-commit.com):
+
+```
+- repo: https://github.com/tcort/markdown-link-check
+  rev: ...
+  hooks:
+    - id: markdown-link-check
+      args: [-q]
+```
+
 ## Run in other tools
 
 - [Mega-Linter](https://megalinter.io/latest/): Linters aggregator [including markdown-link-check](https://megalinter.io/latest/descriptors/markdown_markdown_link_check/)
