@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "pretest": "jshint index.js markdown-link-check",
+    "pretest": "eslint .",
     "test": "mocha -R spec --exit"
   },
   "repository": {
@@ -43,39 +43,9 @@
     "progress": "^2.0.3"
   },
   "devDependencies": {
+    "eslint": "^8.35.0",
     "expect.js": "^0.3.1",
-    "mocha": "^10.2.0",
-    "jshint": "^2.13.6",
-    "express": "^4.18.2"
-  },
-  "jshintConfig": {
-    "esversion": 11,
-    "bitwise": true,
-    "curly": true,
-    "eqeqeq": true,
-    "forin": true,
-    "freeze": true,
-    "globalstrict": true,
-    "immed": true,
-    "indent": 4,
-    "moz": true,
-    "newcap": true,
-    "noarg": true,
-    "node": true,
-    "noempty": true,
-    "nonew": true,
-    "trailing": true,
-    "undef": true,
-    "smarttabs": true,
-    "strict": true,
-    "validthis": true,
-    "globals": {
-      "describe": false,
-      "it": false,
-      "before": false,
-      "beforeEach": false,
-      "after": false,
-      "afterEach": false
-    }
+    "express": "^4.18.2",
+    "mocha": "^10.2.0"
   }
 }

@@ -37,6 +37,7 @@ function performSpecialReplacements(str, opts) {
         }
 
         str = str.replace(envVarPattern, envVarPatternReplacement);
+        // eslint-disable-next-line no-constant-condition
     } while (true);
 
     return str;
