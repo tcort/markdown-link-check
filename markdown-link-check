@@ -91,11 +91,13 @@ function getInputs() {
     ).parse(process.argv);
 
     for (const input of inputs) {
-        input.opts.showProgressBar = (program.progress === true); // force true or undefined to be true or false.
-        input.opts.quiet = (program.quiet === true);
-        input.opts.verbose = (program.verbose === true);
-        input.opts.retryOn429 = (program.retry === true);
-        input.opts.aliveStatusCodes = program.alive;
+        input.opts.showProgressBar = (program.opts().progress === true); // force true or undefined to be true or false.
+        input.opts.quiet = (program.opts().quiet === true);
+        input.opts.verbose = (program.opts().verbose === true);
+        input.opts.retryOn429 = (program.opts().retry === true);
+        input.opts.aliveStatusCodes = program.opts().alive;
+		input.opts.config = program.opts().config.trim();
+        
         if (program.projectBaseUrl) {
             input.opts.projectBaseUrl = `file://${program.projectBaseUrl}`;
         } else {
@@ -148,8 +150,8 @@ async function processInput(filenameForOutput, stream, opts) {
         console.log(chalk.cyan('\nFILE: ' + filenameForOutput));
     }
 
-    if (program.config) {
-        let config = await loadConfig(program.config);
+    if (opts.config) {
+        let config = await loadConfig(opts.config);
 
         opts.ignorePatterns = config.ignorePatterns;
         opts.replacementPatterns = config.replacementPatterns;
