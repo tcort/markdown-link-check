@@ -1,5 +1,10 @@
 # Changes
 
+## Version 3.11.1
+
+* fix:Config-file-and-others-options-ignored (@kevinvalleau)
+* chore(deps-dev): bump eslint from 8.35.0 to 8.38.0 (@dependabot)
+
 ## Version 3.11.0
 
 * tests: add test for link to a header with special character #227 (@kayman-mk)
