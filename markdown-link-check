@@ -96,7 +96,10 @@ function getInputs() {
         input.opts.verbose = (program.opts().verbose === true);
         input.opts.retryOn429 = (program.opts().retry === true);
         input.opts.aliveStatusCodes = program.opts().alive;
-		input.opts.config = program.opts().config.trim();
+        const config = program.opts().config;
+        if (config) {
+            input.opts.config = config.trim();
+        }
         
         if (program.projectBaseUrl) {
             input.opts.projectBaseUrl = `file://${program.projectBaseUrl}`;
