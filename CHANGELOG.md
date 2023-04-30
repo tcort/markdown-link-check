@@ -1,5 +1,11 @@
 # Changes
 
+* chore(deps-dev): bump eslint from 8.38.0 to 8.39.0 (@dependabot)
+* fixed the error when there is no --config option (@mkusaka)
+* chore(deps): bump commander from 10.0.0 to 10.0.1 (@dependabot)
+* Updated elgohr/Publish-Docker-Github-Action to a supported version (v5) (@elgohr)
+* chore: upgrade dependencies (@tcort)
+
 ## Version 3.11.1
 
 * fix:Config-file-and-others-options-ignored (@kevinvalleau)
