@@ -89,7 +89,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
 
         if (opts.replacementPatterns) {
             for (let replacementPattern of opts.replacementPatterns) {
-                let pattern = replacementPattern.pattern instanceof RegExp ? replacementPattern.pattern : new RegExp(replacementPattern.pattern);
+                let pattern = replacementPattern.pattern instanceof RegExp ? replacementPattern.pattern : new RegExp(replacementPattern.pattern, replacementPattern.global ? 'g' : '');
                 link = link.replace(pattern, performSpecialReplacements(replacementPattern.replacement, opts));
             }
         }
