@@ -19,6 +19,10 @@ class Input {
     }
 }
 
+function commaSeparatedPathsList(value) {
+    return value.split(',');
+}
+
 function commaSeparatedCodesList(value, dummyPrevious) {
     return value.split(',').map(function(item) {
         return parseInt(item, 10);
@@ -34,6 +38,7 @@ function getInputs() {
         .option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration')
         .option('-q, --quiet', 'displays errors only')
         .option('-v, --verbose', 'displays detailed error information')
+        .option('-i --ignore <paths>', 'ignore input paths including an ignore path', commaSeparatedPathsList)
         .option('-a, --alive <code>', 'comma separated list of HTTP codes to be considered as alive', commaSeparatedCodesList)
         .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
         .option('--projectBaseUrl <url>', 'the URL to use for {{BASEURL}} replacement')
@@ -81,7 +86,16 @@ function getInputs() {
                         console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
                         process.exit(1);
                     }
-                    baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
+
+                    const resolved = path.resolve(filenameOrUrl);
+
+                    // skip paths given if it includes a path to ignore.
+                    // todo: allow ignore paths to be glob or regex instead of just includes?
+                    if (program.opts().ignore.some((ignorePath) => resolved.includes(ignorePath))) {
+                        continue;
+                    }
+
+                    baseUrl = 'file://' + path.dirname(resolved);
                     stream = fs.createReadStream(filenameOrUrl);
                 }
 
@@ -100,7 +114,7 @@ function getInputs() {
         if (config) {
             input.opts.config = config.trim();
         }
-        
+
         if (program.projectBaseUrl) {
             input.opts.projectBaseUrl = `file://${program.projectBaseUrl}`;
         } else {
