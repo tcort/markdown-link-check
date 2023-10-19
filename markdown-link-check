@@ -97,12 +97,14 @@ function getInputs() {
         input.opts.retryOn429 = (program.opts().retry === true);
         input.opts.aliveStatusCodes = program.opts().alive;
         const config = program.opts().config;
+        const projectBaseUrl = program.opts().projectBaseUrl;
+
         if (config) {
             input.opts.config = config.trim();
         }
-        
-        if (program.projectBaseUrl) {
-            input.opts.projectBaseUrl = `file://${program.projectBaseUrl}`;
+
+        if (projectBaseUrl) {
+            input.opts.projectBaseUrl = `file://${projectBaseUrl}`;
         } else {
             // set the default projectBaseUrl to the current working directory, so that `{{BASEURL}}` can be resolved to the project root.
             input.opts.projectBaseUrl = `file://${process.cwd()}`;
