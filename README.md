@@ -188,6 +188,7 @@ Options:
 * `retryCount` the number of retries to be made on a 429 response. Default `2`.
 * `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
 * `aliveStatusCodes` a list of HTTP codes to consider as alive.
+* `parallel` the number of parallel requests to be made. Default `2`.
 
 **Example:**
 
@@ -228,7 +229,8 @@ Options:
   "retryOn429": true,
   "retryCount": 5,
   "fallbackRetryDelay": "30s",
-  "aliveStatusCodes": [200, 206]
+  "aliveStatusCodes": [200, 206],
+  "parallel": 2
 }
 ```
 

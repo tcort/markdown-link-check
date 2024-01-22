@@ -49,6 +49,7 @@ function getInputs() {
     program
         .version(pkg.version)
         .option('-p, --progress', 'show progress bar')
+        .option('-n, --parallel <number>', 'number of parallel requests (default: 2)')
         .option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration')
         .option('-q, --quiet', 'displays errors only')
         .option('-v, --verbose', 'displays detailed error information')
@@ -117,6 +118,7 @@ function getInputs() {
         input.opts.quiet = (program.opts().quiet === true);
         input.opts.verbose = (program.opts().verbose === true);
         input.opts.retryOn429 = (program.opts().retry === true);
+        input.opts.parallel = program.opts().parallel;
         input.opts.aliveStatusCodes = program.opts().alive;
         const config = program.opts().config;
         if (config) {
@@ -181,6 +183,7 @@ async function processInput(filenameForOutput, stream, opts) {
         opts.retryCount = config.retryCount;
         opts.fallbackRetryDelay = config.fallbackRetryDelay;
         opts.aliveStatusCodes = config.aliveStatusCodes;
+        opts.parallel = opts.parallel || config.parallel;
     }
 
     await runMarkdownLinkCheck(filenameForOutput, markdown, opts);
@@ -247,8 +250,10 @@ async function runMarkdownLinkCheck(filenameForOutput, markdown, opts) {
 
 async function main() {
     chalk = (await import('chalk')).default;
-
     const inputs = getInputs();
+
+    // start time
+    console.time("Link checked in")
 
     let isOk = true;
     for await (const input of inputs) {
@@ -258,7 +263,8 @@ async function main() {
             isOk = false;
         }
     }
-
+    console.log('Exiting with code ' + (isOk ? 0 : 1));
+    console.timeEnd("Link checked in")
     process.exit(isOk ? 0 : 1);
 }
 

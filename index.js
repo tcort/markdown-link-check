@@ -72,8 +72,8 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         }) : undefined;
 
     opts.anchors = anchors;
-
-    async.mapLimit(linksCollection, 4, function (link, callback) {
+    let parallel = opts.parallel || 2
+    async.mapLimit(linksCollection, parallel, function (link, callback) {
         if (opts.ignorePatterns) {
             const shouldIgnore = opts.ignorePatterns.some(function(ignorePattern) {
                 return ignorePattern.pattern instanceof RegExp ? ignorePattern.pattern.test(link) : (new RegExp(ignorePattern.pattern)).test(link) ? true : false;
