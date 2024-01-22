@@ -253,7 +253,7 @@ async function main() {
     const inputs = getInputs();
 
     // start time
-    console.time("Link checked in")
+    console.time("Links checked in")
 
     let isOk = true;
     for await (const input of inputs) {
@@ -263,8 +263,8 @@ async function main() {
             isOk = false;
         }
     }
-    console.log('Exiting with code ' + (isOk ? 0 : 1));
-    console.timeEnd("Link checked in")
+    console.timeEnd("Links checked in")
+    console.log('Exit code ' + (isOk ? 0 : 1));
     process.exit(isOk ? 0 : 1);
 }
 
