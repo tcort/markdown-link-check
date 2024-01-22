@@ -35,11 +35,10 @@
   "dependencies": {
     "async": "^3.2.4",
     "chalk": "^5.2.0",
-    "commander": "^10.0.1",
-    "link-check": "^5.2.0",
+    "commander": "^11.1.0",
+    "isemail": "^3.2.0",
     "lodash": "^4.17.21",
     "markdown-link-extractor": "^3.1.0",
-    "needle": "^3.2.0",
     "progress": "^2.0.3"
   },
   "devDependencies": {

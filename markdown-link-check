@@ -5,7 +5,6 @@
 let chalk;
 const fs = require('fs');
 const markdownLinkCheck = require('./');
-const needle = require('needle');
 const path = require('path');
 const pkg = require('./package.json');
 const program = require('commander');
@@ -24,6 +23,25 @@ function commaSeparatedCodesList(value, dummyPrevious) {
         return parseInt(item, 10);
     });
 }
+
+/**
+ * Load all files in the rootFolder and all subfolders that end with .md
+ */
+function loadAllMarkdownFiles(rootFolder = '.') {
+    const fs = require('fs');
+    const path = require('path');
+    const files = [];
+    fs.readdirSync(rootFolder).forEach(file => {
+        const fullPath = path.join(rootFolder, file);
+        if (fs.lstatSync(fullPath).isDirectory()) {
+            files.push(...loadAllMarkdownFiles(fullPath));
+        } else if (fullPath.endsWith('.md')) {
+            files.push(fullPath);
+        }
+    });
+    return files;
+}
+
 
 function getInputs() {
     const inputs = [];
@@ -62,9 +80,7 @@ function getInputs() {
                 filenameForOutput = filenameOrUrl;
                 let baseUrl = '';
                 if (/https?:/.test(filenameOrUrl)) {
-                    stream = needle.get(filenameOrUrl);
-                    stream.on('error', onError);
-                    stream.on('response', onResponse);
+                    
                     try { // extract baseUrl from supplied URL
                         const parsed = url.parse(filenameOrUrl);
                         delete parsed.search;
@@ -73,19 +89,25 @@ function getInputs() {
                             parsed.pathname = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/') + 1);
                         }
                         baseUrl = url.format(parsed);
+                        console.log('baseUrl: ' + baseUrl)
+                        inputs.push(new Input(filenameForOutput, null, {baseUrl: baseUrl}));
                     } catch (err) { /* ignore error */
                         }
                 } else {
                     const stats = fs.statSync(filenameOrUrl);
                     if (stats.isDirectory()){
-                        console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
-                        process.exit(1);
+                        let files = loadAllMarkdownFiles(filenameOrUrl)
+                        for (let file of files) {
+                            filenameForOutput = file;
+                            baseUrl = 'file://' + path.dirname(path.resolve(file));
+                            inputs.push(new Input(filenameForOutput, stream, {baseUrl: baseUrl}));
+                        }
+                    } else {
+                        baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
+                        inputs.push(new Input(filenameForOutput, null, {baseUrl: baseUrl}));    
                     }
-                    baseUrl = 'file://' + path.dirname(path.resolve(filenameOrUrl));
-                    stream = fs.createReadStream(filenameOrUrl);
                 }
 
-                inputs.push(new Input(filenameForOutput, stream, {baseUrl: baseUrl}));
             }
         }
     ).parse(process.argv);
@@ -135,18 +157,12 @@ async function loadConfig(config) {
 
 async function processInput(filenameForOutput, stream, opts) {
     let markdown = ''; // collect the markdown data, then process it
-
-    stream.on('error', function(error) {
-        if (error.code === 'ENOENT') {
-            console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
-        } else {
-            console.error(chalk.red(error));
-        }
-        return process.exit(1);
-    });
-
-    for await (const chunk of stream) {
-        markdown += chunk.toString();
+    
+    if (/https?:/.test(filenameForOutput)) {
+        let res = await fetch(filenameForOutput);
+        markdown = await res.text();
+    } else {
+        markdown = fs.readFileSync(filenameForOutput, 'utf8')
     }
 
     if (!opts.quiet && filenameForOutput) {

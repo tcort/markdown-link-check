@@ -186,6 +186,7 @@ Options:
 
 * `ignorePatterns`: An array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match.
 * `replacementPatterns`: An array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. The special replacement `{{BASEURL}}` can be used to dynamically link to the current working directory (for example that `/` points to the root of your current working directory).
+* `aliases`: An object holding a `aliasBasePath` and a `alias` object. The `aliasBasePath` is used to prefix all aliases. The `alias` object holds a mapping of regular expressions to replacement strings. The replacement strings can contain `$1`, `$2`, etc. to reference the matching groups in the regular expression (feature required for checking links to documentation hosted with [docsify aliases](https://docsify.js.org/#/configuration?id=alias))
 * `httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
 * `timeout` timeout in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
 * `retryOn429` if this is `true` then retry request when response is an HTTP code 429 after the duration indicated by `retry-after` header.
@@ -221,6 +222,13 @@ Options:
       }
     }
   ],
+  "aliases": {
+    "aliasBasePath": "https://example.com/#",
+    "alias": {
+      "/sub-project-one/(.*)": "https://raw.githubusercontent.com/my-org/project-one/main/docs/$1",
+      "/sub-project-two/(.*)": "https://raw.githubusercontent.com/my-org/project-two/main/docs/$1",
+    }   
+  },
   "timeout": "20s",
   "retryOn429": true,
   "retryCount": 5,

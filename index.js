@@ -2,8 +2,8 @@
 
 const _ = require('lodash');
 const async = require('async');
-const linkCheck = require('link-check');
-const LinkCheckResult = require('link-check').LinkCheckResult;
+const linkCheck = require('./link-check');
+const LinkCheckResult = require('./link-check').LinkCheckResult;
 const markdownLinkExtractor = require('markdown-link-extractor');
 const ProgressBar = require('progress');
 
@@ -73,7 +73,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
 
     opts.anchors = anchors;
 
-    async.mapLimit(linksCollection, 2, function (link, callback) {
+    async.mapLimit(linksCollection, 4, function (link, callback) {
         if (opts.ignorePatterns) {
             const shouldIgnore = opts.ignorePatterns.some(function(ignorePattern) {
                 return ignorePattern.pattern instanceof RegExp ? ignorePattern.pattern.test(link) : (new RegExp(ignorePattern.pattern)).test(link) ? true : false;
@@ -93,6 +93,20 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
                 link = link.replace(pattern, performSpecialReplacements(replacementPattern.replacement, opts));
             }
         }
+
+        if (opts.aliases) {
+            for (let alias of Object.keys(opts.aliases.alias)) {
+                let regex = new RegExp(opts.aliases.basePath+alias);
+                if (regex.test(link)) {
+                    link = link.replace(regex, opts.aliases.alias[alias]);
+                    let filename = link.split('/').pop();
+                    if (filename.indexOf('.')<0) {
+                        link += '.md'
+                    }
+                }
+            }
+        }
+
 
         // Make sure it is not undefined and that the appropriate headers are always recalculated for a given link.
         opts.headers = {};

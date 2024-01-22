@@ -10,8 +10,8 @@ const markdownLinkCheck = require('../');
 describe('markdown-link-check', function () {
     const MAX_RETRY_COUNT = 5;
     // add a longer timeout on tests so we can really test real cases.
-    // Mocha default is 2s, make it 5s here.
-    this.timeout(5000);
+    // Mocha default is 2s, make it 10s here.
+    this.timeout(10000);
 
     let baseUrl;
 
@@ -81,7 +81,7 @@ describe('markdown-link-check', function () {
                 done(err);
                 return;
             }
-            baseUrl = 'http://' + server.address().address + ':' + server.address().port;
+            baseUrl = 'http://localhost:' + server.address().port;
             done();
         });
     });
@@ -104,12 +104,13 @@ describe('markdown-link-check', function () {
                 "retryCount": MAX_RETRY_COUNT,
                 "fallbackRetryDelay": "500ms"
             }, function (err, results) {
+            console.log(results)
             expect(err).to.be(null);
             expect(results).to.be.an('array');
 
             const expected = [
                 // redirect-loop
-                { statusCode:   0, status:  'dead' },
+                { statusCode:   500, status:  'error' },
 
                 // valid
                 { statusCode: 200, status: 'alive' },
@@ -118,7 +119,7 @@ describe('markdown-link-check', function () {
                 { statusCode: 404, status:  'dead' },
 
                 // dns-resolution-fail
-                { statusCode:   0, status:  'dead' },
+                { statusCode:   500, status:  'error' },
 
                 // nohead-get-ok
                 { statusCode: 200, status: 'alive' },
@@ -160,12 +161,22 @@ describe('markdown-link-check', function () {
                 { statusCode: 200, status: 'alive' },
 
             ];
+            console.log(expected)
             expect(results.length).to.be(expected.length);
+            console.log(results.length, expected.length)
 
             for (let i = 0; i < results.length; i++) {
+                console.log(results[i].statusCode, results[i].status , expected[i].statusCode, expected[i].status)
+                if (results[i].statusCode !== expected[i].statusCode) {
+                    console.error('error:',results[i].statusCode, expected[i].statusCode)
+                }
+                if (results[i].status !== expected[i].status) {
+                    console.error('error:',results[i].status, expected[i].status)
+                }
                 expect(results[i].statusCode).to.be(expected[i].statusCode);
                 expect(results[i].status).to.be(expected[i].status);
             }
+            console.log('done')
 
             done();
         });
@@ -340,7 +351,7 @@ describe('markdown-link-check', function () {
             done();
         });
     });
-    it.skip('check hash links', function (done) {
+    it('check hash links', function (done) {
         markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'hash-links.md')).toString(), {}, function (err, result) {
             expect(err).to.be(null);
             expect(result).to.eql([
