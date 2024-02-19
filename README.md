@@ -79,6 +79,7 @@ Parameters:
   * `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
   * `aliveStatusCodes` a list of HTTP codes to consider as alive.
     Example: `[200,206]`
+  * `normalizeAnchors` normalize anchors before checking (eg. `#A Wonderful Day` -> `#a-wonderful-day`)
 * `callback` function which accepts `(err, results)`.
   * `err` an Error object when the operation cannot be completed, otherwise `null`.
   * `results` an array of objects with the following properties:
@@ -192,6 +193,7 @@ Options:
 * `retryCount` the number of retries to be made on a 429 response. Default `2`.
 * `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
 * `aliveStatusCodes` a list of HTTP codes to consider as alive.
+* `normalizeAnchors` normalize anchors before checking (eg. `#A Wonderful Day` -> `#a-wonderful-day`)
 
 **Example:**
 

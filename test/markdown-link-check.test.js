@@ -340,7 +340,7 @@ describe('markdown-link-check', function () {
             done();
         });
     });
-    it.skip('check hash links', function (done) {
+    it('check hash links', function (done) {
         markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'hash-links.md')).toString(), {}, function (err, result) {
             expect(err).to.be(null);
             expect(result).to.eql([
@@ -348,6 +348,20 @@ describe('markdown-link-check', function () {
                 { link: '#bar', statusCode: 200, err: null, status: 'alive' },
                 { link: '#potato', statusCode: 404, err: null, status: 'dead' },
                 { link: '#tomato', statusCode: 404, err: null, status: 'dead' },
+                { link: '#header-with-special-char-', statusCode: 404, err: null, status: 'dead' },
+            ]);
+            done();
+        });
+    });
+    it('check normalized hash links', function (done) {
+        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'hash-links.md')).toString(), {normalizeAnchors: true}, function (err, result) {
+            expect(err).to.be(null);
+            expect(result).to.eql([
+                { link: '#foo', statusCode: 200, err: null, status: 'alive' },
+                { link: '#bar', statusCode: 200, err: null, status: 'alive' },
+                { link: '#potato', statusCode: 404, err: null, status: 'dead' },
+                { link: '#tomato', statusCode: 404, err: null, status: 'dead' },
+                { link: '#header-with-special-char-', statusCode: 200, err: null, status: 'alive' },
             ]);
             done();
         });

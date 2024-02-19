@@ -71,7 +71,20 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             total: linksCollection.length
         }) : undefined;
 
-    opts.anchors = anchors;
+    if(opts.normalizeAnchors) {
+        opts.anchors = anchors.map(function(anchor) {
+            if (!anchor.startsWith('#')) {
+                return '';
+            }
+            const sanitizedHeader = decodeURIComponent(anchor.slice(1))
+                .replaceAll(/[ -]/g, '-')
+                .replaceAll(/[^\w-]/g, '')
+                .toLowerCase();
+            return '#' + encodeURIComponent(sanitizedHeader);
+        });
+    } else {
+        opts.anchors = anchors;
+    }
 
     async.mapLimit(linksCollection, 2, function (link, callback) {
         if (opts.ignorePatterns) {
