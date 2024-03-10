@@ -13,10 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-          - 14
-          - 16
           - 18
-          - 19
+          - 20
+          - 21
 
     steps:
     - uses: actions/checkout@v3
