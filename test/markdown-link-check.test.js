@@ -81,7 +81,13 @@ describe('markdown-link-check', function () {
                 done(err);
                 return;
             }
-            baseUrl = 'http://' + server.address().address + ':' + server.address().port;
+            // github action uses IPv6 addresses
+            // there seems missing IPv6 support in upstream libs
+            if (server.address().address === "::1") {
+                baseUrl = 'http://localhost:' + server.address().port;
+            } else {
+                baseUrl = 'http://' + server.address().address + ':' + server.address().port;
+            }
             done();
         });
     });
