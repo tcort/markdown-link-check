@@ -10,6 +10,7 @@ const path = require('path');
 const pkg = require('./package.json');
 const program = require('commander');
 const url = require('url');
+const { ProxyAgent } = require('proxy-agent');
 
 class Input {
     constructor(filenameForOutput, stream, opts) {
@@ -62,7 +63,9 @@ function getInputs() {
                 filenameForOutput = filenameOrUrl;
                 let baseUrl = '';
                 if (/https?:/.test(filenameOrUrl)) {
-                    stream = needle.get(filenameOrUrl);
+                    stream = needle.get(
+                        filenameOrUrl, { agent: new ProxyAgent(), use_proxy_from_env_var: false }
+                    );
                     stream.on('error', onError);
                     stream.on('response', onResponse);
                     try { // extract baseUrl from supplied URL
@@ -100,7 +103,7 @@ function getInputs() {
         if (config) {
             input.opts.config = config.trim();
         }
-        
+
         if (program.projectBaseUrl) {
             input.opts.projectBaseUrl = `file://${program.projectBaseUrl}`;
         } else {
