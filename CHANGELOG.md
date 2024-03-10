@@ -1,5 +1,14 @@
 # Changes
 
+## Version 3.12
+
+- feat: add basic ignore subpaths argument @CanadaHonk
+- feat: add global option to replacementPatterns @CanadaHonk
+- refactor: replace url.parse with new URL @CanadaHonk
+- docs: update readme to be clearer for projectBaseUrl opt @nwcm
+- feat: Add support to load md files via proxy @dklimpel
+- chore: upgrade dependencies
+
 ## Version 3.11.2
 
 * chore(deps-dev): bump eslint from 8.38.0 to 8.39.0 (@dependabot)
