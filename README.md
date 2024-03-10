@@ -66,7 +66,6 @@ Parameters:
 
 * `markdown` string containing markdown formatted text.
 * `opts` optional options object containing any of the following optional fields:
-  * `baseUrl` the base URL for relative links.
   * `showProgressBar` enable an ASCII progress bar.
   * `timeout` timeout in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
   * `httpHeaders` to apply URL specific headers, see example below.
@@ -170,14 +169,15 @@ multiple files on the command line.
 Usage: markdown-link-check [options] [filenameOrUrl]
 
 Options:
-  -p, --progress         show progress bar
-  -c, --config [config]  apply a config file (JSON), holding e.g. url specific header configuration
-  -q, --quiet            displays errors only
-  -v, --verbose          displays detailed error information
-  -a, --alive <code>     comma separated list of HTTP code to be considered as alive
-  -r, --retry            retry after the duration indicated in 'retry-after' header when HTTP code is 429
-  -h, --help             display help for command
-  -V, --version          display version string (e.g. `1.2.3`)
+  -p, --progress              show progress bar
+  -c, --config [config]       apply a config file (JSON), holding e.g. url specific header configuration
+  -q, --quiet                 displays errors only
+  -v, --verbose               displays detailed error information
+  -a, --alive <code>          comma separated list of HTTP code to be considered as alive
+  -r, --retry                 retry after the duration indicated in 'retry-after' header when HTTP code is 429
+  -h, --help                  display help for command
+  -V, --version               display version string (e.g. `1.2.3`)
+    , --projectBaseUrl <url>  the URL to use for {{BASEURL}} replacement
 ```
 
 ##### Config file format
@@ -192,11 +192,13 @@ Options:
 * `retryCount` the number of retries to be made on a 429 response. Default `2`.
 * `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
 * `aliveStatusCodes` a list of HTTP codes to consider as alive.
+* `projectBaseUrl` the URL to use for `{{BASEURL}}` replacement
 
 **Example:**
 
 ```json
 {
+  "projectBaseUrl":"${workspaceFolder}",
   "ignorePatterns": [
     {
       "pattern": "^http://example.net"
