@@ -69,13 +69,13 @@ function getInputs() {
                     stream.on('error', onError);
                     stream.on('response', onResponse);
                     try { // extract baseUrl from supplied URL
-                        const parsed = url.parse(filenameOrUrl);
-                        delete parsed.search;
-                        delete parsed.hash;
+                        const parsed = new URL(filenameOrUrl);
+                        parsed.search = '';
+                        parsed.hash = '';
                         if (parsed.pathname.lastIndexOf('/') !== -1) {
                             parsed.pathname = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/') + 1);
                         }
-                        baseUrl = url.format(parsed);
+                        baseUrl = parsed.toString();
                     } catch (err) { /* ignore error */
                         }
                 } else {
