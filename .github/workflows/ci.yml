@@ -18,6 +18,8 @@ jobs:
           - 18
           - 19
 
+    env:
+      NODE_OPTIONS: '--dns-result-order=ipv4first'
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
