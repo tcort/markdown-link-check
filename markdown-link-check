@@ -64,6 +64,8 @@ function getInputs() {
                 }
             }
 
+            const { ignore } = program.opts();
+
             for (const filenameOrUrl of filenamesOrUrls) {
                 filenameForOutput = filenameOrUrl;
                 let baseUrl = '';
@@ -94,7 +96,7 @@ function getInputs() {
 
                     // skip paths given if it includes a path to ignore.
                     // todo: allow ignore paths to be glob or regex instead of just includes?
-                    if (program.opts().ignore.some((ignorePath) => resolved.includes(ignorePath))) {
+                    if (ignore && ignore.some((ignorePath) => resolved.includes(ignorePath))) {
                         continue;
                     }
 
