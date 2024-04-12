@@ -6,6 +6,7 @@ const expect = require('expect.js');
 const http = require('http');
 const express = require('express');
 const markdownLinkCheck = require('../');
+const dirname = process.platform === 'win32' ? __dirname.replace(/\\/g, '/') : __dirname;
 
 describe('markdown-link-check', function () {
     const MAX_RETRY_COUNT = 5;
@@ -66,7 +67,7 @@ describe('markdown-link-check', function () {
 
         app.get('/hello.jpg', function (req, res) {
             res.sendFile('hello.jpg', {
-                root: __dirname,
+                root: dirname,
                 dotfiles: 'deny'
             });
         });
@@ -76,7 +77,7 @@ describe('markdown-link-check', function () {
         });
 
         const server = http.createServer(app);
-        server.listen(0 /* random open port */, 'localhost', function serverListen(err) {
+        server.listen(0 /* random open port */, '127.0.0.1', function serverListen(err) {
             if (err) {
                 done(err);
                 return;
@@ -88,7 +89,7 @@ describe('markdown-link-check', function () {
 
     it('should check the links in sample.md', function (done) {
         markdownLinkCheck(
-            fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl),
+            fs.readFileSync(path.join(dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl),
             {
                 baseUrl: baseUrl,
                 ignorePatterns: [{ pattern: /not-working-and-ignored/ }],
@@ -172,7 +173,7 @@ describe('markdown-link-check', function () {
     });
 
     it('should check the links in file.md', function (done) {
-        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'file.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + __dirname), { baseUrl: baseUrl }, function (err, results) {
+        markdownLinkCheck(fs.readFileSync(path.join(dirname, 'file.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + dirname), { baseUrl: baseUrl }, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
 
@@ -194,7 +195,7 @@ describe('markdown-link-check', function () {
     });
 
     it('should check the links in local-file.md', function (done) {
-        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'local-file.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + __dirname), {baseUrl: 'file://' + __dirname, projectBaseUrl: 'file://' + __dirname + "/..",replacementPatterns: [{ pattern: '^/', replacement: "{{BASEURL}}/"}]}, function (err, results) {
+        markdownLinkCheck(fs.readFileSync(path.join(dirname, 'local-file.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + dirname), {baseUrl: 'file://' + dirname, projectBaseUrl: 'file://' + dirname + "/..",replacementPatterns: [{ pattern: '^/', replacement: "{{BASEURL}}/"}]}, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
 
@@ -251,10 +252,39 @@ describe('markdown-link-check', function () {
         });
     });
 
+    it('should check section links to headers in section-links.md', function (done) {
+        markdownLinkCheck(fs.readFileSync(path.join(dirname, 'section-links.md')).toString(), { baseUrl: 'https://BASEURL' }, function (err, results) {
+            expect(err).to.be(null);
+            expect(results).to.be.an('array');
+
+            const expected = [
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 404, status:  'dead' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 404, status:  'dead' },
+                { statusCode: 404, status:  'dead' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' }
+            ];
+
+            expect(results.length).to.be(expected.length);
+
+            for (let i = 0; i < results.length; i++) {
+                expect(results[i].statusCode).to.be(expected[i].statusCode);
+                expect(results[i].status).to.be(expected[i].status);
+            }
+
+            done();
+        });
+    });
+
     it('should enrich http headers with environment variables', function (done) {
         process.env.BASIC_AUTH_TOKEN = 'Zm9vOmJhcg==';
         markdownLinkCheck(
-            fs.readFileSync(path.join(__dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl),
+            fs.readFileSync(path.join(dirname, 'sample.md')).toString().replace(/%%BASE_URL%%/g, baseUrl),
             {
                 baseUrl: baseUrl,
                 httpHeaders: [
@@ -274,8 +304,8 @@ describe('markdown-link-check', function () {
     });
 
     it('should enrich pattern replacement strings with environment variables', function (done) {
-        process.env.WORKSPACE = 'file://' + __dirname + '/..';
-        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'local-file.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + __dirname), {baseUrl: 'file://' + __dirname, projectBaseUrl: 'file://' + __dirname + "/..",replacementPatterns: [{ pattern: '^/', replacement: "{{env.WORKSPACE}}/"}]}, function (err, results) {
+        process.env.WORKSPACE = 'file://' + dirname + '/..';
+        markdownLinkCheck(fs.readFileSync(path.join(dirname, 'local-file.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + dirname), {baseUrl: 'file://' + dirname, projectBaseUrl: 'file://' + dirname + "/..",replacementPatterns: [{ pattern: '^/', replacement: "{{env.WORKSPACE}}/"}]}, function (err, results) {
             expect(err).to.be(null);
             expect(results).to.be.an('array');
 
@@ -306,7 +336,7 @@ describe('markdown-link-check', function () {
         process.env.lowercase = 'hello.jpg';
         process.env['WITH-Special_Characters-123'] = 'hello.jpg';
 
-        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'special-replacements.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + __dirname), {baseUrl: 'file://' + __dirname, projectBaseUrl: 'file://' + __dirname + "/..",replacementPatterns: [
+        markdownLinkCheck(fs.readFileSync(path.join(dirname, 'special-replacements.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + dirname), {baseUrl: 'file://' + dirname, projectBaseUrl: 'file://' + dirname + "/..",replacementPatterns: [
             {pattern: '^/', replacement: "{{BASEURL}}/"},
             {pattern: '%%ENVVAR_MIXEDCASE_TEST%%', replacement: "{{env.MixedCase}}"},
             {pattern: '%%ENVVAR_UPPERCASE_TEST%%', replacement: "{{env.UPPERCASE}}"},
@@ -341,7 +371,7 @@ describe('markdown-link-check', function () {
         });
     });
     it('check hash links', function (done) {
-        markdownLinkCheck(fs.readFileSync(path.join(__dirname, 'hash-links.md')).toString(), {}, function (err, result) {
+        markdownLinkCheck(fs.readFileSync(path.join(dirname, 'hash-links.md')).toString(), {}, function (err, result) {
             expect(err).to.be(null);
             expect(result).to.eql([
                 { link: '#foo', statusCode: 200, err: null, status: 'alive' },
