@@ -1,4 +1,4 @@
-![Test library workflow status](https://github.com/tcort/markdown-link-check/workflows/Test%20library/badge.svg)
+![Test library workflow status](https://github.com/tcort/markdown-link-check/actions/workflows/ci.yml/badge.svg)
 
 # markdown-link-check
 
@@ -48,6 +48,21 @@ To run as a [pre-commit hook](https://pre-commit.com):
   hooks:
     - id: markdown-link-check
       args: [-q]
+```
+
+## Run in a GitLab pipeline
+
+```yaml
+linkchecker:
+  stage: test
+  image:
+    name: ghcr.io/tcort/markdown-link-check:3.11.2
+    entrypoint: ["/bin/sh", "-c"]
+  script:
+    - find . -name \*.md -print0 | xargs -0 -n1 markdown-link-check
+  rules:
+    - changes:
+      - "**/*.md"
 ```
 
 ## Run in other tools

@@ -1,6 +1,12 @@
 # Changes
 
-## Version 3.12
+## Version 3.12.1
+
+- fix: fix crash #297 @CanadaHonk
+- Set `ipv4first` for tests in CI @dklimpel
+- Bump node for release @dklimpel
+
+## Version 3.12.0
 
 - feat: add basic ignore subpaths argument @CanadaHonk
 - feat: add global option to replacementPatterns @CanadaHonk
