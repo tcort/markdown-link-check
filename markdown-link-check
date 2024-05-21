@@ -100,7 +100,13 @@ function getInputs() {
                         continue;
                     }
 
-                    baseUrl = 'file://' + path.dirname(resolved);
+                    if (process.platform === 'win32') {
+                        baseUrl = 'file://' + path.dirname(resolved).replace(/\\/g, '/');
+                    }
+                    else {
+                        baseUrl = 'file://' + path.dirname(resolved);
+                    }
+
                     stream = fs.createReadStream(filenameOrUrl);
                 }
 
@@ -124,7 +130,12 @@ function getInputs() {
             input.opts.projectBaseUrl = `file://${program.projectBaseUrl}`;
         } else {
             // set the default projectBaseUrl to the current working directory, so that `{{BASEURL}}` can be resolved to the project root.
-            input.opts.projectBaseUrl = `file://${process.cwd()}`;
+            if (process.platform === 'win32') {
+                input.opts.projectBaseUrl = `file:///${process.cwd().replace(/\\/g, '/')}`;
+            }
+            else {
+                input.opts.projectBaseUrl = `file://${process.cwd()}`;
+            }
         }
     }
 

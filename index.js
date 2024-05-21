@@ -43,6 +43,29 @@ function performSpecialReplacements(str, opts) {
     return str;
 }
 
+function extractSections(markdown) {
+    // First remove code blocks.
+    markdown = markdown.replace(/^```[\S\s]+?^```$/mg, '');
+
+    const sectionTitles = markdown.match(/^#+ .*$/gm) || [];
+
+    const sections = sectionTitles.map(section =>
+        section.replace(/^\W+/, '').replace(/\W+$/, '').replace(/[^\w\s-]+/g, '').replace(/\s+/g, '-').toLowerCase()
+    );
+
+    var uniq = {};
+    for (var section of sections) {
+        if (section in uniq) {
+            uniq[section]++;
+            section = section + '-' + uniq[section];
+        }
+        uniq[section] = 0;
+    }
+    const uniqueSections = Object.keys(uniq) ?? [];
+
+    return uniqueSections;
+}
+
 module.exports = function markdownLinkCheck(markdown, opts, callback) {
     if (arguments.length === 2 && typeof opts === 'function') {
         // optional 'opts' not supplied.
@@ -62,6 +85,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
     }
 
     const links = markdownLinkExtractor(markdown);
+    const sections = extractSections(markdown);
     const linksCollection = _.uniq(links);
     const bar = (opts.showProgressBar) ?
         new ProgressBar('Checking... [:bar] :percent', {
@@ -114,8 +138,24 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             }
         }
 
-        linkCheck(link, opts, function (err, result) {
+        let sectionLink = null;
 
+        if (link.startsWith('#')) {
+            sectionLink = link;
+        }
+        else if ('baseUrl' in opts && link.startsWith(opts.baseUrl)) {
+            if (link.substring(opts.baseUrl.length).match(/^\/*#/)) {
+                sectionLink = link.replace(/^[^#]+/, '');
+            }
+        }
+
+        if (sectionLink) {
+            const result = new LinkCheckResult(opts, sectionLink, sections.includes(sectionLink.substring(1)) ? 200 : 404, undefined);
+            callback(null, result);
+            return;
+        }
+
+        linkCheck(link, opts, function (err, result) {
             if (opts.showProgressBar) {
                 bar.tick();
             }
