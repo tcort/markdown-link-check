@@ -8,7 +8,8 @@ const markdownLinkCheck = require('./');
 const needle = require('needle');
 const path = require('path');
 const pkg = require('./package.json');
-const program = require('commander');
+const { Command } = require('commander');
+const program = new Command();
 const url = require('url');
 const { ProxyAgent } = require('proxy-agent');
 
