@@ -1,5 +1,14 @@
 # Changes
 
+## Version 3.12.2
+
+- fix status badge in README by @dklimpel in https://github.com/tcort/markdown-link-check/pull/303
+- enable skipped tests for hash links by @dklimpel in https://github.com/tcort/markdown-link-check/pull/306
+- chore: Upgrade to ESLint 9 by @nschonni in https://github.com/tcort/markdown-link-check/pull/318
+- Check GitHub markdown section links by @rkitover in https://github.com/tcort/markdown-link-check/pull/312
+- docs: add example for GitLab pipeline by @dklimpel in https://github.com/tcort/markdown-link-check/pull/309
+- ci: Use matrix for cross-OS testing by @nschonni in https://github.com/tcort/markdown-link-check/pull/307
+
 ## Version 3.12.1
 
 - fix: fix crash #297 @CanadaHonk
