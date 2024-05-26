@@ -200,7 +200,7 @@ Options:
 `config.json`:
 
 * `ignorePatterns`: An array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match.
-* `replacementPatterns`: An array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. The special replacement `{{BASEURL}}` can be used to dynamically link to the current working directory (for example that `/` points to the root of your current working directory).
+* `replacementPatterns`: An array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. The special replacement `{{BASEURL}}` can be used to dynamically link to the current working directory (for example that `/` points to the root of your current working directory). This parameter supports named regex groups the same way as `string.replace` [method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement) in node.
 * `httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
 * `timeout` timeout in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
 * `retryOn429` if this is `true` then retry request when response is an HTTP code 429 after the duration indicated by `retry-after` header.
@@ -232,6 +232,10 @@ Options:
       "pattern": "%20",
       "replacement": "-",
       "global": true
+    },
+    {
+      "pattern": "images/(?<filename>.*)",
+      "replacement": "assets/$<filename>"
     }
   ],
   "httpHeaders": [

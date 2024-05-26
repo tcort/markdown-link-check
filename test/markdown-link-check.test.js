@@ -370,6 +370,33 @@ describe('markdown-link-check', function () {
             done();
         });
     });
+
+    it('should correctly resolve regex named groups in replacement patterns', function (done) {
+        markdownLinkCheck(fs.readFileSync(path.join(dirname, 'regex-groups-replacement.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + dirname), {baseUrl: 'file://' + dirname, projectBaseUrl: 'file://' + dirname + "/..",replacementPatterns: [
+            {pattern: '^/', replacement: "{{BASEURL}}/"},
+            {pattern: 'folder-to-be-ignored/(?<filename>.*)', replacement: '$<filename>'}
+        ]}, function (err, results) {
+            expect(err).to.be(null);
+            expect(results).to.be.an('array');
+
+            const expected = [
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' }
+            ];
+
+            expect(results.length).to.be(expected.length);
+
+            for (let i = 0; i < results.length; i++) {
+                expect(results[i].statusCode).to.be(expected[i].statusCode);
+                expect(results[i].status).to.be(expected[i].status);
+            }
+
+            done();
+        });
+    });
+
     it('check hash links', function (done) {
         markdownLinkCheck(fs.readFileSync(path.join(dirname, 'hash-links.md')).toString(), {}, function (err, result) {
             expect(err).to.be(null);
