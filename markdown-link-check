@@ -10,7 +10,6 @@ const path = require('path');
 const pkg = require('./package.json');
 const { Command } = require('commander');
 const program = new Command();
-const url = require('url');
 const { ProxyAgent } = require('proxy-agent');
 
 class Input {
