@@ -376,6 +376,7 @@ describe('markdown-link-check', function () {
             expect(result).to.eql([
                 { link: '#foo', statusCode: 200, err: null, status: 'alive' },
                 { link: '#bar', statusCode: 200, err: null, status: 'alive' },
+                { link: '#does-not-exist', statusCode: 404, err: null, status: 'dead' },
                 { link: '#potato', statusCode: 404, err: null, status: 'dead' },
                 { link: '#tomato', statusCode: 404, err: null, status: 'dead' },
                 { link: '#header-with-special-char-at-end-', statusCode: 200, err: null, status: 'alive' },

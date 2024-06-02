@@ -14,6 +14,8 @@ The title is [Foo](#foo).
 
 The second section is [Bar](#bar).
 
+To test a failure. Link that [does not exist](#does-not-exist).
+
 ## Uh, oh
 
 There is no section named [Potato](#potato).
