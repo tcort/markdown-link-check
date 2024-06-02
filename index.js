@@ -50,7 +50,29 @@ function extractSections(markdown) {
     const sectionTitles = markdown.match(/^#+ .*$/gm) || [];
 
     const sections = sectionTitles.map(section =>
-        section.replace(/^\W+/, '').replace(/\W+$/, '').replace(/[^\w\s-]+/g, '').replace(/\s+/g, '-').toLowerCase()
+        // The links are compared with the headings (simple text comparison).
+        // However, the links are url-encoded beforehand, so the headings
+        // have to also be encoded so that they can also be matched.
+        encodeURIComponent(
+            section
+                // replace links, the links can start with "./", "/", "http://", "https://" or "#"
+                // and keep the value of the text ($1)
+                .replace(/\[(.+)\]\(((?:\.?\/|https?:\/\/|#)[\w\d./?=#-]+)\)/, "$1")
+                // make everything (Unicode-aware) lower case
+                .toLowerCase()
+                // remove white spaces and "#" at the beginning
+                .replace(/^#+\s*/, '')
+                // remove everything that is NOT a (Unicode) Letter, (Unicode) Number decimal,
+                // (Unicode) Number letter, white space, underscore or hyphen
+                // https://ruby-doc.org/3.3.2/Regexp.html#class-Regexp-label-Unicode+Character+Categories
+                .replace(/[^\p{L}\p{Nd}\p{Nl}\s_\-`]/gu, "")
+                // remove sequences of *
+                .replace(/\*(?=.*)/gu, "")
+                // remove leftover backticks
+                .replace(/`/gu, "")
+                // Now replace remaining blanks with '-'
+                .replace(/\s/gu, "-")
+        )
     );
 
     var uniq = {};
