@@ -43,9 +43,32 @@ function performSpecialReplacements(str, opts) {
     return str;
 }
 
+function removeCodeBlocks(markdown) {
+    return markdown.replace(/^```[\S\s]+?^```$/gm, '');
+}
+
+function extractHtmlSections(markdown) {
+    markdown =
+        // remove code blocks
+        removeCodeBlocks(markdown)
+        // remove HTML comments
+        .replace(/<!--[\S\s]+?-->/gm, '')
+        // remove single line code (if not escaped with "\")
+        .replace(/(?<!\\)`[\S\s]+?(?<!\\)`/gm, '');
+
+    const regexAllId = /<(?<tag>[^\s]+).*?id="(?<id>[^"]*?)".*?>/gmi;
+    const regexAName = /<a.*?name="(?<name>[^"]*?)".*?>/gmi;
+
+    const sections = []
+        .concat(Array.from(markdown.matchAll(regexAllId), (match) => match.groups.id))
+        .concat(Array.from(markdown.matchAll(regexAName), (match) => match.groups.name));
+
+    return sections
+}
+
 function extractSections(markdown) {
     // First remove code blocks.
-    markdown = markdown.replace(/^```[\S\s]+?^```$/mg, '');
+    markdown = removeCodeBlocks(markdown);
 
     const sectionTitles = markdown.match(/^#+ .*$/gm) || [];
 
@@ -85,7 +108,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
     }
 
     const links = markdownLinkExtractor(markdown);
-    const sections = extractSections(markdown);
+    const sections = extractSections(markdown).concat(extractHtmlSections(markdown));
     const linksCollection = _.uniq(links);
     const bar = (opts.showProgressBar) ?
         new ProgressBar('Checking... [:bar] :percent', {
