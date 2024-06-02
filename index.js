@@ -64,6 +64,7 @@ function extractSections(markdown) {
                 .replace(/^#+\s*/, '')
                 // remove everything that is NOT a (Unicode) Letter, (Unicode) Number decimal,
                 // (Unicode) Number letter, white space, underscore or hyphen
+                // https://ruby-doc.org/3.3.2/Regexp.html#class-Regexp-label-Unicode+Character+Categories
                 .replace(/[^\p{L}\p{Nd}\p{Nl}\s_\-`]/gu, "")
                 // remove sequences of *
                 .replace(/\*(?=.*)/gu, "")
