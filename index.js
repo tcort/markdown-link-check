@@ -56,8 +56,8 @@ function extractHtmlSections(markdown) {
         // remove single line code (if not escaped with "\")
         .replace(/(?<!\\)`[\S\s]+?(?<!\\)`/gm, '');
 
-    const regexAllId = /<(?<tag>[^\s]+).*?id="(?<id>[^"]*?)".*?>/gmi;
-    const regexAName = /<a.*?name="(?<name>[^"]*?)".*?>/gmi;
+    const regexAllId = /<(?<tag>[^\s]+).*?id=["'](?<id>[^"']*?)["'].*?>/gmi;
+    const regexAName = /<a.*?name=["'](?<name>[^"']*?)["'].*?>/gmi;
 
     const sections = []
         .concat(Array.from(markdown.matchAll(regexAllId), (match) => match.groups.id))

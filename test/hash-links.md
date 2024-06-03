@@ -2,8 +2,10 @@
 
 <!-- markdownlint-disable MD033 -->
 <a id="tomato_id"></a>
-
 <a name="tomato_name"></a>
+
+<a id='tomato_id_single_quote'></a>
+<a name='tomato_name_single_quote'></a>
 
 <div id="onion"></div>
 <div id="onion_outer">
@@ -38,6 +40,10 @@ There is no section named [Potato](#potato).
 There is an anchor named with `id` [Tomato](#tomato_id).
 
 There is an anchor named with `name` [Tomato](#tomato_name).
+
+There is an anchor named with `id` [Tomato in single quote](#tomato_id_single_quote).
+
+There is an anchor named with `name` [Tomato in single quote](#tomato_name_single_quote).
 
 There is an anchor in code [Tomato in code](#tomato_code).
 

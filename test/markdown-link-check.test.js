@@ -379,6 +379,8 @@ describe('markdown-link-check', function () {
                 { link: '#potato', statusCode: 404, err: null, status: 'dead' },
                 { link: '#tomato_id', statusCode: 200, err: null, status: 'alive' },
                 { link: '#tomato_name', statusCode: 200, err: null, status: 'alive' },
+                { link: '#tomato_id_single_quote', statusCode: 200, err: null, status: 'alive' },
+                { link: '#tomato_name_single_quote', statusCode: 200, err: null, status: 'alive' },
                 { link: '#tomato_code', statusCode: 404, err: null, status: 'dead' },
                 { link: '#tomato_escaped_backticks', statusCode: 200, err: null, status: 'alive' },
                 { link: '#tomato_comment', statusCode: 404, err: null, status: 'dead' },
