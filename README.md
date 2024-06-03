@@ -59,7 +59,7 @@ linkchecker:
     name: ghcr.io/tcort/markdown-link-check:3.11.2
     entrypoint: ["/bin/sh", "-c"]
   script:
-    - find . -name \*.md -print0 | xargs -0 -n1 markdown-link-check
+    - markdown-link-check ./docs
   rules:
     - changes:
       - "**/*.md"
@@ -169,19 +169,22 @@ markdown-link-check ./README.md
 
 #### Check links from a local markdown folder (recursive)
 
-Avoid using `find -exec` because it will swallow the error from each consecutive run.
-Instead, use `xargs`:
+This checks all files in folder `./docs` with file extension `*.md`:
+
+```shell
+markdown-link-check ./docs
+```
+
+The files can also be searched for and filtered manually:
+
 ```shell
 find . -name \*.md -print0 | xargs -0 -n1 markdown-link-check
 ```
 
-There is an [open issue](https://github.com/tcort/markdown-link-check/issues/78) for allowing the tool to specify
-multiple files on the command line.
-
 #### Usage
 
 ```shell
-Usage: markdown-link-check [options] [filenameOrUrl]
+Usage: markdown-link-check [options] [filenameOrDirectorynameOrUrl]
 
 Options:
   -p, --progress              show progress bar
