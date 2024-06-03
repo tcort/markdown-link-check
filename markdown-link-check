@@ -31,6 +31,23 @@ function commaSeparatedCodesList(value, dummyPrevious) {
     });
 }
 
+
+/**
+ * Load all files in the rootFolder and all subfolders that end with .md
+ */
+function loadAllMarkdownFiles(rootFolder = '.') {
+    const files = [];
+    fs.readdirSync(rootFolder).forEach(file => {
+        const fullPath = path.join(rootFolder, file);
+        if (fs.lstatSync(fullPath).isDirectory()) {
+            files.push(...loadAllMarkdownFiles(fullPath));
+        } else if (fullPath.endsWith('.md')) {
+            files.push(fullPath);
+        }
+    });
+    return files;
+}
+
 function getInputs() {
     const inputs = [];
 
@@ -40,11 +57,11 @@ function getInputs() {
         .option('-c, --config [config]', 'apply a config file (JSON), holding e.g. url specific header configuration')
         .option('-q, --quiet', 'displays errors only')
         .option('-v, --verbose', 'displays detailed error information')
-        .option('-i --ignore <paths>', 'ignore input paths including an ignore path', commaSeparatedPathsList)
+        .option('-i, --ignore <paths>', 'ignore input paths including an ignore path', commaSeparatedPathsList)
         .option('-a, --alive <code>', 'comma separated list of HTTP codes to be considered as alive', commaSeparatedCodesList)
         .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
         .option('--projectBaseUrl <url>', 'the URL to use for {{BASEURL}} replacement')
-        .arguments('[filenamesOrUrls...]')
+        .arguments('[filenamesOrDirectorynamesOrUrls...]')
         .action(function (filenamesOrUrls) {
             let filenameForOutput;
             let stream;
@@ -70,6 +87,7 @@ function getInputs() {
             for (const filenameOrUrl of filenamesOrUrls) {
                 filenameForOutput = filenameOrUrl;
                 let baseUrl = '';
+                // remote file
                 if (/https?:/.test(filenameOrUrl)) {
                     stream = needle.get(
                         filenameOrUrl, { agent: new ProxyAgent(), use_proxy_from_env_var: false }
@@ -81,37 +99,44 @@ function getInputs() {
                         parsed.search = '';
                         parsed.hash = '';
                         if (parsed.pathname.lastIndexOf('/') !== -1) {
-                            parsed.pathname = parsed.pathname.substr(0, parsed.pathname.lastIndexOf('/') + 1);
+                            parsed.pathname = parsed.pathname.substring(0, parsed.pathname.lastIndexOf('/') + 1);
                         }
                         baseUrl = parsed.toString();
-                    } catch (err) { /* ignore error */
-                        }
+                        inputs.push(new Input(filenameForOutput, stream, {baseUrl: baseUrl}));
+                    } catch (err) {
+                        /* ignore error */
+                    }
                 } else {
-                    const stats = fs.statSync(filenameOrUrl);
-                    if (stats.isDirectory()){
-                        console.error(chalk.red('\nERROR: ' + filenameOrUrl + ' is a directory! Please provide a valid filename as an argument.'));
-                        process.exit(1);
+                    // local file or directory
+                    let files = [];
+
+                    if (fs.statSync(filenameOrUrl).isDirectory()){
+                        files = loadAllMarkdownFiles(filenameOrUrl)
+                    } else {
+                        files = [filenameOrUrl]
                     }
 
-                    const resolved = path.resolve(filenameOrUrl);
+                    for (let file of files) {
+                        filenameForOutput = file;
+                        const resolved = path.resolve(filenameForOutput);
 
-                    // skip paths given if it includes a path to ignore.
-                    // todo: allow ignore paths to be glob or regex instead of just includes?
-                    if (ignore && ignore.some((ignorePath) => resolved.includes(ignorePath))) {
-                        continue;
-                    }
+                        // skip paths given if it includes a path to ignore.
+                        // todo: allow ignore paths to be glob or regex instead of just includes?
+                        if (ignore && ignore.some((ignorePath) => resolved.includes(ignorePath))) {
+                            continue;
+                        }
 
-                    if (process.platform === 'win32') {
-                        baseUrl = 'file://' + path.dirname(resolved).replace(/\\/g, '/');
-                    }
-                    else {
-                        baseUrl = 'file://' + path.dirname(resolved);
-                    }
+                        if (process.platform === 'win32') {
+                            baseUrl = 'file://' + path.dirname(resolved).replace(/\\/g, '/');
+                        }
+                        else {
+                            baseUrl = 'file://' + path.dirname(resolved);
+                        }
 
-                    stream = fs.createReadStream(filenameOrUrl);
+                        stream = fs.createReadStream(filenameForOutput);
+                        inputs.push(new Input(filenameForOutput, stream, {baseUrl: baseUrl}));
+                    }
                 }
-
-                inputs.push(new Input(filenameForOutput, stream, {baseUrl: baseUrl}));
             }
         }
     ).parse(process.argv);
