@@ -34,10 +34,6 @@ docker run -v ${PWD}:/tmp:ro --rm -i ghcr.io/tcort/markdown-link-check:stable /t
 
 Alternatively, if you wish to target a specific release, images are tagged with semantic versions (i.e. `3`, `3.8`, `3.8.3`)
 
-## Run in a GitHub action
-
-Please head on to [github-action-markdown-link-check](https://github.com/gaurav-nelson/github-action-markdown-link-check).
-
 ## Run as a pre-commit hook
 
 To run as a [pre-commit hook](https://pre-commit.com):
