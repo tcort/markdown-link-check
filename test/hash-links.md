@@ -77,3 +77,9 @@ Whitespaces separated by special characters (no workaround)
 Consequent whitespaces typo (easy to workaround)
 
 [Client/server examples using `network.peer.*`](#clientserver-examples-using--networkpeer)
+
+## This header is [linked](#somewhere)
+
+This is a [link to a linked header](#this-header-is-linked)
+
+### Somewhere

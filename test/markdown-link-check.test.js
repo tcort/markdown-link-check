@@ -393,6 +393,8 @@ describe('markdown-link-check', function () {
                 { link: '#product-owner--design-approval', statusCode: 200, err: null, status: 'alive' },
                 { link: '#migrating-from--v1180', statusCode: 200, err: null, status: 'alive' },
                 { link: '#clientserver-examples-using--networkpeer', statusCode: 200, err: null, status: 'alive' },
+                { link: '#somewhere', statusCode: 200, err: null, status: 'alive' },
+                { link: '#this-header-is-linked', statusCode: 200, err: null, status: 'alive' },
             ]);
             done();
         });
