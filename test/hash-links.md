@@ -65,3 +65,15 @@ An [anchor link](#heading-with-an-anchor-link) to a heading.
 ## Product Owner / Design Approval
 
 [Product Owner / Design Approval](#product-owner--design-approval)
+
+## Migrating from `<= v1.18.0`
+
+Whitespaces separated by special characters (no workaround)
+
+[migrating from <= v1.18.0](#migrating-from--v1180)
+
+## Client/server examples using  `network.peer.*
+
+Consequent whitespaces typo (easy to workaround)
+
+[Client/server examples using `network.peer.*`](#clientserver-examples-using--networkpeer)
