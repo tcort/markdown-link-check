@@ -388,6 +388,9 @@ describe('markdown-link-check', function () {
                 { link: 'https://github.com/tcort/markdown-link-check', statusCode: 200, err: null, status: 'alive' },
                 { link: '#heading-with-a-link', statusCode: 200, err: null, status: 'alive' },
                 { link: '#heading-with-an-anchor-link', statusCode: 200, err: null, status: 'alive' },
+                { link: '#--docker', statusCode: 200, err: null, status: 'alive' },
+                { link: '#step-7---lint--test', statusCode: 200, err: null, status: 'alive' },
+                { link: '#product-owner--design-approval', statusCode: 200, err: null, status: 'alive' },
             ]);
             done();
         });
