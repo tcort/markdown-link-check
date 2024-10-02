@@ -422,6 +422,7 @@ describe('markdown-link-check', function () {
                 { link: '#clientserver-examples-using--networkpeer', statusCode: 200, err: null, status: 'alive' },
                 { link: '#somewhere', statusCode: 200, err: null, status: 'alive' },
                 { link: '#this-header-is-linked', statusCode: 200, err: null, status: 'alive' },
+                { link: '#l-is-the-package-in-the-linux-distro-base-image', statusCode: 200, err: null, status: 'alive' },
             ]);
             done();
         });
