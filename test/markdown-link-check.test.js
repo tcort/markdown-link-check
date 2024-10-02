@@ -418,6 +418,8 @@ describe('markdown-link-check', function () {
                 { link: '#--docker', statusCode: 200, err: null, status: 'alive' },
                 { link: '#step-7---lint--test', statusCode: 200, err: null, status: 'alive' },
                 { link: '#product-owner--design-approval', statusCode: 200, err: null, status: 'alive' },
+                { link: '#migrating-from--v1180', statusCode: 200, err: null, status: 'alive' },
+                { link: '#clientserver-examples-using--networkpeer', statusCode: 200, err: null, status: 'alive' },
             ]);
             done();
         });
