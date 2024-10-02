@@ -83,3 +83,9 @@ Consequent whitespaces typo (easy to workaround)
 This is a [link to a linked header](#this-header-is-linked)
 
 ### Somewhere
+
+## L. Is the package in the Linux distro base image?
+
+Anchor links ending with `?`.
+
+[L. Is the package in the Linux distro base image?](#l-is-the-package-in-the-linux-distro-base-image)
