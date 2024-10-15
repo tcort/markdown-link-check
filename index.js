@@ -47,10 +47,12 @@ function extractSections(markdown) {
     // First remove code blocks.
     markdown = markdown.replace(/^```[\S\s]+?^```$/mg, '');
 
-    const sectionTitles = markdown.match(/^#+ .*$/gm) || [];
+    const sectionTitles = Array.from(
+        markdown.matchAll(/^(?:\s*(?:[-*+]|\d+[.)])\s+)?(#+ .*)$/gm) ?? []
+    );
 
     const sections = sectionTitles.map(section =>
-        section.replace(/^\W+/, '').replace(/\W+$/, '').replace(/[^\w\s-]+/g, '').replace(/\s+/g, '-').toLowerCase()
+        section[1].replace(/^\W+/, '').replace(/\W+$/, '').replace(/[^\w\s-]+/g, '').replace(/\s+/g, '-').toLowerCase()
     );
 
     var uniq = {};
