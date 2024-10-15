@@ -370,7 +370,8 @@ describe('markdown-link-check', function () {
             done();
         });
     });
-    it('check hash links', function (done) {
+
+    it('should validate hash links', function (done) {
         markdownLinkCheck(fs.readFileSync(path.join(dirname, 'hash-links.md')).toString(), {}, function (err, result) {
             expect(err).to.be(null);
             expect(result).to.eql([
@@ -379,7 +380,12 @@ describe('markdown-link-check', function () {
                 { link: '#potato', statusCode: 404, err: null, status: 'dead' },
                 { link: '#tomato', statusCode: 404, err: null, status: 'dead' },
                 { link: '#header-with-special-char-', statusCode: 404, err: null, status: 'dead' },
+                { link: '#header-in-an-ordered-list', statusCode: 200, err: null, status: 'alive' },
+                { link: '#indented-header-in-an-ordered-list', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-in-an-unordered-list', statusCode: 200, err: null, status: 'alive' },
+                { link: '#indented-header-in-an-unordered-list', statusCode: 200, err: null, status: 'alive' },
             ]);
+
             done();
         });
     });
