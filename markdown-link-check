@@ -4,7 +4,8 @@
 
 let chalk;
 const fs = require('fs');
-const markdownLinkCheck = require('./');
+const { promisify } = require('util');
+const markdownLinkCheck = promisify(require('./'));
 const needle = require('needle');
 const path = require('path');
 const pkg = require('./package.json');
@@ -232,17 +233,16 @@ async function processInput(filenameForOutput, stream, opts) {
 }
 
 async function runMarkdownLinkCheck(filenameForOutput, markdown, opts) {
-    return new Promise((resolve, reject) => {
-        markdownLinkCheck(markdown, opts, async function (err, results) {
-            await Promise.all(
-                opts.reporters.map(reporter => reporter(err, results, opts, filenameForOutput)
-            ));
+    const [err, results] = await markdownLinkCheck(markdown, opts)
+        .then(res => [null, res]).catch(err => [err]);
 
-            if (err) reject();
-            else if (results.some((result) => result.status === 'dead')) reject();
-            else resolve();
-        });
-    });
+    await Promise.allSettled(
+        opts.reporters.map(reporter => reporter(err, results, opts, filenameForOutput)
+    ));
+
+    if (err) throw null;
+    else if (results.some((result) => result.status === 'dead')) return;
+    else return;
 }
 
 async function main() {
