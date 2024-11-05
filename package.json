@@ -44,7 +44,7 @@
     "xmlbuilder2": "^3.1.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.3.0",
+    "@eslint/js": "^9.14.0",
     "eslint": "^9.14.0",
     "expect.js": "^0.3.1",
     "express": "^4.21.1",
