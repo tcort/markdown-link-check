@@ -5,14 +5,14 @@
 let chalk;
 const fs = require('fs');
 const { promisify } = require('util');
-const markdownLinkCheck = promisify(require('./'));
+const markdownLinkCheck = promisify(require('../'));
 const needle = require('needle');
 const path = require('path');
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 const { Command } = require('commander');
 const program = new Command();
 const { ProxyAgent } = require('proxy-agent');
-const reporters = require('./reporters/index.js');
+const reporters = require('../lib/reporters/index.js');
 
 class Input {
     constructor(filenameForOutput, stream, opts) {
