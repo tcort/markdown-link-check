@@ -19,7 +19,8 @@ jobs:
         node-version:
           - 18
           - 20
-          - 21
+          - 22
+          - 23
 
     env:
       NODE_OPTIONS: '--dns-result-order=ipv4first'
