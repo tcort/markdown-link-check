@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.13.2
+
+- fix: MODULE_NOT_FOUND error #368
+
 ## Version 3.13.1
 
 - fix: MODULE_NOT_FOUND error #368
