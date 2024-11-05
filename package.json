@@ -33,10 +33,10 @@
     "markdown-link-check"
   ],
   "dependencies": {
-    "async": "^3.2.5",
+    "async": "^3.2.6",
     "chalk": "^5.3.0",
     "commander": "^12.1.0",
-    "link-check": "^5.3.0",
+    "link-check": "^5.4.0",
     "markdown-link-extractor": "^4.0.2",
     "needle": "^3.3.1",
     "progress": "^2.0.3",
@@ -45,10 +45,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
-    "eslint": "^9.3.0",
+    "eslint": "^9.14.0",
     "expect.js": "^0.3.1",
-    "express": "^4.19.2",
-    "globals": "^15.3.0",
-    "mocha": "^10.4.0"
+    "express": "^4.21.1",
+    "globals": "^15.12.0",
+    "mocha": "^10.8.2"
   }
 }
