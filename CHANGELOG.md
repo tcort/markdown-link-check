@@ -1,5 +1,19 @@
 # Changes
 
+## Version 3.13.0
+
+- feat: anchor link checks support HTML tags like `<a name="foo"></a>` #331 @dklimpel
+- ✨ add support for additional test reporters #364 @dudeofawesome
+- feat: support iterate link check over directories in CLI #334 @dklimpel
+- Update hook names #366 @henrygerardmoore
+- chore(deps): remove lodash #332 @dklimpel
+- fix: add used `@eslint/js` to dev dependencies in package.json #330 @dklimpel
+- fix: remove not used const url #329 @dklimpel
+- feat: add support for unicode characters in anchor links #328 @dklimpel
+- docs(readme): explain named regex groups in replacementPatterns #327 @AndreyNautilus
+- ci: bump nodejs #367 @dklimpel
+- update dependencies
+
 ## Version 3.12.2
 
 - fix status badge in README by @dklimpel in https://github.com/tcort/markdown-link-check/pull/303
