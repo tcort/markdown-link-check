@@ -12,7 +12,7 @@ const pkg = require('../package.json');
 const { Command } = require('commander');
 const program = new Command();
 const { ProxyAgent } = require('proxy-agent');
-const reporters = require('../lib/reporters/index.js');
+const reporters = require('../reporters.js');
 
 class Input {
     constructor(filenameForOutput, stream, opts) {
