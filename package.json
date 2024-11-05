@@ -37,7 +37,6 @@
     "chalk": "^5.3.0",
     "commander": "^12.1.0",
     "link-check": "^5.3.0",
-    "lodash": "^4.17.21",
     "markdown-link-extractor": "^4.0.2",
     "needle": "^3.3.1",
     "progress": "^2.0.3",
