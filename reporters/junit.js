@@ -28,9 +28,9 @@ module.exports = async function junitReporter(err, results, opts, filenameForOut
             }
         }
     }
+    process.on('exit', () => {
+        writeFileSync('junit.xml', doc.end({ prettyPrint: true }) + '\n');
+        console.error('\nWrote junit.xml');
+    });
 };
 
-process.on('exit', () => {
-    writeFileSync('junit.xml', doc.end({ prettyPrint: true }) + '\n');
-    console.error('\nWrote junit.xml');
-})
