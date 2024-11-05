@@ -4,4 +4,4 @@
   entry: markdown-link-check
   language: node
   types: [markdown]
-  stages: [commit, push, manual]
+  stages: [pre-commit, pre-push, manual]

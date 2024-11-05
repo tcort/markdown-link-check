@@ -370,12 +370,40 @@ describe('markdown-link-check', function () {
             done();
         });
     });
+
+    it('should correctly resolve regex named groups in replacement patterns', function (done) {
+        markdownLinkCheck(fs.readFileSync(path.join(dirname, 'regex-groups-replacement.md')).toString().replace(/%%BASE_URL%%/g, 'file://' + dirname), {baseUrl: 'file://' + dirname, projectBaseUrl: 'file://' + dirname + "/..",replacementPatterns: [
+            {pattern: '^/', replacement: "{{BASEURL}}/"},
+            {pattern: 'folder-to-be-ignored/(?<filename>.*)', replacement: '$<filename>'}
+        ]}, function (err, results) {
+            expect(err).to.be(null);
+            expect(results).to.be.an('array');
+
+            const expected = [
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' },
+                { statusCode: 200, status: 'alive' }
+            ];
+
+            expect(results.length).to.be(expected.length);
+
+            for (let i = 0; i < results.length; i++) {
+                expect(results[i].statusCode).to.be(expected[i].statusCode);
+                expect(results[i].status).to.be(expected[i].status);
+            }
+
+            done();
+        });
+    });
+
     it('check hash links', function (done) {
         markdownLinkCheck(fs.readFileSync(path.join(dirname, 'hash-links.md')).toString(), {}, function (err, result) {
             expect(err).to.be(null);
             expect(result).to.eql([
                 { link: '#foo', statusCode: 200, err: null, status: 'alive' },
                 { link: '#bar', statusCode: 200, err: null, status: 'alive' },
+                { link: '#does-not-exist', statusCode: 404, err: null, status: 'dead' },
                 { link: '#potato', statusCode: 404, err: null, status: 'dead' },
                 { link: '#tomato_id', statusCode: 200, err: null, status: 'alive' },
                 { link: '#tomato_name', statusCode: 200, err: null, status: 'alive' },
@@ -387,7 +415,23 @@ describe('markdown-link-check', function () {
                 { link: '#onion', statusCode: 200, err: null, status: 'alive' },
                 { link: '#onion_outer', statusCode: 200, err: null, status: 'alive' },
                 { link: '#onion_inner', statusCode: 200, err: null, status: 'alive' },
-                { link: '#header-with-special-char-', statusCode: 404, err: null, status: 'dead' },
+                { link: '#header-with-special-char-at-end-', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-multiple-special-chars-at-end-', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-special--char', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-multiple-special--chars', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-german-umlaut-%C3%B6', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-german-umlaut-%C3%B6-manual-encoded-link', statusCode: 200, err: null, status: 'alive' },
+                { link: 'https://github.com/tcort/markdown-link-check', statusCode: 200, err: null, status: 'alive' },
+                { link: '#heading-with-a-link', statusCode: 200, err: null, status: 'alive' },
+                { link: '#heading-with-an-anchor-link', statusCode: 200, err: null, status: 'alive' },
+                { link: '#--docker', statusCode: 200, err: null, status: 'alive' },
+                { link: '#step-7---lint--test', statusCode: 200, err: null, status: 'alive' },
+                { link: '#product-owner--design-approval', statusCode: 200, err: null, status: 'alive' },
+                { link: '#migrating-from--v1180', statusCode: 200, err: null, status: 'alive' },
+                { link: '#clientserver-examples-using--networkpeer', statusCode: 200, err: null, status: 'alive' },
+                { link: '#somewhere', statusCode: 200, err: null, status: 'alive' },
+                { link: '#this-header-is-linked', statusCode: 200, err: null, status: 'alive' },
+                { link: '#l-is-the-package-in-the-linux-distro-base-image', statusCode: 200, err: null, status: 'alive' },
             ]);
             done();
         });
