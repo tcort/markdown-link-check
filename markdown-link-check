@@ -12,7 +12,7 @@ const pkg = require('./package.json');
 const { Command } = require('commander');
 const program = new Command();
 const { ProxyAgent } = require('proxy-agent');
-const reporters = require('./reporters');
+const reporters = require('./reporters/index.js');
 
 class Input {
     constructor(filenameForOutput, stream, opts) {
@@ -49,7 +49,7 @@ function loadAllMarkdownFiles(rootFolder = '.') {
 }
 
 function commaSeparatedReportersList(value) {
-    return value.split(',').map((reporter) => reporters[reporter] ?? reporters.eefault);
+    return value.split(',').map((reporter) => reporters[reporter] ?? reporters.default);
 }
 
 function getInputs() {

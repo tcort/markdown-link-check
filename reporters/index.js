@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-    default: require('./default'),
-    junit: require('./junit'),
+    default: require('./default.js'),
+    junit: require('./junit.js'),
 };
