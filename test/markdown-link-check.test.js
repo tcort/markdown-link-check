@@ -403,9 +403,26 @@ describe('markdown-link-check', function () {
             expect(result).to.eql([
                 { link: '#foo', statusCode: 200, err: null, status: 'alive' },
                 { link: '#bar', statusCode: 200, err: null, status: 'alive' },
+                { link: '#does-not-exist', statusCode: 404, err: null, status: 'dead' },
                 { link: '#potato', statusCode: 404, err: null, status: 'dead' },
                 { link: '#tomato', statusCode: 404, err: null, status: 'dead' },
-                { link: '#header-with-special-char-', statusCode: 404, err: null, status: 'dead' },
+                { link: '#header-with-special-char-at-end-', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-multiple-special-chars-at-end-', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-special--char', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-multiple-special--chars', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-german-umlaut-%C3%B6', statusCode: 200, err: null, status: 'alive' },
+                { link: '#header-with-german-umlaut-%C3%B6-manual-encoded-link', statusCode: 200, err: null, status: 'alive' },
+                { link: 'https://github.com/tcort/markdown-link-check', statusCode: 200, err: null, status: 'alive' },
+                { link: '#heading-with-a-link', statusCode: 200, err: null, status: 'alive' },
+                { link: '#heading-with-an-anchor-link', statusCode: 200, err: null, status: 'alive' },
+                { link: '#--docker', statusCode: 200, err: null, status: 'alive' },
+                { link: '#step-7---lint--test', statusCode: 200, err: null, status: 'alive' },
+                { link: '#product-owner--design-approval', statusCode: 200, err: null, status: 'alive' },
+                { link: '#migrating-from--v1180', statusCode: 200, err: null, status: 'alive' },
+                { link: '#clientserver-examples-using--networkpeer', statusCode: 200, err: null, status: 'alive' },
+                { link: '#somewhere', statusCode: 200, err: null, status: 'alive' },
+                { link: '#this-header-is-linked', statusCode: 200, err: null, status: 'alive' },
+                { link: '#l-is-the-package-in-the-linux-distro-base-image', statusCode: 200, err: null, status: 'alive' },
             ]);
             done();
         });
