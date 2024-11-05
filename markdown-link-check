@@ -5,7 +5,6 @@
 let chalk;
 const fs = require('fs');
 const markdownLinkCheck = require('./');
-const defaultReporter = require("./reporters/default.js");
 const needle = require('needle');
 const path = require('path');
 const pkg = require('./package.json');
@@ -31,7 +30,6 @@ function commaSeparatedCodesList(value, dummyPrevious) {
     });
 }
 
-
 /**
  * Load all files in the rootFolder and all subfolders that end with .md
  */
@@ -48,6 +46,10 @@ function loadAllMarkdownFiles(rootFolder = '.') {
     return files;
 }
 
+function commaSeparatedReportersList(value) {
+    return value.split(',').map((reporter) => require(path.resolve('reporters', reporter)));
+}
+
 function getInputs() {
     const inputs = [];
 
@@ -60,6 +62,7 @@ function getInputs() {
         .option('-i, --ignore <paths>', 'ignore input paths including an ignore path', commaSeparatedPathsList)
         .option('-a, --alive <code>', 'comma separated list of HTTP codes to be considered as alive', commaSeparatedCodesList)
         .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
+        .option('--reporters <names>', 'specify reporters to use', commaSeparatedReportersList)
         .option('--projectBaseUrl <url>', 'the URL to use for {{BASEURL}} replacement')
         .arguments('[filenamesOrDirectorynamesOrUrls...]')
         .action(function (filenamesOrUrls) {
@@ -147,6 +150,7 @@ function getInputs() {
         input.opts.verbose = (program.opts().verbose === true);
         input.opts.retryOn429 = (program.opts().retry === true);
         input.opts.aliveStatusCodes = program.opts().alive;
+        input.opts.reporters = program.opts().reporters ?? [require(path.resolve('reporters', 'default.js'))];
         const config = program.opts().config;
         if (config) {
             input.opts.config = config.trim();
@@ -221,6 +225,7 @@ async function processInput(filenameForOutput, stream, opts) {
         opts.retryCount = config.retryCount;
         opts.fallbackRetryDelay = config.fallbackRetryDelay;
         opts.aliveStatusCodes = config.aliveStatusCodes;
+        opts.reporters = config.reporters;
     }
 
     await runMarkdownLinkCheck(filenameForOutput, markdown, opts);
@@ -229,7 +234,9 @@ async function processInput(filenameForOutput, stream, opts) {
 async function runMarkdownLinkCheck(filenameForOutput, markdown, opts) {
     return new Promise((resolve, reject) => {
         markdownLinkCheck(markdown, opts, async function (err, results) {
-            await defaultReporter(err, results, opts, filenameForOutput);
+            await Promise.all(
+                opts.reporters.map(reporter => reporter(err, results, opts, filenameForOutput)
+            ));
 
             if (err) reject();
             else if (results.some((result) => result.status === 'dead')) reject();
