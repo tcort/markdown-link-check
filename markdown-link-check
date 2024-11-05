@@ -12,6 +12,7 @@ const pkg = require('./package.json');
 const { Command } = require('commander');
 const program = new Command();
 const { ProxyAgent } = require('proxy-agent');
+const reporters = require('./reporters');
 
 class Input {
     constructor(filenameForOutput, stream, opts) {
@@ -48,7 +49,7 @@ function loadAllMarkdownFiles(rootFolder = '.') {
 }
 
 function commaSeparatedReportersList(value) {
-    return value.split(',').map((reporter) => require(path.resolve('reporters', reporter)));
+    return value.split(',').map((reporter) => reporters[reporter] ?? reporters.eefault);
 }
 
 function getInputs() {
@@ -151,7 +152,7 @@ function getInputs() {
         input.opts.verbose = (program.opts().verbose === true);
         input.opts.retryOn429 = (program.opts().retry === true);
         input.opts.aliveStatusCodes = program.opts().alive;
-        input.opts.reporters = program.opts().reporters ?? [require(path.resolve('reporters', 'default.js'))];
+        input.opts.reporters = program.opts().reporters ?? [ reporters.default ];
         const config = program.opts().config;
         if (config) {
             input.opts.config = config.trim();

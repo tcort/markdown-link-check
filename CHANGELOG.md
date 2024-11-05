@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.13.1
+
+- fix: MODULE_NOT_FOUND error #368
+
 ## Version 3.13.0
 
 - feat: anchor link checks support HTML tags like `<a name="foo"></a>` #331 @dklimpel
