@@ -1,5 +1,9 @@
 # Changes
 
+## Version 3.13.6
+
+- fix: move script back to its original location
+
 ## Version 3.13.5
 
 - fix: MODULE_NOT_FOUND error #368
