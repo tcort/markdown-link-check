@@ -82,7 +82,7 @@ Parameters:
 * `markdown` string containing markdown formatted text.
 * `opts` optional options object containing any of the following optional fields:
   * `showProgressBar` enable an ASCII progress bar.
-  * `timeout` timeout in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
+  * `timeout` timeout in [ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
   * `httpHeaders` to apply URL specific headers, see example below.
   * `ignorePatterns` an array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match. Example: `[{ pattern: /foo/ }]`
   * `replacementPatterns` an array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. The special replacement `{{BASEURL}}` can be used to dynamically link to the base folder (used from `projectBaseUrl`) (for example that `/` points to the root of your local repository). Example: `[{ pattern: /^.attachments/, replacement: "file://some/conventional/folder/.attachments" }, { pattern: ^/, replacement: "{{BASEURL}}/"}]`. You can add `"global": true` to use a global regular expression to replace all instances.
@@ -90,7 +90,7 @@ Parameters:
   * `ignoreDisable` if this is `true` then disable comments are ignored.
   * `retryOn429` if this is `true` then retry request when response is an HTTP code 429 after the duration indicated by `retry-after` header.
   * `retryCount` the number of retries to be made on a 429 response. Default `2`.
-  * `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
+  * `fallbackRetryDelay` the delay in [ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
   * `aliveStatusCodes` a list of HTTP codes to consider as alive.
     Example: `[200,206]`
 * `callback` function which accepts `(err, results)`.
@@ -205,10 +205,10 @@ Options:
 * `ignorePatterns`: An array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match.
 * `replacementPatterns`: An array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. The special replacement `{{BASEURL}}` can be used to dynamically link to the current working directory (for example that `/` points to the root of your current working directory). This parameter supports named regex groups the same way as `string.replace` [method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement) in node.
 * `httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
-* `timeout` timeout in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
+* `timeout` timeout in [ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
 * `retryOn429` if this is `true` then retry request when response is an HTTP code 429 after the duration indicated by `retry-after` header.
 * `retryCount` the number of retries to be made on a 429 response. Default `2`.
-* `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
+* `fallbackRetryDelay` the delay in [ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
 * `aliveStatusCodes` a list of HTTP codes to consider as alive.
 * `projectBaseUrl` the URL to use for `{{BASEURL}}` replacement
 
