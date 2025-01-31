@@ -288,7 +288,7 @@ async function processInput(filenameForOutput, stream, opts) {
         opts.retryCount = config.retryCount;
         opts.fallbackRetryDelay = config.fallbackRetryDelay;
         opts.aliveStatusCodes = config.aliveStatusCodes;
-        opts.reporter = config.reporter ??  opts.reporters;
+        opts.reporters = config.reporters ??  opts.reporters;
     }
 
     await runMarkdownLinkCheck(filenameForOutput, markdown, opts);
