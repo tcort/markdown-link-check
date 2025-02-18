@@ -96,13 +96,13 @@ function commaSeparatedCodesList(value, dummyPrevious) {
 /**
  * Load all files in the rootFolder and all subfolders that end with .md
  */
-function loadAllMarkdownFiles(rootFolder = '.') {
+function loadAllMarkdownFiles(rootFolder = '.', includeMdx = false) {
     const files = [];
     fs.readdirSync(rootFolder).forEach(file => {
         const fullPath = path.join(rootFolder, file);
         if (fs.lstatSync(fullPath).isDirectory()) {
             files.push(...loadAllMarkdownFiles(fullPath));
-        } else if (fullPath.endsWith('.md')) {
+        } else if (fullPath.endsWith('.md') || (includeMdx && fullPath.endsWith('mdx'))) {
             files.push(fullPath);
         }
     });
@@ -127,6 +127,7 @@ function getInputs() {
         .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
         .option('--reporters <names>', 'specify reporters to use', commaSeparatedReportersList)
         .option('--projectBaseUrl <url>', 'the URL to use for {{BASEURL}} replacement')
+	.option('--include-mdx', 'check links in mdx files as well as md files')
         .arguments('[filenamesOrDirectorynamesOrUrls...]')
         .action(function (filenamesOrUrls) {
             let filenameForOutput;
@@ -148,7 +149,7 @@ function getInputs() {
                 }
             }
 
-            const { ignore } = program.opts();
+            const { ignore, includeMdx } = program.opts();
 
             for (const filenameOrUrl of filenamesOrUrls) {
                 filenameForOutput = filenameOrUrl;
@@ -177,7 +178,7 @@ function getInputs() {
                     let files = [];
 
                     if (fs.statSync(filenameOrUrl).isDirectory()){
-                        files = loadAllMarkdownFiles(filenameOrUrl)
+                        files = loadAllMarkdownFiles(filenameOrUrl, includeMdx)
                     } else {
                         files = [filenameOrUrl]
                     }
