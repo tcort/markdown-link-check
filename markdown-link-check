@@ -101,7 +101,7 @@ function loadAllMarkdownFiles(rootFolder = '.', includeMdx = false) {
     fs.readdirSync(rootFolder).forEach(file => {
         const fullPath = path.join(rootFolder, file);
         if (fs.lstatSync(fullPath).isDirectory()) {
-            files.push(...loadAllMarkdownFiles(fullPath));
+            files.push(...loadAllMarkdownFiles(fullPath, includeMdx));
         } else if (fullPath.endsWith('.md') || (includeMdx && fullPath.endsWith('mdx'))) {
             files.push(fullPath);
         }
