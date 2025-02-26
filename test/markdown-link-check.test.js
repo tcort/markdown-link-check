@@ -5,7 +5,7 @@ const path = require('path');
 const expect = require('expect.js');
 const http = require('http');
 const express = require('express');
-const markdownLinkCheck = require('../');
+const { markdownLinkCheck } = require('../src/markdown-link-check');
 const dirname = process.platform === 'win32' ? __dirname.replace(/\\/g, '/') : __dirname;
 
 describe('markdown-link-check', function () {
