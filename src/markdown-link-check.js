@@ -85,7 +85,7 @@ function commaSeparatedPathsList(value) {
     return value.split(',');
 }
 
-function commaSeparatedCodesList(value, dummyPrevious) {
+function commaSeparatedCodesList(value) {
     return value.split(',').map(function(item) {
         return parseInt(item, 10);
     });
@@ -135,7 +135,7 @@ function getInputs() {
                 inputs.push(new Input(filenameForOutput, process.stdin, {}));
             }
 
-            function onError(error) {
+            function onError() {
                 console.error(chalk.red('\nERROR: Unable to connect! Please provide a valid URL as an argument.'));
                 process.exit(1);
             }
@@ -167,7 +167,7 @@ function getInputs() {
                         }
                         baseUrl = parsed.toString();
                         inputs.push(new Input(filenameForOutput, stream, {baseUrl: baseUrl}));
-                    } catch (err) {
+                    } catch {
                         /* ignore error */
                     }
                 } else {
@@ -234,7 +234,7 @@ function getInputs() {
 }
 
 async function loadConfig(config) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         fs.access(config, (fs.constants || fs).R_OK, function (err) {
             if (!err) {
                 let configStream = fs.createReadStream(config);
@@ -314,7 +314,7 @@ async function main() {
     for await (const input of inputs) {
         try {
             await processInput(input.filenameForOutput, input.stream, input.opts);
-        } catch (err) {
+        } catch {
             isOk = false;
         }
     }
