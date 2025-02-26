@@ -3,7 +3,7 @@
   "version": "3.13.6",
   "description": "checks the all of the hyperlinks in a markdown text to determine if they are alive or dead",
   "bin": {
-    "markdown-link-check": "markdown-link-check"
+    "markdown-link-check": "./markdown-link-check.js"
   },
   "main": "index.js",
   "scripts": {
@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
+    "@stryker-mutator/mocha-runner": "^8.7.1",
     "eslint": "^9.14.0",
     "expect.js": "^0.3.1",
     "express": "^4.21.1",

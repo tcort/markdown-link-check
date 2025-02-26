@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "This config was generated using 'stryker init'. Please take a look at: https://stryker-mutator.io/docs/stryker-js/configuration/ for more information.",
+  "ignorePatterns": [
+    "./*.md",
+    ".github",
+    ".gitignore",
+    ".idea",
+    "Dockerfile",
+    "eslint.config.mjs",
+    "reports"
+  ],
+  "_mutate_comment": "Had to rename markdown-link-check, some work to do on that probably",
+  "mutate": [
+    "index.js",
+    "markdown-link-check.js"
+  ],
+  "packageManager": "npm",
+  "reporters": [
+    "html",
+    "clear-text",
+    "progress"
+  ],
+  "testRunner": "mocha",
+  "testRunner_comment": "Take a look at https://stryker-mutator.io/docs/stryker-js/mocha-runner for information about the mocha plugin.",
+  "coverageAnalysis": "perTest"
+}
