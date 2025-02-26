@@ -322,4 +322,4 @@ async function main() {
     process.exit(isOk ? 0 : 1);
 }
 
-module.exports = { main, markdownLinkCheck };
+module.exports = { main };
