@@ -11,10 +11,6 @@
     "reports"
   ],
   "_mutate_comment": "Had to rename markdown-link-check, some work to do on that probably",
-  "mutate": [
-    "index.js",
-    "markdown-link-check.js"
-  ],
   "packageManager": "npm",
   "reporters": [
     "html",

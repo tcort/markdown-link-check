@@ -1,14 +1,12 @@
-#!/usr/bin/env node
-
 'use strict';
 
 let chalk;
 const fs = require('fs');
 const { promisify } = require('util');
-const markdownLinkCheck = promisify(require('.'));
+const markdownLinkCheck = promisify(require('./index'));
 const needle = require('needle');
 const path = require('path');
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 const { Command } = require('commander');
 const program = new Command();
 const { ProxyAgent } = require('proxy-agent');
@@ -324,4 +322,4 @@ async function main() {
     process.exit(isOk ? 0 : 1);
 }
 
-main();
+module.exports = { main };
