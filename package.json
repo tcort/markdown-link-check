@@ -5,7 +5,7 @@
   "bin": {
     "markdown-link-check": "markdown-link-check"
   },
-  "main": "src/index.js",
+  "main": "markdown-link-check",
   "scripts": {
     "pretest": "eslint .",
     "test": "mocha -R spec --exit"
