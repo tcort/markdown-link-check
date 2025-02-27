@@ -40,4 +40,7 @@ jobs:
       run: npm test
 
     - name: Integration test
-      run: ./markdown-link-check test/alive-links-only.md
+      # Simple checks for now to guard against errors that stop it running at all, e.g. https://github.com/tcort/markdown-link-check/issues/370
+      run: |
+        ./markdown-link-check test/alive-links-only.md || (echo "Error: Blew up with basic use" && exit 1)
+        ./markdown-link-check test/alive-links-only.md --config test/empty-config.json || (echo "Error: Blew up with config file" && exit 1)
