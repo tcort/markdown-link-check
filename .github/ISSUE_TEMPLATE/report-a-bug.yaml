@@ -1,4 +1,4 @@
-name: Bug Report
+name: Report a bug
 description: Report a bug
 labels: ['bug', 'triage']
 body:
@@ -6,6 +6,16 @@ body:
     attributes:
       value: |
         Thanks for taking the time to submit this bug report.
+  - type: dropdown
+    id: have-checked-latest
+    attributes:
+      label: Have you checked that the bug is not already fixed?
+      description: 'Please make sure you have checked that the latest version of markdown-link-check includes the bug you are reporting.'
+      options:
+        - 'Yes'
+        - 'No'
+    validations:
+      required: true
   - type: textarea
     id: summary
     attributes:
@@ -31,14 +41,14 @@ body:
     id: expected-behaviour
     attributes:
       label: Expected behavior
-      description: Please provide a clear and concise description of what you expected to happen or see.
+      description: 'Please provide a clear and concise description of the expected behaviour.'
     validations:
       required: true
   - type: textarea
     id: actual-behaviour
     attributes:
       label: Actual behavior
-      description: Please provide a clear and concise description of what you expected to happen or see.
+      description: 'Please provide a clear and concise description of the actual behaviour.'
     validations:
       required: true
   - type: textarea
@@ -47,7 +57,7 @@ body:
       label: Additional context
       description: 'Please provide any additional context or information that may be helpful in diagnosing and resolving this issue.'
   - type: dropdown
-    id: will-submit-fix
+    id: could-submit-pull-request
     attributes:
       label: Can you fix it?
       description: 'Would you be willing and/or able to submit a pull request to fix the bug?'
