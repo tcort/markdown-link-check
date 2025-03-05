@@ -52,6 +52,6 @@ body:
       label: Can you fix it?
       description: 'Would you be willing and/or able to submit a pull request to fix the bug?'
       options:
-        - Yes
-        - No
-        - Maybe
+        - 'Yes'
+        - 'No'
+        - 'Maybe'
