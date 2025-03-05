@@ -1,43 +1,57 @@
 name: Bug Report
-description: Report a Bug
-title: '[Bug]: '
+description: Report a bug
 labels: ['bug', 'triage']
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report.
+        Thanks for taking the time to submit this bug report.
   - type: textarea
+    id: summary
     attributes:
-      label: Bug Summary
+      label: Summary
       description: Please provide a concise summary of the bug.
     validations:
       required: true
-  - type: textarea
-    attributes:
-      label: Steps to reproduce the bug
-      description: 'Please provide detailed step-by-step instructions on how to replicate this issue, including any relevant configuration.'
-    validations:
-      required: true
   - type: input
+    id: affected-version
     attributes:
       label: Affected version
       description: 'Please provide the version markdown-link-check used.'
     validations:
       required: true
   - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce the bug
+      description: 'Please provide detailed step-by-step instructions on how to replicate this issue, including any relevant configuration.'
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behaviour
     attributes:
       label: Expected behavior
       description: Please provide a clear and concise description of what you expected to happen or see.
     validations:
       required: true
   - type: textarea
+    id: actual-behaviour
     attributes:
       label: Actual behavior
       description: Please provide a clear and concise description of what you expected to happen or see.
     validations:
       required: true
   - type: textarea
+    id: additional-context
     attributes:
       label: Additional context
       description: 'Please provide any additional context or information that may be helpful in diagnosing and resolving this issue.'
+  - type: dropdown
+    id: will-submit-fix
+    attributes:
+      label: Can you fix it?
+      description: 'Would you be willing and/or able to submit a pull request to fix the bug?'
+      options:
+        - Yes
+        - No
+        - Maybe
