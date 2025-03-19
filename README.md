@@ -1,4 +1,4 @@
-![Test library workflow status](https://github.com/tcort/markdown-link-check/actions/workflows/ci.yml/badge.svg)
+[![Test library workflow status](https://github.com/tcort/markdown-link-check/actions/workflows/ci.yml/badge.svg)](https://github.com/tcort/markdown-link-check/actions/workflows/ci.yml)
 
 # markdown-link-check
 
