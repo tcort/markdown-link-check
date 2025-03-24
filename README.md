@@ -1,3 +1,5 @@
+[![Stars](https://img.shields.io/github/stars/tcort/markdown-link-check)](https://github.com/tcort/markdown-link-check/stargazers)
+[![Forks](https://img.shields.io/github/forks/tcort/markdown-link-check)](https://github.com/tcort/markdown-link-check/network/members)
 [![Test library workflow status](https://github.com/tcort/markdown-link-check/actions/workflows/ci.yml/badge.svg)](https://github.com/tcort/markdown-link-check/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/tcort/markdown-link-check)](https://github.com/tcort/markdown-link-check/blob/master/LICENSE.md)
 
