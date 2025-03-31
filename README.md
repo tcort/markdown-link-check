@@ -188,18 +188,20 @@ find . -name \*.md -print0 | xargs -0 -n1 markdown-link-check
 #### Usage
 
 ```shell
-Usage: markdown-link-check [options] [filenameOrDirectorynameOrUrl]
+Usage: markdown-link-check [options] [filenamesOrDirectorynamesOrUrls...]
 
 Options:
-  -p, --progress              show progress bar
-  -c, --config [config]       apply a config file (JSON), holding e.g. url specific header configuration
-  -q, --quiet                 displays errors only
-  -v, --verbose               displays detailed error information
-  -a, --alive <code>          comma separated list of HTTP code to be considered as alive
-  -r, --retry                 retry after the duration indicated in 'retry-after' header when HTTP code is 429
-  -h, --help                  display help for command
-  -V, --version               display version string (e.g. `1.2.3`)
-    , --projectBaseUrl <url>  the URL to use for {{BASEURL}} replacement
+  -V, --version           output the version number
+  -p, --progress          show progress bar
+  -c, --config [config]   apply a config file (JSON), holding e.g. url specific header configuration
+  -q, --quiet             displays errors only
+  -v, --verbose           displays detailed error information
+  -i, --ignore <paths>    ignore input paths including an ignore path
+  -a, --alive <code>      comma separated list of HTTP codes to be considered as alive
+  -r, --retry             retry after the duration indicated in 'retry-after' header when HTTP code is 429
+  --reporters <names>     specify reporters to use
+  --projectBaseUrl <url>  the URL to use for {{BASEURL}} replacement
+  -h, --help              display help for command
 ```
 
 ##### Config file format
