@@ -1,0 +1,41 @@
+name: Request an enhancement
+description: Request an enhancement
+labels: ['enhancement', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to share your suggestion for enhancing markdown-link-check.
+  - type: dropdown
+    id: have-checked-latest
+    attributes:
+      label: Have you checked that the enhancement does not already exist?
+      description: 'Please make sure you have checked that the latest version of markdown-link-check does not already support the behaviour you are suggesting.'
+      options:
+        - 'Yes'
+        - 'No'
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: 'Please provide a clear and concise description of the suggested enhancement.'
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: 'Please provide any additional context or information that may be helpful in understanding the motivation behind your suggestion.'
+  - type: dropdown
+    id: could-submit-pull-request
+    attributes:
+      label: Could you implement the enhancement?
+      description: 'Would you be willing and/or able to submit a pull request to add the enhancement?'
+      options:
+        - 'Yes'
+        - 'No'
+        - 'Maybe'
+    validations:
+      required: true
