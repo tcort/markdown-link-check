@@ -26,11 +26,21 @@ jobs:
       NODE_OPTIONS: '--dns-result-order=ipv4first'
     steps:
     - uses: actions/checkout@v4
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: npm
 
-    - run: npm ci
-    - run: npm test
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Unit tests
+      run: npm test
+
+    - name: Integration test
+      # Simple checks for now to guard against errors that stop it running at all, e.g. https://github.com/tcort/markdown-link-check/issues/370
+      run: |
+        ./markdown-link-check test/alive-links-only.md || (echo "Error: Blew up with basic use" && exit 1)
+        ./markdown-link-check test/alive-links-only.md --config test/empty-config.json || (echo "Error: Blew up with config file" && exit 1)

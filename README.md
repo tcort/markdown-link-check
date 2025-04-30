@@ -1,4 +1,8 @@
-![Test library workflow status](https://github.com/tcort/markdown-link-check/actions/workflows/ci.yml/badge.svg)
+[![Releases](https://img.shields.io/github/v/tag/tcort/markdown-link-check.svg?sort=semver)](https://github.com/tcort/markdown-link-check/releases)
+[![Stars](https://img.shields.io/github/stars/tcort/markdown-link-check)](https://github.com/tcort/markdown-link-check/stargazers)
+[![Forks](https://img.shields.io/github/forks/tcort/markdown-link-check)](https://github.com/tcort/markdown-link-check/network/members)
+[![Test library workflow status](https://github.com/tcort/markdown-link-check/actions/workflows/ci.yml/badge.svg)](https://github.com/tcort/markdown-link-check/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/tcort/markdown-link-check)](https://github.com/tcort/markdown-link-check/blob/master/LICENSE.md)
 
 # markdown-link-check
 
@@ -29,7 +33,7 @@ Docker images are built with each release. Use the `stable` tag for the current 
 Add current directory with your `README.md` file as read only volume to `docker run`:
 
 ```shell
-docker run -v ${PWD}:/tmp:ro --rm -i ghcr.io/tcort/markdown-link-check:stable /tmp/README.md
+docker run -v .:/tmp:ro --rm -i ghcr.io/tcort/markdown-link-check:stable /tmp/README.md
 ```
 
 Alternatively, if you wish to target a specific release, images are tagged with semantic versions (i.e. `3`, `3.8`, `3.8.3`)
@@ -82,7 +86,7 @@ Parameters:
 * `markdown` string containing markdown formatted text.
 * `opts` optional options object containing any of the following optional fields:
   * `showProgressBar` enable an ASCII progress bar.
-  * `timeout` timeout in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
+  * `timeout` timeout in [ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
   * `httpHeaders` to apply URL specific headers, see example below.
   * `ignorePatterns` an array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match. Example: `[{ pattern: /foo/ }]`
   * `replacementPatterns` an array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. The special replacement `{{BASEURL}}` can be used to dynamically link to the base folder (used from `projectBaseUrl`) (for example that `/` points to the root of your local repository). Example: `[{ pattern: /^.attachments/, replacement: "file://some/conventional/folder/.attachments" }, { pattern: ^/, replacement: "{{BASEURL}}/"}]`. You can add `"global": true` to use a global regular expression to replace all instances.
@@ -90,7 +94,7 @@ Parameters:
   * `ignoreDisable` if this is `true` then disable comments are ignored.
   * `retryOn429` if this is `true` then retry request when response is an HTTP code 429 after the duration indicated by `retry-after` header.
   * `retryCount` the number of retries to be made on a 429 response. Default `2`.
-  * `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
+  * `fallbackRetryDelay` the delay in [ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
   * `aliveStatusCodes` a list of HTTP codes to consider as alive.
     Example: `[200,206]`
 * `callback` function which accepts `(err, results)`.
@@ -184,18 +188,20 @@ find . -name \*.md -print0 | xargs -0 -n1 markdown-link-check
 #### Usage
 
 ```shell
-Usage: markdown-link-check [options] [filenameOrDirectorynameOrUrl]
+Usage: markdown-link-check [options] [filenamesOrDirectorynamesOrUrls...]
 
 Options:
-  -p, --progress              show progress bar
-  -c, --config [config]       apply a config file (JSON), holding e.g. url specific header configuration
-  -q, --quiet                 displays errors only
-  -v, --verbose               displays detailed error information
-  -a, --alive <code>          comma separated list of HTTP code to be considered as alive
-  -r, --retry                 retry after the duration indicated in 'retry-after' header when HTTP code is 429
-  -h, --help                  display help for command
-  -V, --version               display version string (e.g. `1.2.3`)
-    , --projectBaseUrl <url>  the URL to use for {{BASEURL}} replacement
+  -V, --version           output the version number
+  -p, --progress          show progress bar
+  -c, --config [config]   apply a config file (JSON), holding e.g. url specific header configuration
+  -q, --quiet             displays errors only
+  -v, --verbose           displays detailed error information
+  -i, --ignore <paths>    ignore input paths including an ignore path
+  -a, --alive <code>      comma separated list of HTTP codes to be considered as alive
+  -r, --retry             retry after the duration indicated in 'retry-after' header when HTTP code is 429
+  --reporters <names>     specify reporters to use
+  --projectBaseUrl <url>  the URL to use for {{BASEURL}} replacement
+  -h, --help              display help for command
 ```
 
 ##### Config file format
@@ -205,10 +211,10 @@ Options:
 * `ignorePatterns`: An array of objects holding regular expressions which a link is checked against and skipped for checking in case of a match.
 * `replacementPatterns`: An array of objects holding regular expressions which are replaced in a link with their corresponding replacement string. This behavior allows (for example) to adapt to certain platform conventions hosting the Markdown. The special replacement `{{BASEURL}}` can be used to dynamically link to the current working directory (for example that `/` points to the root of your current working directory). This parameter supports named regex groups the same way as `string.replace` [method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement) in node.
 * `httpHeaders`: The headers are only applied to links where the link **starts with** one of the supplied URLs in the `urls` section.
-* `timeout` timeout in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
+* `timeout` timeout in [ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`). Default `10s`.
 * `retryOn429` if this is `true` then retry request when response is an HTTP code 429 after the duration indicated by `retry-after` header.
 * `retryCount` the number of retries to be made on a 429 response. Default `2`.
-* `fallbackRetryDelay` the delay in [zeit/ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
+* `fallbackRetryDelay` the delay in [ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
 * `aliveStatusCodes` a list of HTTP codes to consider as alive.
 * `projectBaseUrl` the URL to use for `{{BASEURL}}` replacement
 

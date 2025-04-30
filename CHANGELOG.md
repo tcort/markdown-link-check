@@ -1,5 +1,22 @@
 # Changes
 
+## Version 3.13.7
+
+* Do not override reporter option if not defined in config file (issue #369) by @smainil in https://github.com/tcort/markdown-link-check/pull/372
+* chore(deps-dev): bump eslint from 9.14.0 to 9.20.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/408
+* chore(deps-dev): bump @eslint/js from 9.14.0 to 9.20.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/407
+* chore(deps-dev): bump express from 4.21.1 to 4.21.2 by @dependabot in https://github.com/tcort/markdown-link-check/pull/383
+* chore(deps): bump proxy-agent from 6.4.0 to 6.5.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/384
+* chore(deps): bump chalk from 5.3.0 to 5.4.1 by @dependabot in https://github.com/tcort/markdown-link-check/pull/392
+* chore(deps-dev): bump globals from 15.12.0 to 15.14.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/391
+* chore(deps-dev): bump @eslint/js from 9.20.0 to 9.21.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/414
+* chore(deps-dev): bump mocha from 10.8.2 to 11.1.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/399
+* chore(deps): bump commander from 12.1.0 to 13.1.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/400
+* chore(deps-dev): bump eslint from 9.20.0 to 9.21.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/419
+* chore(deps-dev): bump globals from 15.14.0 to 16.0.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/418
+* chore(deps-dev): bump @eslint/js from 9.21.0 to 9.22.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/426
+* chore(deps-dev): bump eslint from 9.21.0 to 9.22.0 by @dependabot in https://github.com/tcort/markdown-link-check/pull/425
+
 ## Version 3.13.6
 
 - fix: move script back to its original location
