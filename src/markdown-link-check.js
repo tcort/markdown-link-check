@@ -1,15 +1,17 @@
+#!/usr/bin/env node
+
 'use strict';
 
 let chalk;
 const fs = require('fs');
-const { promisify } = require('util');
-const markdownLinkCheck = promisify(require('./index'));
+const {promisify} = require('util');
+const markdownLinkCheck = promisify(require('.'));
 const needle = require('needle');
 const path = require('path');
 const pkg = require('../package.json');
-const { Command } = require('commander');
+const {Command} = require('commander');
 const program = new Command();
-const { ProxyAgent } = require('proxy-agent');
+const {ProxyAgent} = require('proxy-agent');
 
 const reporters = {
     default: async function defaultReporter(err, results, opts, filenameForOutput) {
@@ -86,7 +88,7 @@ function commaSeparatedPathsList(value) {
 }
 
 function commaSeparatedCodesList(value) {
-    return value.split(',').map(function(item) {
+    return value.split(',').map(function (item) {
         return parseInt(item, 10);
     });
 }
@@ -139,6 +141,7 @@ function getInputs() {
                 console.error(chalk.red('\nERROR: Unable to connect! Please provide a valid URL as an argument.'));
                 process.exit(1);
             }
+
             function onResponse(response) {
                 if (response.statusCode === 404) {
                     console.error(chalk.red('\nERROR: 404 - File not found! Please provide a valid URL as an argument.'));
@@ -146,7 +149,7 @@ function getInputs() {
                 }
             }
 
-            const { ignore } = program.opts();
+            const {ignore} = program.opts();
 
             for (const filenameOrUrl of filenamesOrUrls) {
                 filenameForOutput = filenameOrUrl;
@@ -154,7 +157,7 @@ function getInputs() {
                 // remote file
                 if (/https?:/.test(filenameOrUrl)) {
                     stream = needle.get(
-                        filenameOrUrl, { agent: new ProxyAgent(), use_proxy_from_env_var: false }
+                        filenameOrUrl, {agent: new ProxyAgent(), use_proxy_from_env_var: false}
                     );
                     stream.on('error', onError);
                     stream.on('response', onResponse);
@@ -174,7 +177,7 @@ function getInputs() {
                     // local file or directory
                     let files = [];
 
-                    if (fs.statSync(filenameOrUrl).isDirectory()){
+                    if (fs.statSync(filenameOrUrl).isDirectory()) {
                         files = loadAllMarkdownFiles(filenameOrUrl)
                     } else {
                         files = [filenameOrUrl]
@@ -192,8 +195,7 @@ function getInputs() {
 
                         if (process.platform === 'win32') {
                             baseUrl = 'file://' + path.dirname(resolved).replace(/\\/g, '/');
-                        }
-                        else {
+                        } else {
                             baseUrl = 'file://' + path.dirname(resolved);
                         }
 
@@ -211,7 +213,7 @@ function getInputs() {
         input.opts.verbose = (program.opts().verbose === true);
         input.opts.retryOn429 = (program.opts().retry === true);
         input.opts.aliveStatusCodes = program.opts().alive;
-        input.opts.reporters = program.opts().reporters ?? [ reporters.default ];
+        input.opts.reporters = program.opts().reporters ?? [reporters.default];
         const config = program.opts().config;
         if (config) {
             input.opts.config = config.trim();
@@ -223,8 +225,7 @@ function getInputs() {
             // set the default projectBaseUrl to the current working directory, so that `{{BASEURL}}` can be resolved to the project root.
             if (process.platform === 'win32') {
                 input.opts.projectBaseUrl = `file:///${process.cwd().replace(/\\/g, '/')}`;
-            }
-            else {
+            } else {
                 input.opts.projectBaseUrl = `file://${process.cwd()}`;
             }
         }
@@ -245,8 +246,7 @@ async function loadConfig(config) {
                 }).on('end', function () {
                     resolve(JSON.parse(configData));
                 });
-            }
-            else {
+            } else {
                 console.error(chalk.red('\nERROR: Config file not accessible.'));
                 process.exit(1);
             }
@@ -257,7 +257,7 @@ async function loadConfig(config) {
 async function processInput(filenameForOutput, stream, opts) {
     let markdown = ''; // collect the markdown data, then process it
 
-    stream.on('error', function(error) {
+    stream.on('error', function (error) {
         if (error.code === 'ENOENT') {
             console.error(chalk.red('\nERROR: File not found! Please provide a valid filename as an argument.'));
         } else {
@@ -298,7 +298,7 @@ async function runMarkdownLinkCheck(filenameForOutput, markdown, opts) {
 
     await Promise.allSettled(
         opts.reporters.map(reporter => reporter(err, results, opts, filenameForOutput)
-    ));
+        ));
 
     if (err) throw null;
     else if (results.some((result) => result.status === 'dead')) return;
@@ -322,4 +322,4 @@ async function main() {
     process.exit(isOk ? 0 : 1);
 }
 
-module.exports = { main };
+module.exports = {main};
