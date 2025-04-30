@@ -270,6 +270,18 @@ Options:
 npm test
 ```
 
+## Mutation testing
+
+We use [Stryker Mutator](https://stryker-mutator.io/) to help us identify gaps in our unit tests.
+
+To run the mutation tests...
+
+```shell
+stryker run
+```
+
+This will take about five minutes and should leave a report for your use at `reports/mutation/mutation.html`
+
 ## License
 
 See [LICENSE.md](https://github.com/tcort/markdown-link-check/blob/master/LICENSE.md)
