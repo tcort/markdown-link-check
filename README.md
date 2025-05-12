@@ -39,7 +39,7 @@ Alternatively, if you wish to target a specific release, images are tagged with 
 
 ## Run in a GitHub action
 
-Please head on to [github-action-markdown-link-check](https://github.com/gaurav-nelson/github-action-markdown-link-check).
+Please head on to [github-action-markdown-link-check](https://github.com/tcort/github-action-markdown-link-check).
 
 ## Run as a pre-commit hook
 
