@@ -13,6 +13,18 @@ const { Command } = require('commander');
 const program = new Command();
 const { ProxyAgent } = require('proxy-agent');
 
+const startTime = performance.now();
+let lastTime = startTime
+console.log(startTime);
+
+function currentElapsedTime(description) {
+    console.log(
+        description + " " +
+        Math.round(performance.now() - startTime) + "ms since previous " +
+        "(" + Math.round(performance.now() - startTime) + "ms total)"
+    );
+}
+
 const reporters = {
     default: async function defaultReporter(err, results, opts, filenameForOutput) {
         const chalk = (await import('chalk')).default
@@ -114,6 +126,7 @@ function commaSeparatedReportersList(value) {
 }
 
 function getInputs() {
+    currentElapsedTime("getInputs() start");
     const inputs = [];
 
     program
@@ -232,6 +245,7 @@ function getInputs() {
         }
     }
 
+    currentElapsedTime("getInputs() end");
     return inputs;
 }
 
@@ -257,6 +271,7 @@ async function loadConfig(config) {
 }
 
 async function processInput(filenameForOutput, stream, opts) {
+    currentElapsedTime("processInput() start");
     let markdown = ''; // collect the markdown data, then process it
 
     stream.on('error', function(error) {
@@ -292,9 +307,11 @@ async function processInput(filenameForOutput, stream, opts) {
     }
 
     await runMarkdownLinkCheck(filenameForOutput, markdown, opts);
+    currentElapsedTime("processInput() end");
 }
 
 async function runMarkdownLinkCheck(filenameForOutput, markdown, opts) {
+    currentElapsedTime("runMarkdownLinkCheck() start");
     const [err, results] = await markdownLinkCheck(markdown, opts)
         .then(res => [null, res]).catch(err => [err]);
 
@@ -302,12 +319,15 @@ async function runMarkdownLinkCheck(filenameForOutput, markdown, opts) {
         opts.reporters.map(reporter => reporter(err, results, opts, filenameForOutput)
     ));
 
+    currentElapsedTime("runMarkdownLinkCheck() end");
     if (err) throw null;
+    // Todo: Remove at redundant condition
     else if (results.some((result) => result.status === 'dead')) return;
     else return;
 }
 
 async function main() {
+    currentElapsedTime("main() start");
     chalk = (await import('chalk')).default;
 
     const inputs = getInputs();
@@ -321,6 +341,7 @@ async function main() {
         }
     }
 
+    currentElapsedTime("main() end");
     process.exit(isOk ? 0 : 1);
 }
 

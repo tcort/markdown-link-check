@@ -1,0 +1,375 @@
+Statistical profiling result from isolate-0x128008000-96876-v8.log, (472 ticks, 327 unaccounted, 0 excluded).
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+    140   29.7%          /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+      2    0.4%    0.6%  RegExp: ([^\r\n]*<!--[ \t]+markdown-link-check-disable-line[ \t]+-->[^\r\n]*)
+      1    0.2%    0.3%  JS: ^resume node:internal/streams/readable:1247:16
+      1    0.2%    0.3%  JS: ^SafeSet node:internal/per_context/primordials:422:16
+      1    0.2%    0.3%  JS: *_callState /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/parse5/dist/cjs/tokenizer/index.js:493:15
+
+ [C++]:
+   ticks  total  nonlib   name
+
+ [Summary]:
+   ticks  total  nonlib   name
+      5    1.1%    1.5%  JavaScript
+      0    0.0%    0.0%  C++
+      4    0.8%    1.2%  GC
+    140   29.7%          Shared libraries
+    327   69.3%          Unaccounted
+
+ [C++ entry points]:
+   ticks    cpp   total   name
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 1.0% are not shown.
+
+   ticks parent  name
+    327   69.3%  UNKNOWN
+     71   21.7%    JS: ^wrapSafe node:internal/modules/cjs/loader:1620:18
+     66   93.0%      JS: ^<anonymous> node:internal/modules/cjs/loader:1680:37
+     66  100.0%        JS: ^<anonymous> node:internal/modules/cjs/loader:1876:37
+     66  100.0%          JS: ^<anonymous> node:internal/modules/cjs/loader:1450:33
+     66  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      4    5.6%      JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      4  100.0%        JS: ^traceSync node:diagnostics_channel:320:12
+      4  100.0%          JS: ^wrapModuleLoad node:internal/modules/cjs/loader:228:24
+      4  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1479:36
+      1    1.4%      JS: ^wrapModuleLoad node:internal/modules/cjs/loader:228:24
+      1  100.0%        JS: ^<anonymous> node:internal/modules/cjs/loader:1479:36
+      1  100.0%          JS: ^require node:internal/modules/helpers:134:19
+      1  100.0%            JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/domutils/lib/index.js:1:1
+     53   16.2%    JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+     47   88.7%      JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      4    8.5%        JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/undici/lib/web/fetch/response.js:1:1
+      4  100.0%          JS: ^<anonymous> node:internal/modules/cjs/loader:1680:37
+      4  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1876:37
+      3    6.4%        JS: ~<anonymous> node:internal/streams/duplex:1:1
+      3  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      3  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      3    6.4%        JS: ~<anonymous> node:http2:1:1
+      3  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      3  100.0%            JS: ^compileForPublicLoader node:internal/bootstrap/realm:332:25
+      3    6.4%        JS: ~<anonymous> node:crypto:1:1
+      3  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      3  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      2    4.3%        JS: ~<anonymous> node:tty:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      2    4.3%        JS: ~<anonymous> node:tls:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      2    4.3%        JS: ~<anonymous> node:internal/streams/operators:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      2    4.3%        JS: ~<anonymous> node:internal/http2/core:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      2    4.3%        JS: ~<anonymous> node:http:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      2  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      2    4.3%        JS: ~<anonymous> node:_http_client:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      2    4.3%        /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      1   50.0%          JS: ~main /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:310:20
+      1  100.0%            JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:1:1
+      1   50.0%          /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      1  100.0%            JS: ~builtinStrategy node:internal/modules/esm/translators:351:52
+      1    2.1%        JS: ~getTranslators node:internal/modules/esm/loader:93:24
+      1  100.0%          JS: ~ModuleLoader node:internal/modules/esm/loader:144:20
+      1  100.0%            JS: ~ModuleLoader node:internal/modules/esm/loader:184:14
+      1    2.1%        JS: ~<anonymous> node:stream:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      1    2.1%        JS: ~<anonymous> node:net:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/webstreams/readablestream:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/streams/readable:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/streams/pipeline:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/perf/observe:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/modules/esm/loader:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/fs/promises:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/data_url:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/crypto/hkdf:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/child_process:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:internal/assert/assertion_error:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> node:dns:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^compileForPublicLoader node:internal/bootstrap/realm:332:25
+      1    2.1%        JS: ~<anonymous> node:child_process:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^compileForPublicLoader node:internal/bootstrap/realm:332:25
+      1    2.1%        JS: ~<anonymous> node:assert:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      1    2.1%        JS: ~<anonymous> node:_tls_common:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    2.1%        JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/markdown-link-extractor/index.js:1:1
+      1  100.0%          JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/index.js:1:1
+      1  100.0%            JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:1:1
+      1    2.1%        JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:131:26
+      1  100.0%          JS: ~listener /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/commander/lib/command.js:558:22
+      1  100.0%            JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/commander/lib/command.js:1604:54
+      1    2.1%        JS: ~#createModuleJob node:internal/modules/esm/loader:596:19
+      1  100.0%          JS: ~#getJobFromResolveResult node:internal/modules/esm/loader:332:27
+      1  100.0%            JS: ~getModuleJobForImport node:internal/modules/esm/loader:304:30
+      5    9.4%      JS: ^compileForPublicLoader node:internal/bootstrap/realm:332:25
+      5  100.0%        JS: ^loadBuiltinModule node:internal/modules/helpers:101:27
+      5  100.0%          JS: ^loadBuiltinWithHooks node:internal/modules/cjs/loader:1160:30
+      5  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      1    1.9%      JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      1  100.0%        JS: ^traceSync node:diagnostics_channel:320:12
+      1  100.0%          JS: ^wrapModuleLoad node:internal/modules/cjs/loader:228:24
+      1  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1479:36
+     12    3.7%    /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      3   25.0%      JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:35:34
+      3  100.0%        /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      3  100.0%          JS: ~defaultReporter /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:17:44
+      3  100.0%            /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      1    8.3%      JS: ~runMarkdownLinkCheck /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:297:36
+      1  100.0%        /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      1  100.0%          /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      1  100.0%            JS: ^processTicksAndRejections node:internal/process/task_queues:72:35
+      1    8.3%      JS: ~resolvePackageTargetString node:internal/modules/esm/resolve:376:36
+      1  100.0%        JS: ~resolvePackageTarget node:internal/modules/esm/resolve:481:30
+      1  100.0%          JS: ~resolvePackageTarget node:internal/modules/esm/resolve:481:30
+      1  100.0%            JS: ~resolvePackageTarget node:internal/modules/esm/resolve:481:30
+      1    8.3%      JS: ~removeCodeBlocks /Users/will.gibson/Dev/tcort/markdown-link-check/index.js:45:26
+      1  100.0%        JS: ~extractSections /Users/will.gibson/Dev/tcort/markdown-link-check/index.js:68:25
+      1  100.0%          JS: ~markdownLinkCheck /Users/will.gibson/Dev/tcort/markdown-link-check/index.js:113:44
+      1  100.0%            /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      1    8.3%      JS: ~<anonymous> node:internal/crypto/keys:1:1
+      1  100.0%        JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%          JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1  100.0%            JS: ~<anonymous> node:internal/crypto/hkdf:1:1
+      1    8.3%      JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/needle/lib/needle.js:1:1
+      1  100.0%        JS: ^<anonymous> node:internal/modules/cjs/loader:1680:37
+      1  100.0%          JS: ^<anonymous> node:internal/modules/cjs/loader:1876:37
+      1  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1450:33
+      1    8.3%      JS: ^isSecureEndpoint /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/agent-base/dist/index.js:43:21
+      1  100.0%        JS: ^get protocol /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/agent-base/dist/index.js:169:17
+      1  100.0%          JS: ^get defaultPort /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/agent-base/dist/index.js:160:20
+      1  100.0%            JS: ^ClientRequest node:_http_client:137:23
+      1    8.3%      JS: ^inlineTokens /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1466:17
+      1  100.0%        JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1268:8
+      1  100.0%          JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1254:15
+      1  100.0%            JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:2295:16
+      1    8.3%      JS: ^<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/needle/lib/needle.js:512:52
+      1  100.0%        JS: ^onceWrapper node:events:627:21
+      1  100.0%          JS: ^emit node:events:465:44
+      1  100.0%            JS: ^parserOnIncomingClient node:_http_client:629:32
+      7    2.1%    JS: ~<anonymous> node:internal/main/run_main_module:1:1
+      7    2.1%    JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:1:1
+      7  100.0%      JS: ~<anonymous> node:internal/main/run_main_module:1:1
+      6    1.8%    JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/index.js:1:1
+      6  100.0%      JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:1:1
+      6  100.0%        JS: ~<anonymous> node:internal/main/run_main_module:1:1
+      5    1.5%    JS: ^readFileSync node:fs:435:22
+      5  100.0%      JS: ^defaultLoadImpl node:internal/modules/cjs/loader:1114:25
+      5  100.0%        JS: ^loadSource node:internal/modules/cjs/loader:1746:20
+      5  100.0%          JS: ^<anonymous> node:internal/modules/cjs/loader:1876:37
+      5  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1450:33
+      4    1.2%    JS: ^wrappedFn node:internal/errors:535:21
+      3   75.0%      JS: ^wrappedFn node:internal/errors:535:21
+      3  100.0%        JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/index.js:1:1
+      3  100.0%          JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:1:1
+      3  100.0%            JS: ~<anonymous> node:internal/main/run_main_module:1:1
+      1   25.0%      JS: ~eos node:internal/streams/end-of-stream:54:13
+      1  100.0%        JS: ~destroyer node:internal/streams/pipeline:49:19
+      1  100.0%          JS: ~pipelineImpl node:internal/streams/pipeline:184:22
+      1  100.0%            JS: ~pipeline node:internal/streams/pipeline:180:18
+      4    1.2%    JS: ^getNearestParentPackageJSON node:internal/modules/package_json_reader:144:37
+      3   75.0%      JS: ^trySelf node:internal/modules/cjs/loader:605:17
+      3  100.0%        JS: ^<anonymous> node:internal/modules/cjs/loader:1318:35
+      3  100.0%          JS: ^defaultResolveImpl node:internal/modules/cjs/loader:1043:30
+      3  100.0%            JS: ^resolveForCJSWithHooks node:internal/modules/cjs/loader:1038:32
+      1   25.0%      JS: ^<anonymous> node:internal/modules/cjs/loader:1876:37
+      1  100.0%        JS: ^<anonymous> node:internal/modules/cjs/loader:1450:33
+      1  100.0%          JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      1  100.0%            JS: ^traceSync node:diagnostics_channel:320:12
+
+    140   29.7%  /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+     16   11.4%    /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      3   18.8%      JS: ~calculateServerName node:_http_agent:334:29
+      3  100.0%        JS: ~normalizeServerName node:_http_agent:329:29
+      3  100.0%          JS: ~addRequest node:_http_agent:230:49
+      3  100.0%            JS: ~ClientRequest node:_http_client:137:23
+      2   12.5%      JS: ^keys_by_type /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/needle/lib/needle.js:135:22
+      2  100.0%        JS: ^Needle.setup /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/needle/lib/needle.js:167:34
+      2  100.0%          JS: ^Needle.start /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/needle/lib/needle.js:299:34
+      2  100.0%            JS: ^module.exports.<computed> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/needle/lib/needle.js:845:36
+      1    6.3%      JS: ~url /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:857:8
+      1  100.0%        JS: ~inlineTokens /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1466:17
+      1  100.0%          JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1268:8
+      1  100.0%            JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1254:15
+      1    6.3%      JS: ~tag /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:636:8
+      1  100.0%        JS: ~inlineTokens /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1466:17
+      1  100.0%          JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1268:8
+      1  100.0%            JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1254:15
+      1    6.3%      JS: ~parse_content_type /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/needle/lib/utils.js:61:28
+      1  100.0%        JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/needle/lib/needle.js:512:52
+      1  100.0%          JS: ^onceWrapper node:events:627:21
+      1  100.0%            JS: ^emit node:events:465:44
+      1    6.3%      JS: ~lheading /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:589:13
+      1  100.0%        JS: ~blockTokens /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1279:16
+      1  100.0%          JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1268:8
+      1  100.0%            JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1254:15
+      1    6.3%      JS: ~html /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:508:9
+      1  100.0%        JS: ~blockTokens /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1279:16
+      1  100.0%          JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1268:8
+      1  100.0%            JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1254:15
+      1    6.3%      JS: ~getRegex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:90:19
+      1  100.0%        JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1:1
+      1  100.0%          JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/markdown-link-extractor/index.js:1:1
+      1  100.0%            JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/index.js:1:1
+      1    6.3%      JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/entities/lib/generated/decode-data-html.js:1:1
+      1  100.0%        JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      1  100.0%          JS: ^traceSync node:diagnostics_channel:320:12
+      1  100.0%            JS: ^wrapModuleLoad node:internal/modules/cjs/loader:228:24
+      1    6.3%      JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:35:34
+      1  100.0%        /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      1  100.0%          JS: ~defaultReporter /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:17:44
+      1  100.0%            /Users/will.gibson/.asdf/installs/nodejs/22.15.0/bin/node
+      1    6.3%      JS: ^realpathSync node:fs:2711:22
+      1  100.0%        JS: ^toRealPath node:internal/modules/helpers:60:20
+      1  100.0%          JS: ^<anonymous> node:internal/modules/cjs/loader:701:28
+      1  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1318:35
+      1    6.3%      JS: ^nextPart node:fs:2700:31
+      1  100.0%        JS: ^realpathSync node:fs:2711:22
+      1  100.0%          JS: ^toRealPath node:internal/modules/helpers:60:20
+      1  100.0%            JS: ^tryFile node:internal/modules/cjs/loader:538:17
+      1    6.3%      JS: ^emStrong /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:733:13
+      1  100.0%        JS: ^inlineTokens /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1466:17
+      1  100.0%          JS: ^lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1268:8
+      1  100.0%            JS: ~lex /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/marked/lib/marked.cjs:1254:15
+     15   10.7%    JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+     14   93.3%      JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      2   14.3%        JS: ~<anonymous> node:internal/worker:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      2   14.3%        JS: ~<anonymous> node:internal/http2/core:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      2  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      2   14.3%        JS: ~<anonymous> node:http2:1:1
+      2  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      2  100.0%            JS: ^compileForPublicLoader node:internal/bootstrap/realm:332:25
+      1    7.1%        JS: ~<anonymous> node:tty:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    7.1%        JS: ~<anonymous> node:internal/readline/interface:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    7.1%        JS: ~<anonymous> node:internal/http2/compat:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    7.1%        JS: ~<anonymous> node:internal/fs/promises:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    7.1%        JS: ~<anonymous> node:internal/child_process:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    7.1%        JS: ~<anonymous> node:http:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      1    7.1%        JS: ~<anonymous> node:_http_client:1:1
+      1  100.0%          JS: ^compileForInternalLoader node:internal/bootstrap/realm:384:27
+      1  100.0%            JS: ^requireBuiltin node:internal/bootstrap/realm:421:24
+      1    7.1%        JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/markdown-link-extractor/index.js:1:1
+      1  100.0%          JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/index.js:1:1
+      1  100.0%            JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/markdown-link-check:1:1
+      1    6.7%      JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      1  100.0%        JS: ^traceSync node:diagnostics_channel:320:12
+      1  100.0%          JS: ^wrapModuleLoad node:internal/modules/cjs/loader:228:24
+      1  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1479:36
+     12    8.6%    JS: ^wrapSafe node:internal/modules/cjs/loader:1620:18
+     11   91.7%      JS: ^<anonymous> node:internal/modules/cjs/loader:1680:37
+     11  100.0%        JS: ^<anonymous> node:internal/modules/cjs/loader:1876:37
+     11  100.0%          JS: ^<anonymous> node:internal/modules/cjs/loader:1450:33
+     11  100.0%            JS: ^<anonymous> node:internal/modules/cjs/loader:1188:24
+      1    8.3%      JS: ^wrapModuleLoad node:internal/modules/cjs/loader:228:24
+      1  100.0%        JS: ^<anonymous> node:internal/modules/cjs/loader:1479:36
+      1  100.0%          JS: ^require node:internal/modules/helpers:134:19
+      1  100.0%            JS: ~<anonymous> /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/domhandler/lib/index.js:1:1
+     10    7.1%    JS: ~configSecureContext node:internal/tls/secure-context:129:29
+     10  100.0%      JS: ~createSecureContext node:_tls_common:96:29
+     10  100.0%        JS: ~connect node:_tls_wrap:1744:35
+     10  100.0%          JS: ~createConnection node:https:141:26
+     10  100.0%            JS: ~createSocket node:_http_agent:296:53
+      4    2.9%    JS: ~TLSSocket.getPeerCertificate node:_tls_wrap:1118:50
+      4  100.0%      JS: ~onConnectSecure node:_tls_wrap:1665:25
+      4  100.0%        JS: ^emit node:events:465:44
+      4  100.0%          JS: ~TLSSocket._finishInit node:_tls_wrap:1052:43
+      4  100.0%            JS: ~ssl.onhandshakedone node:_tls_wrap:862:27
+      4    2.9%    JS: ^TLSSocket.getPeerCertificate node:_tls_wrap:1118:50
+      4  100.0%      JS: ^onConnectSecure node:_tls_wrap:1665:25
+      4  100.0%        JS: ^emit node:events:465:44
+      3   75.0%          JS: ^TLSSocket._finishInit node:_tls_wrap:1052:43
+      3  100.0%            JS: ^ssl.onhandshakedone node:_tls_wrap:862:27
+      1   25.0%          JS: ~TLSSocket._finishInit node:_tls_wrap:1052:43
+      1  100.0%            JS: ~ssl.onhandshakedone node:_tls_wrap:862:27
+      2    1.4%    JS: ~find /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/cheerio-select/lib/index.js:290:14
+      2  100.0%      JS: ~findElements /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/cheerio-select/lib/index.js:286:22
+      2  100.0%        JS: ~select /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/cheerio-select/lib/index.js:185:16
+      2  100.0%          JS: ~_findBySelector /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/cheerio/dist/commonjs/api/traversing.js:99:25
+      2  100.0%            JS: ~find /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/cheerio/dist/commonjs/api/traversing.js:77:14
+      2    1.4%    JS: ~SecureContext node:_tls_common:72:23
+      2  100.0%      JS: ~createSecureContext node:_tls_common:96:29
+      2  100.0%        JS: ~connect node:_tls_wrap:1744:35
+      2  100.0%          JS: ~createConnection node:https:141:26
+      2  100.0%            JS: ~createSocket node:_http_agent:296:53
+      2    1.4%    JS: ~<anonymous> node:internal/main/run_main_module:1:1
+      2    1.4%    JS: ^emit node:events:465:44
+      1   50.0%      JS: ~afterConnect node:net:1589:22
+      1   50.0%      JS: ^addChunk node:internal/streams/readable:550:18
+      1  100.0%        JS: ^readableAddChunkPushByteMode node:internal/streams/readable:463:38
+      1  100.0%          JS: ^Readable.push node:internal/streams/readable:387:35
+      1  100.0%            JS: ^onStreamRead node:internal/stream_base_commons:166:22
+      2    1.4%    JS: ^TLSSocket._start node:_tls_wrap:1081:38
+      2  100.0%      JS: ^onceWrapper node:events:627:21
+      2  100.0%        JS: ^emit node:events:465:44
+      2  100.0%          JS: ^afterConnect node:net:1589:22
+      1   50.0%            JS: ~afterConnectMultiple node:net:1690:30
+      2    1.4%    JS: ^SecureContext node:_tls_common:72:23
+      2  100.0%      JS: ^createSecureContext node:_tls_common:96:29
+      2  100.0%        JS: ^connect node:_tls_wrap:1744:35
+      2  100.0%          JS: ^createConnection node:https:141:26
+      2  100.0%            JS: ^createSocket node:_http_agent:296:53
+      2    1.4%    JS: ^EventEmitter node:events:219:22
+      1   50.0%      JS: ^Stream node:internal/streams/legacy:11:16
+      1  100.0%        JS: ^Readable node:internal/streams/readable:320:18
+      1  100.0%          JS: ^IncomingMessage node:_http_incoming:50:25
+      1  100.0%            JS: ^parserOnHeadersComplete node:_http_common:71:33
+      1   50.0%      JS: ^Agent node:_http_agent:81:15
+      1  100.0%        JS: ^ProxyAgent /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/proxy-agent/dist/index.js:77:16
+      1  100.0%          JS: ^check /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/link-check/lib/proto/http.js:12:26
+      1  100.0%            JS: ^linkCheck /Users/will.gibson/Dev/tcort/markdown-link-check/node_modules/link-check/index.js:13:36
+
