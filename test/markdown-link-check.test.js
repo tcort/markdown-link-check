@@ -5,6 +5,7 @@ const path = require('path');
 const expect = require('expect.js');
 const http = require('http');
 const express = require('express');
+const child_process = require('child_process');
 const markdownLinkCheck = require('../');
 const dirname = process.platform === 'win32' ? __dirname.replace(/\\/g, '/') : __dirname;
 
@@ -434,6 +435,22 @@ describe('markdown-link-check', function () {
                 { link: '#l-is-the-package-in-the-linux-distro-base-image', statusCode: 200, err: null, status: 'alive' },
             ]);
             done();
+        });
+    });
+
+    describe("CLI", function () {
+        const cliPath = path.join(dirname, '..', 'markdown-link-check');
+
+        it("exits with 0 if all links are ok", function () {
+            const { status, output } = child_process.spawnSync(cliPath, [path.join(dirname, 'alive-links-only.md')]);
+            expect(status).to.be(0);
+            expect(output.toString()).to.contain('links checked.');
+        });
+
+        it("exits with 1 if any link is broken", function () {
+            const { status, output } = child_process.spawnSync(cliPath, [path.join(dirname, 'section-links.md')]);
+            expect(status).to.be(1);
+            expect(output.toString()).to.contain('dead links found!');
         });
     });
 });
