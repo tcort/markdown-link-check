@@ -439,16 +439,16 @@ describe('markdown-link-check', function () {
     });
 
     describe("CLI", function () {
-        const cliPath = path.join(dirname, '..', 'markdown-link-check');
+        const cliPath = path.join(__dirname, '..', 'markdown-link-check');
 
         it("exits with 0 if all links are ok", function () {
-            const { status, output } = child_process.spawnSync(cliPath, [path.join(dirname, 'alive-links-only.md')]);
+            const { status, output } = child_process.spawnSync(cliPath, [path.join(__dirname, 'alive-links-only.md')]);
             expect(status).to.be(0);
             expect(output.toString()).to.contain('links checked.');
         });
 
         it("exits with 1 if any link is broken", function () {
-            const { status, output } = child_process.spawnSync(cliPath, [path.join(dirname, 'section-links.md')]);
+            const { status, output } = child_process.spawnSync(cliPath, [path.join(__dirname, 'section-links.md')]);
             expect(status).to.be(1);
             expect(output.toString()).to.contain('dead links found!');
         });
