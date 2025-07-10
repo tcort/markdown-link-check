@@ -303,7 +303,7 @@ async function runMarkdownLinkCheck(filenameForOutput, markdown, opts) {
     ));
 
     if (err) throw null;
-    else if (results.some((result) => result.status === 'dead')) return;
+    else if (results.some((result) => result.status === 'dead')) throw null;
     else return;
 }
 
