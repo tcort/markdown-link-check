@@ -73,6 +73,107 @@ const reporters = {
             });
         }
     },
+    junit: async function junitReporter(err, results, opts, filenameForOutput) {
+        const path = require('path');
+        
+        const totalTests = results.length;
+        const failedTests = results.filter(result => result.status === 'dead' || result.status === 'error').length;
+        const skippedTests = results.filter(result => result.status === 'ignored').length;
+        const passedTests = totalTests - failedTests - skippedTests;
+        
+        const timestamp = new Date().toISOString();
+        const testSuiteName = filenameForOutput ? path.basename(filenameForOutput, '.md') : 'markdown-link-check';
+        
+        let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+        xml += `<testsuites name="markdown-link-check" tests="${totalTests}" failures="${failedTests}" skipped="${skippedTests}" time="0">\n`;
+        xml += `  <testsuite name="${testSuiteName}" tests="${totalTests}" failures="${failedTests}" skipped="${skippedTests}" time="0" timestamp="${timestamp}">\n`;
+        
+        xml += '    <properties>\n';
+        if (filenameForOutput) {
+            xml += `      <property name="file" value="${escapeXml(filenameForOutput)}"/>\n`;
+        }
+        xml += '    </properties>\n';
+        
+        results.forEach(function(result, index) {
+            const testName = `link-${index + 1}`;
+            const className = testSuiteName;
+            
+            xml += `    <testcase name="${escapeXml(testName)}" classname="${escapeXml(className)}" time="0">\n`;
+            
+            // Add test case properties
+            xml += '      <properties>\n';
+            xml += `        <property name="url" value="${escapeXml(result.link)}"/>\n`;
+            xml += `        <property name="status" value="${escapeXml(result.status)}"/>\n`;
+            if (result.statusCode !== undefined) {
+                xml += `        <property name="statusCode" value="${result.statusCode}"/>\n`;
+            }
+            xml += '      </properties>\n';
+            
+            // Handle failures and errors
+            if (result.status === 'dead') {
+                const message = `Dead link: ${result.link} (Status: ${result.statusCode})`;
+                xml += `      <failure message="${escapeXml(message)}" type="DeadLink">\n`;
+                xml += `        <![CDATA[Link: ${result.link}\nStatus Code: ${result.statusCode}\nStatus: ${result.status}`;
+                if (result.err) {
+                    xml += `\nError: ${result.err}`;
+                }
+                xml += ']]>\n';
+                xml += '      </failure>\n';
+            } else if (result.status === 'error') {
+                const message = `Error checking link: ${result.link}`;
+                xml += `      <error message="${escapeXml(message)}" type="LinkCheckError">\n`;
+                xml += `        <![CDATA[Link: ${result.link}\nStatus Code: ${result.statusCode}\nStatus: ${result.status}`;
+                if (result.err) {
+                    xml += `\nError: ${result.err}`;
+                }
+                xml += ']]>\n';
+                xml += '      </error>\n';
+            } else if (result.status === 'ignored') {
+                xml += `      <skipped message="Link ignored: ${escapeXml(result.link)}"/>\n`;
+            }
+            
+            xml += '    </testcase>\n';
+        });
+        
+        // Handle global errors
+        if (err) {
+            xml += `    <testcase name="markdown-link-check-error" classname="${escapeXml(testSuiteName)}" time="0">\n`;
+            xml += `      <error message="${escapeXml(err.message || 'Unknown error')}" type="ProcessingError">\n`;
+            xml += `        <![CDATA[${err.stack || err.message || err}]]>\n`;
+            xml += '      </error>\n';
+            xml += '    </testcase>\n';
+        }
+        
+        xml += '  </testsuite>\n';
+        xml += '</testsuites>\n';
+        
+        const outputFile = opts.junitOutput || 'junit-results.xml';
+        
+        try {
+            fs.writeFileSync(outputFile, xml, 'utf8');
+            if (!opts.quiet) {
+                console.log(`JUnit report written to: ${outputFile}`);
+            }
+        } catch (writeErr) {
+            console.error(`Error writing JUnit report: ${writeErr.message}`);
+        }
+        
+        function escapeXml(unsafe) {
+            if (typeof unsafe !== 'string') {
+                return String(unsafe);
+            }
+            return unsafe.replace(/[<>&'"]/g, function (c) {
+                switch (c) {
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '&': return '&amp;';
+                    case '\'': return '&apos;';
+                    case '"': return '&quot;';
+                    default: return c;
+                }
+            });
+        }
+    },
 };
 
 class Input {
@@ -127,6 +228,7 @@ function getInputs() {
         .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
         .option('--reporters <names>', 'specify reporters to use', commaSeparatedReportersList)
         .option('--projectBaseUrl <url>', 'the URL to use for {{BASEURL}} replacement')
+        .option('--junit-output <file>', 'output file for JUnit XML report (only used with junit reporter)')
         .arguments('[filenamesOrDirectorynamesOrUrls...]')
         .action(function (filenamesOrUrls) {
             let filenameForOutput;
@@ -214,6 +316,7 @@ function getInputs() {
         input.opts.retryOn429 = (program.opts().retry === true);
         input.opts.aliveStatusCodes = program.opts().alive;
         input.opts.reporters = program.opts().reporters ?? [ reporters.default ];
+        input.opts.junitOutput = program.opts().junitOutput;
         const config = program.opts().config;
         if (config) {
             input.opts.config = config.trim();
