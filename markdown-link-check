@@ -160,7 +160,6 @@ const reporters = {
                         }).txt(fileErr.stack || fileErr.message || String(fileErr));
                     }
                     
-                    // Add test cases for each link
                     fileResults.forEach((result) => {
                         const testcase = testsuite.ele('testcase', {
                             name: result.link,
@@ -168,7 +167,6 @@ const reporters = {
                             time: '0'
                         });
                         
-                        // Add test case properties
                         const testProperties = testcase.ele('properties');
                         testProperties.ele('property', { name: 'url', value: result.link });
                         testProperties.ele('property', { name: 'status', value: result.status });
@@ -176,7 +174,6 @@ const reporters = {
                             testProperties.ele('property', { name: 'statusCode', value: String(result.statusCode) });
                         }
                         
-                        // Handle different result statuses
                         if (result.status === 'dead') {
                             const message = result.err 
                                 ? String(result.err)
@@ -207,7 +204,6 @@ const reporters = {
                 testsuites.att('errors', String(totalErrors));
                 testsuites.att('skipped', String(totalSkipped));
                 
-                // Write XML to file
                 const xmlString = doc.end({ prettyPrint: true });
                 fs.writeFileSync(outputFile, xmlString, 'utf8');
                 
@@ -215,7 +211,7 @@ const reporters = {
                     console.log(`JUnit report written to: ${outputFile}`);
                 }
                 
-                // Clean up global state
+                // Clean up
                 delete global.junitResults;
                 delete global.processedInputs;
                 delete global.totalInputs;
