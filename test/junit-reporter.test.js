@@ -26,7 +26,7 @@ describe('JUnit Reporter', function () {
     });
 
     it('should generate valid JUnit XML for a markdown file with mixed link results', function (done) {
-        this.timeout(15000); // Increase timeout for network requests
+        this.timeout(15000); 
 
         const testMarkdown = `# Test File
 
@@ -79,24 +79,21 @@ describe('JUnit Reporter', function () {
                 expect(testCaseMatches).to.be.ok();
                 expect(testCaseMatches.length).to.be.greaterThan(4);
 
-                // Should contain expected URLs
                 expect(xmlContent).to.contain('https://www.google.com');
                 expect(xmlContent).to.contain('https://github.com');
                 expect(xmlContent).to.contain('./README.md');
                 expect(xmlContent).to.contain('./package.json');
                 expect(xmlContent).to.contain('this-site-definitely-does-not-exist-12345.com');
 
-                // Should have at least one failure (the non-existent site)
                 expect(xmlContent).to.contain('<failure');
                 expect(xmlContent).to.contain('type="DeadLink"');
 
-                expect(xmlContent).to.contain('<testcase name="link-1"');
+                expect(xmlContent).to.contain('<testcase name="https://www.google.com"');
                 expect(xmlContent).to.contain('<properties>');
                 expect(xmlContent).to.contain('<property name="url"');
                 expect(xmlContent).to.contain('<property name="status"');
                 expect(xmlContent).to.contain('<property name="statusCode"');
 
-                // Verify counts make sense
                 const testsMatch = xmlContent.match(/tests="(\d+)"/);
                 const failuresMatch = xmlContent.match(/failures="(\d+)"/);
                 const skippedMatch = xmlContent.match(/skipped="(\d+)"/);
@@ -142,7 +139,6 @@ describe('JUnit Reporter', function () {
             fs.unlinkSync(defaultOutputFile);
         }
 
-        // Run markdown-link-check with junit reporter but no output file specified
         const cliPath = path.join(__dirname, '..', 'markdown-link-check');
         const child = spawn('node', [
             cliPath,
@@ -205,7 +201,7 @@ describe('JUnit Reporter', function () {
 
         child.on('close', () => {
             try {
-                // Should have both console output and XML file
+                
                 expect(stdout).to.contain('✓'); // Default reporter output
                 expect(stdout).to.contain('links checked'); // Default reporter summary
                 expect(stdout).to.contain('JUnit report written to:'); // JUnit reporter message
@@ -254,7 +250,6 @@ describe('JUnit Reporter', function () {
                 
                 const xmlContent = fs.readFileSync(outputFile, 'utf8');
                 
-                // Verify XML escaping occurred in file name and test suite name
                 expect(xmlContent).to.contain('escaping-test &amp; file'); // & should be escaped in file name
                 
                 expect(xmlContent).to.contain('<?xml version="1.0" encoding="UTF-8"?>');

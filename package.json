@@ -40,7 +40,8 @@
     "markdown-link-extractor": "^4.0.2",
     "needle": "^3.3.1",
     "progress": "^2.0.3",
-    "proxy-agent": "^6.4.0"
+    "proxy-agent": "^6.4.0",
+    "xmlbuilder2": "^3.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
