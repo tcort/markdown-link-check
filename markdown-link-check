@@ -82,6 +82,7 @@ const reporters = {
             global.junitResults = [];
             global.processedInputs = 0;
             global.totalInputs = 1; // fallback for single file
+            global.junitProcessedInputs = 0;
         }
         
         // Add current file results to global collection
@@ -93,9 +94,10 @@ const reporters = {
         });
         
         global.processedInputs++;
+        global.junitProcessedInputs++;
         
         // Only write XML file when all inputs have been processed
-        if (global.processedInputs >= global.totalInputs) {
+        if (global.junitProcessedInputs >= global.totalInputs) {
             const outputFile = opts.junitOutput || 'junit-results.xml';
             
             try {
@@ -213,9 +215,8 @@ const reporters = {
                 
                 // Clean up
                 delete global.junitResults;
-                delete global.processedInputs;
-                delete global.totalInputs;
-                
+                delete global.junitProcessedInputs;
+
             } catch (writeErr) {
                 console.error(`Error writing JUnit report: ${writeErr.message}`);
             }
@@ -462,15 +463,7 @@ async function main() {
 
     const inputs = getInputs();
     
-    const usingJunitReporter = inputs.some(input => 
-        input.opts.reporters && input.opts.reporters.includes(reporters.junit)
-    );
-    
-    if (usingJunitReporter) {
-        global.junitResults = [];
-        global.totalInputs = inputs.length;
-        global.processedInputs = 0;
-    }
+    global.totalInputs = inputs.length;
 
     let isOk = true;
     for await (const input of inputs) {
