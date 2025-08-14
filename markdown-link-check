@@ -80,8 +80,6 @@ const reporters = {
         // Initialize global collector if not exists
         if (!global.junitResults) {
             global.junitResults = [];
-            global.processedInputs = 0;
-            global.totalInputs = 1; // fallback for single file
             global.junitProcessedInputs = 0;
         }
         
@@ -93,7 +91,6 @@ const reporters = {
             filenameForOutput: filenameForOutput || 'stdin'
         });
         
-        global.processedInputs++;
         global.junitProcessedInputs++;
         
         // Only write XML file when all inputs have been processed
