@@ -73,6 +73,152 @@ const reporters = {
             });
         }
     },
+    junit: async function junitReporter(err, results, opts, filenameForOutput) {
+        const { create } = require('xmlbuilder2');
+        const path = require('path');
+        
+        // Initialize global collector if not exists
+        if (!global.junitResults) {
+            global.junitResults = [];
+            global.junitProcessedInputs = 0;
+        }
+        
+        // Add current file results to global collection
+        global.junitResults.push({
+            err,
+            results: results || [],
+            opts,
+            filenameForOutput: filenameForOutput || 'stdin'
+        });
+        
+        global.junitProcessedInputs++;
+        
+        // Only write XML file when all inputs have been processed
+        if (global.junitProcessedInputs >= global.totalInputs) {
+            const outputFile = opts.junitOutput || 'junit-results.xml';
+            
+            try {
+                // Create XML document
+                const doc = create({ version: '1.0', encoding: 'UTF-8' });
+                const testsuites = doc.ele('testsuites', { 
+                    name: 'markdown-link-check',
+                    time: '0'
+                });
+                
+                let totalTests = 0;
+                let totalFailures = 0;
+                let totalErrors = 0;
+                let totalSkipped = 0;
+                
+                // Process all collected results
+                for (const fileResult of global.junitResults) {
+                    const { err: fileErr, results: fileResults, filenameForOutput: fileName } = fileResult;
+                    const testSuiteName = fileName && fileName !== 'stdin' ? path.basename(fileName, '.md') : 'markdown-link-check';
+                    
+                    const tests = fileResults.length;
+                    const failures = fileResults.filter(result => result.status === 'dead').length;
+                    const errors = fileResults.filter(result => result.status === 'error').length;
+                    const skipped = fileResults.filter(result => result.status === 'ignored').length;
+                    
+                    totalTests += tests;
+                    totalFailures += failures;
+                    totalErrors += errors;
+                    totalSkipped += skipped;
+                    
+                    // Add errors for file processing issues
+                    if (fileErr) {
+                        totalErrors++;
+                    }
+                    
+                    const testsuite = testsuites.ele('testsuite', {
+                        name: testSuiteName,
+                        tests: tests + (fileErr ? 1 : 0),
+                        failures: failures,
+                        errors: errors + (fileErr ? 1 : 0),
+                        skipped: skipped,
+                        time: '0',
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    // Add properties
+                    const properties = testsuite.ele('properties');
+                    if (fileName && fileName !== 'stdin') {
+                        properties.ele('property', { name: 'file', value: fileName });
+                    }
+                    
+                    // Handle global file error
+                    if (fileErr) {
+                        const errorTest = testsuite.ele('testcase', {
+                            name: 'markdown-link-check-error',
+                            classname: testSuiteName,
+                            time: '0'
+                        });
+                        errorTest.ele('error', {
+                            message: fileErr.message || 'Unknown error',
+                            type: 'ProcessingError'
+                        }).txt(fileErr.stack || fileErr.message || String(fileErr));
+                    }
+                    
+                    fileResults.forEach((result) => {
+                        const testcase = testsuite.ele('testcase', {
+                            name: result.link,
+                            classname: testSuiteName,
+                            time: '0'
+                        });
+                        
+                        const testProperties = testcase.ele('properties');
+                        testProperties.ele('property', { name: 'url', value: result.link });
+                        testProperties.ele('property', { name: 'status', value: result.status });
+                        if (result.statusCode !== undefined) {
+                            testProperties.ele('property', { name: 'statusCode', value: String(result.statusCode) });
+                        }
+                        
+                        if (result.status === 'dead') {
+                            const message = result.err 
+                                ? String(result.err)
+                                : `${result.link} is ${result.status} (${result.statusCode})`;
+                            testcase.ele('failure', {
+                                message: message,
+                                type: 'DeadLink'
+                            }).txt(`Link: ${result.link}\nStatus Code: ${result.statusCode}\nStatus: ${result.status}${result.err ? `\nError: ${result.err}` : ''}`);
+                        } else if (result.status === 'error') {
+                            const message = result.err 
+                                ? String(result.err)
+                                : `${result.link} is ${result.status} (${result.statusCode})`;
+                            testcase.ele('error', {
+                                message: message,
+                                type: 'LinkCheckError'
+                            }).txt(`Link: ${result.link}\nStatus Code: ${result.statusCode}\nStatus: ${result.status}${result.err ? `\nError: ${result.err}` : ''}`);
+                        } else if (result.status === 'ignored') {
+                            testcase.ele('skipped', {
+                                message: `Link ignored: ${result.link}`
+                            });
+                        }
+                    });
+                }
+                
+                // Update totals in testsuites element
+                testsuites.att('tests', String(totalTests + totalErrors));
+                testsuites.att('failures', String(totalFailures));
+                testsuites.att('errors', String(totalErrors));
+                testsuites.att('skipped', String(totalSkipped));
+                
+                const xmlString = doc.end({ prettyPrint: true });
+                fs.writeFileSync(outputFile, xmlString, 'utf8');
+                
+                if (!opts.quiet) {
+                    console.log(`JUnit report written to: ${outputFile}`);
+                }
+                
+                // Clean up
+                delete global.junitResults;
+                delete global.junitProcessedInputs;
+
+            } catch (writeErr) {
+                console.error(`Error writing JUnit report: ${writeErr.message}`);
+            }
+        }
+    },
 };
 
 class Input {
@@ -127,6 +273,7 @@ function getInputs() {
         .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
         .option('--reporters <names>', 'specify reporters to use', commaSeparatedReportersList)
         .option('--projectBaseUrl <url>', 'the URL to use for {{BASEURL}} replacement')
+        .option('--junit-output <file>', 'output file for JUnit XML report (only used with junit reporter)')
         .arguments('[filenamesOrDirectorynamesOrUrls...]')
         .action(function (filenamesOrUrls) {
             let filenameForOutput;
@@ -214,6 +361,7 @@ function getInputs() {
         input.opts.retryOn429 = (program.opts().retry === true);
         input.opts.aliveStatusCodes = program.opts().alive;
         input.opts.reporters = program.opts().reporters ?? [ reporters.default ];
+        input.opts.junitOutput = program.opts().junitOutput;
         const config = program.opts().config;
         if (config) {
             input.opts.config = config.trim();
@@ -311,6 +459,8 @@ async function main() {
     chalk = (await import('chalk')).default;
 
     const inputs = getInputs();
+    
+    global.totalInputs = inputs.length;
 
     let isOk = true;
     for await (const input of inputs) {
