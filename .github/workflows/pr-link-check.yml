@@ -1,0 +1,27 @@
+name: 'PR Link Check'
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  markdown-link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate file manifest
+        id: manifest
+        run: git ls-files > file-manifest.txt
+
+      - name: Run markdown-link-check
+        run: ./markdown-link-check --file-manifest file-manifest.txt .
