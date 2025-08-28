@@ -56,7 +56,7 @@ const reporters = {
         });
 
         if (!opts.quiet) {
-            console.log("\n  %s links checked.", results.length);
+            console.log("\n  %s link%s checked.", results.length, results.length === 1 ? '' : 's');
         }
 
         if (results.some((result) => result.status === "dead")) {
@@ -64,9 +64,9 @@ const reporters = {
                 return result.status === "dead";
             });
             if (!opts.quiet) {
-                console.error(chalk.red("\n  ERROR: %s dead links found!"), deadLinks.length);
+                console.error(chalk.red("\n  ERROR: %s dead link%s found!"), deadLinks.length, deadLinks.length === 1 ? '' : 's');
             } else {
-                console.error(chalk.red("\n  ERROR: %s dead links found in %s !"), deadLinks.length, filenameForOutput);
+                console.error(chalk.red("\n  ERROR: %s dead link%s found in %s !"), deadLinks.length, deadLinks.length === 1 ? '' : 's', filenameForOutput);
             }
             deadLinks.forEach(function (result) {
                 console.log("  [%s] %s → Status: %s", statusLabels[result.status], result.link, result.statusCode);
