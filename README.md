@@ -96,6 +96,7 @@ Parameters:
   * `fallbackRetryDelay` the delay in [ms](https://www.npmjs.com/package/ms) format. (e.g. `"2000ms"`, `20s`, `1m`) for retries on a 429 response when no `retry-after` header is returned or when it has an invalid value. Default is `60s`.
   * `aliveStatusCodes` a list of HTTP codes to consider as alive.
     Example: `[200,206]`
+  * `reporters` an array of reporter functions to use for outputting results. If not specified, default output will be generated (useful when using the API programmatically). Available built-in reporters can be imported from the command-line tool.
 * `callback` function which accepts `(err, results)`.
   * `err` an Error object when the operation cannot be completed, otherwise `null`.
   * `results` an array of objects with the following properties:
@@ -200,8 +201,59 @@ Options:
   -r, --retry             retry after the duration indicated in 'retry-after' header when HTTP code is 429
   --reporters <names>     specify reporters to use
   --projectBaseUrl <url>  the URL to use for {{BASEURL}} replacement
+  --junit-output <file>   output file for JUnit XML report (only used with junit reporter)
   -h, --help              display help for command
 ```
+
+##### Reporters
+
+`markdown-link-check` supports multiple output reporters to format the results of link checking:
+
+###### Default Reporter
+
+The default reporter outputs results to the console with colored status indicators:
+
+```shell
+markdown-link-check README.md
+```
+
+Output format:
+
+```text
+  ✓ https://example.com/valid-link
+  ✖ https://example.com/broken-link
+  / https://example.com/ignored-link
+
+  3 links checked.
+
+  ERROR: 1 dead links found!
+```
+
+###### JUnit Reporter
+
+The JUnit reporter generates XML output compatible with JUnit test result format, useful for CI/CD integration:
+
+```shell
+markdown-link-check --reporters junit README.md
+```
+
+To specify a custom output file:
+
+```shell
+markdown-link-check --reporters junit --junit-output results.xml README.md
+```
+
+If no output file is specified, the results are written to `junit-results.xml` by default.
+
+###### Multiple Reporters
+
+You can use multiple reporters simultaneously by specifying them in a comma-separated list:
+
+```shell
+markdown-link-check --reporters default,junit README.md
+```
+
+This will output to both the console (default reporter) and generate a JUnit XML file.
 
 ##### Config file format
 
