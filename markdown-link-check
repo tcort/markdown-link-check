@@ -55,7 +55,7 @@ const reporters = {
             }
         });
 
-        if (!opts.quiet) {
+        if (opts.verbose) {
             console.log("\n  %s links checked.", results.length);
         }
 
