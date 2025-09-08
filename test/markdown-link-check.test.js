@@ -442,7 +442,9 @@ describe('markdown-link-check', function () {
         const cliPath = path.join(__dirname, '..', 'markdown-link-check');
 
         it("exits with 0 if all links are ok", function () {
-            const { status, output } = child_process.spawnSync(cliPath, [path.join(__dirname, 'alive-links-only.md')]);
+            const x = child_process.spawnSync(cliPath, [path.join(__dirname, 'alive-links-only.md')]);
+            console.log(x);
+            const { status, output } = x;
             console.log(output.toString());
             expect(status).to.be(0);
             expect(output.toString()).to.contain('links checked.');
