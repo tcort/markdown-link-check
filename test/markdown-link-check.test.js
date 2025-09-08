@@ -443,12 +443,14 @@ describe('markdown-link-check', function () {
 
         it("exits with 0 if all links are ok", function () {
             const { status, output } = child_process.spawnSync(cliPath, [path.join(__dirname, 'alive-links-only.md')]);
+            console.log(output.toString());
             expect(status).to.be(0);
             expect(output.toString()).to.contain('links checked.');
         });
 
         it("exits with 1 if any link is broken", function () {
             const { status, output } = child_process.spawnSync(cliPath, [path.join(__dirname, 'section-links.md')]);
+            console.log(output.toString());
             expect(status).to.be(1);
             expect(output.toString()).to.contain('dead links found!');
         });
