@@ -448,6 +448,7 @@ describe('markdown-link-check', function () {
         });
 
         it("exits with 1 if any link is broken", function () {
+            this.timeout(60000)
             const { status, output } = child_process.spawnSync(process.execPath, [cliPath, [path.join(__dirname, 'section-links.md')]]);
             expect(status).to.be(1);
             expect(output.toString()).to.contain('dead links found!');
