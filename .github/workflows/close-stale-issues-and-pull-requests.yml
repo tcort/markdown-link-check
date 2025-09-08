@@ -7,7 +7,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v9
+      - uses: actions/stale@v10
         with:
           stale-issue-message: 'This issue has been marked as stale because it has been open 60 days with no activity. It will be closed in 90 days unless the stale label is removed or someone adds a comment.'
           stale-pr-message: 'This pull request has been marked as stale because it has been open 60 days with no activity. It will be closed in 90 days unless the stale label is removed or someone adds a comment.'
