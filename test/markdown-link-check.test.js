@@ -145,8 +145,14 @@ describe('markdown-link-check', function () {
                 // valid e-mail
                 { statusCode: 200, status:  'alive' },
 
+                // valid e-mail with multiple recipients
+                { statusCode: 200, status: 'alive' },
+
                 // invalid e-mail
                 { statusCode: 400, status:  'dead' },
+                
+                // invalid e-mail with multiple recipients
+                { statusCode: 400, status: 'dead' },
 
                 // invalid protocol
                 { statusCode: 500, status:  'error' },
