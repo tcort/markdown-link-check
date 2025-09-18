@@ -17,10 +17,9 @@ jobs:
           - windows-latest
           - macos-latest
         node-version:
-          - 18
           - 20
           - 22
-          - 23
+          - 24
 
     env:
       NODE_OPTIONS: '--dns-result-order=ipv4first'
