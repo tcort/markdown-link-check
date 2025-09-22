@@ -20,7 +20,9 @@ This is a test file:
 Here are some e-mail addresses:
 
 * [valid](mailto:linuxgeek@gmail.com?subject=test)
+* [valid with multiple recipients](MAILTO:alice@example.org,bob@example.net?subject=Test)
 * [invalid](mailto:foo@bar@baz)
+* [invalid with multiple recipients](mailto:foo@@bar@@baz,bob@example.net?subject=Test)
 
 Here are some invalid protocols:
 
