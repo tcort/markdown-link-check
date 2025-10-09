@@ -272,6 +272,7 @@ function getInputs() {
         .option('-a, --alive <code>', 'comma separated list of HTTP codes to be considered as alive', commaSeparatedCodesList)
         .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
         .option('--reporters <names>', 'specify reporters to use', commaSeparatedReportersList)
+        .option('--file-manifest <path>', 'path to a file containing a newline-separated list of project files for relative link validation')
         .option('--projectBaseUrl <url>', 'the URL to use for {{BASEURL}} replacement')
         .option('--junit-output <file>', 'output file for JUnit XML report (only used with junit reporter)')
         .arguments('[filenamesOrDirectorynamesOrUrls...]')
@@ -347,16 +348,30 @@ function getInputs() {
                         }
 
                         stream = fs.createReadStream(filenameForOutput);
-                        inputs.push(new Input(filenameForOutput, stream, {baseUrl: baseUrl}));
+                        inputs.push(new Input(filenameForOutput, stream, {baseUrl: baseUrl, sourceFile: resolved}));
                     }
                 }
             }
         }
     ).parse(process.argv);
 
+    const opts = program.opts();
+    let projectFiles = [];
+    if (opts.fileManifest) {
+        try {
+            projectFiles = fs.readFileSync(opts.fileManifest, 'utf8').split('\n').filter(Boolean);
+        } catch (err) {
+            console.error(`\nERROR: Cannot read file manifest '${opts.fileManifest}'`);
+            process.exit(1);
+        }
+    }
+
     for (const input of inputs) {
-        input.opts.showProgressBar = (program.opts().progress === true); // force true or undefined to be true or false.
-        input.opts.quiet = (program.opts().quiet === true);
+        if (projectFiles.length > 0) {
+            input.opts.projectFiles = projectFiles;
+        }
+        input.opts.showProgressBar = (opts.progress === true); // force true or undefined to be true or false.
+        input.opts.quiet = (opts.quiet === true);
         input.opts.verbose = (program.opts().verbose === true);
         input.opts.retryOn429 = (program.opts().retry === true);
         input.opts.aliveStatusCodes = program.opts().alive;
