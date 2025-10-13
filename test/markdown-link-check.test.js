@@ -450,7 +450,7 @@ describe('markdown-link-check', function () {
         it("exits with 0 if all links are ok", function () {
             const { status, output } = child_process.spawnSync(process.execPath, [cliPath, path.join(__dirname, 'alive-links-only.md')]);
             expect(status).to.be(0);
-            expect(output.toString()).to.contain('links checked.');
+            expect(output.toString()).to.contain('link checked.');
         });
 
         it("exits with 1 if any link is broken", function () {
