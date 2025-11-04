@@ -20,6 +20,7 @@ jobs:
           - 20
           - 22
           - 24
+          - 25
 
     env:
       NODE_OPTIONS: '--dns-result-order=ipv4first'
