@@ -53,6 +53,22 @@ describe('markdown-link-check', function () {
             res.json({foo:'bar'});
         });
 
+        app.use('/redirect-with-body-in-head', function (req, res) {
+            /* Don't judge me. I found at least one server on the
+             * Internet doing this and it triggered a bug. */
+            const body = 'Let me send you a body, although you only asked for a HEAD.';
+
+            const headers =
+                'HTTP/1.1 302 Found\r\n' +
+                'Connection: close\r\n' +
+                'Location: /foo/bar\r\n' +
+                `Content-Length: ${Buffer.byteLength(body)}\r\n` +
+                '\r\n';
+
+            res.socket.write(headers + body);
+            res.socket.destroy();
+        });
+
         app.get('/basic-auth', function (req, res) {
             if (req.headers["authorization"] === "Basic Zm9vOmJhcg==") {
                 res.sendStatus(200);
@@ -110,6 +126,9 @@ describe('markdown-link-check', function () {
             expect(results).to.be.an('array');
 
             const expected = [
+                // redirect-with-body-in-head
+                { statusCode: 200, status: 'alive' },
+
                 // redirect-loop
                 { statusCode:   0, status:  'dead' },
 

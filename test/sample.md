@@ -2,6 +2,7 @@
 
 This is a test file:
 
+* [redirect-with-body-in-head](%%BASE_URL%%/redirect-with-body-in-head) (alive)
 * [redirect-loop](%%BASE_URL%%/loop) (dead)
 * [valid](%%BASE_URL%%/foo/bar) (alive)
 * [invalid](%%BASE_URL%%/foo/dead) (dead)
