@@ -202,7 +202,7 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
         let numCalls = 0;
         linkCheck(link, opts, function (err, result) {
             if (numCalls > 0) {
-                console.trace(`linkCheck called us back more than once for ${link}. This is likely due to a redirect (301, 302 or 303). Ignoring.`);
+                console.trace(`linkCheck called us back more than once for ${link}. This is likely due to a server answering HEAD with 302 and a body, against the HTTP spec. Ignoring.`);
                 return;
             }
             numCalls += 1;
