@@ -1,5 +1,23 @@
 # Changes
 
+## Version 3.14.2
+
+* test: update content string by @uberjew666 in https://github.com/tcort/markdown-link-check/pull/521
+* chore(deps): bump xmlbuilder2 from 3.1.1 to 4.0.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/525
+* chore(deps-dev): bump eslint from 9.37.0 to 9.38.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/524
+* chore(deps): bump actions/setup-node from 5 to 6 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/527
+* chore(deps-dev): bump @eslint/js from 9.37.0 to 9.38.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/526
+* chore(deps): bump commander from 14.0.1 to 14.0.2 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/528
+* chore(deps-dev): bump globals from 16.4.0 to 16.5.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/532
+* chore(deps-dev): bump eslint from 9.38.0 to 9.39.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/530
+* ci: add Node.js 25 to test workflow by @MikeMcC399 in https://github.com/tcort/markdown-link-check/pull/533
+* chore(deps-dev): bump mocha from 11.7.4 to 11.7.5 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/537
+* chore(deps-dev): bump @eslint/js from 9.39.0 to 9.39.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/536
+* chore(deps-dev): bump eslint from 9.39.0 to 9.39.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/535
+* Fix: Error: Callback was already called by @cristiklein in https://github.com/tcort/markdown-link-check/pull/540
+* chore(deps-dev): bump glob from 10.4.5 to 10.5.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/542
+* chore(deps): bump js-yaml from 4.1.0 to 4.1.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/541
+
 ## Version 3.14.1
 
 * fix: return exit code 1 when dead links found by @kt3k in https://github.com/tcort/markdown-link-check/pull/452
