@@ -4,6 +4,9 @@ on:
   release:
     types: [created]
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,12 +14,9 @@ jobs:
     - uses: actions/checkout@v5
     - uses: actions/setup-node@v6
       with:
-        node-version: '18.x'
         registry-url: 'https://registry.npmjs.org'
-    - run: npm install
+    - run: npm ci
     - run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   docker-build-and-publish:
     name: "Docker: Build & Publish"
     runs-on: ubuntu-latest
