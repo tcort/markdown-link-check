@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - uses: actions/setup-node@v6
       with:
         node-version: '18.x'
@@ -35,7 +35,7 @@ jobs:
           | sed -e 's/refs\/tags\///g' \
           | sed -E 's/v?([0-9]+)\.([0-9]+)\.([0-9]+)(-[a-zA-Z]+(\.[0-9]+)?)?/\1.\2.\3\4\,\1.\2\4\,\1\4/g')" >> $GITHUB_ENV
       - name: "Repo: Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: "Docker: Build & Publish"
         id: build
         uses: elgohr/Publish-Docker-Github-Action@v5
