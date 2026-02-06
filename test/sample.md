@@ -2,6 +2,7 @@
 
 This is a test file:
 
+* [redirect-with-body-in-head](%%BASE_URL%%/redirect-with-body-in-head) (alive)
 * [redirect-loop](%%BASE_URL%%/loop) (dead)
 * [valid](%%BASE_URL%%/foo/bar) (alive)
 * [invalid](%%BASE_URL%%/foo/dead) (dead)
@@ -20,7 +21,9 @@ This is a test file:
 Here are some e-mail addresses:
 
 * [valid](mailto:linuxgeek@gmail.com?subject=test)
+* [valid with multiple recipients](MAILTO:alice@example.org,bob@example.net?subject=Test)
 * [invalid](mailto:foo@bar@baz)
+* [invalid with multiple recipients](mailto:foo@@bar@@baz,bob@example.net?subject=Test)
 
 Here are some invalid protocols:
 

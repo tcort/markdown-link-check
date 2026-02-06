@@ -1,5 +1,104 @@
 # Changes
 
+## Version 3.14.2
+
+* test: update content string by @uberjew666 in https://github.com/tcort/markdown-link-check/pull/521
+* chore(deps): bump xmlbuilder2 from 3.1.1 to 4.0.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/525
+* chore(deps-dev): bump eslint from 9.37.0 to 9.38.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/524
+* chore(deps): bump actions/setup-node from 5 to 6 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/527
+* chore(deps-dev): bump @eslint/js from 9.37.0 to 9.38.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/526
+* chore(deps): bump commander from 14.0.1 to 14.0.2 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/528
+* chore(deps-dev): bump globals from 16.4.0 to 16.5.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/532
+* chore(deps-dev): bump eslint from 9.38.0 to 9.39.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/530
+* ci: add Node.js 25 to test workflow by @MikeMcC399 in https://github.com/tcort/markdown-link-check/pull/533
+* chore(deps-dev): bump mocha from 11.7.4 to 11.7.5 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/537
+* chore(deps-dev): bump @eslint/js from 9.39.0 to 9.39.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/536
+* chore(deps-dev): bump eslint from 9.39.0 to 9.39.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/535
+* Fix: Error: Callback was already called by @cristiklein in https://github.com/tcort/markdown-link-check/pull/540
+* chore(deps-dev): bump glob from 10.4.5 to 10.5.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/542
+* chore(deps): bump js-yaml from 4.1.0 to 4.1.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/541
+
+## Version 3.14.1
+
+* fix: return exit code 1 when dead links found by @kt3k in https://github.com/tcort/markdown-link-check/pull/452
+
+## Version 3.14.0
+
+* docs: added a link to the badge by @Lubov66 in https://github.com/tcort/markdown-link-check/pull/428
+* docs: added shield and license link by @Lubov66 in https://github.com/tcort/markdown-link-check/pull/429
+* docs: added a badge to the stars and forks by @Lubov66 in https://github.com/tcort/markdown-link-check/pull/430
+* chore(deps-dev): bump eslint from 9.22.0 to 9.23.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/432
+* docs: added a new badge to the releases by @Lubov66 in https://github.com/tcort/markdown-link-check/pull/431
+* docs: migrate Docker instructions to relative bind mount by @MikeMcC399 in https://github.com/tcort/markdown-link-check/pull/420
+* test(integration): Add simple integration test by @WillGibson in https://github.com/tcort/markdown-link-check/pull/416
+* docs: Update usage in README.md with output from --help by @WillGibson in https://github.com/tcort/markdown-link-check/pull/417
+* chore(admin): Add CODEOWNERS file by @WillGibson in https://github.com/tcort/markdown-link-check/pull/421
+* chore(admin): Automate admin for stale issues and pull requests by @WillGibson in https://github.com/tcort/markdown-link-check/pull/422
+* chore(deps-dev): bump eslint from 9.23.0 to 9.24.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/437
+* chore(deps-dev): bump express from 4.21.2 to 5.1.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/436
+* docs: README rebrand npm package zeit/ms to ms by @MikeMcC399 in https://github.com/tcort/markdown-link-check/pull/434
+* chore(deps): Remove unused dependencies by @WillGibson in https://github.com/tcort/markdown-link-check/pull/415
+* chore(deps-dev): bump eslint from 9.21.0 to 9.24.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/441
+* chore(deps-dev): bump @eslint/js from 9.24.0 to 9.25.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/444
+* chore(deps-dev): bump eslint from 9.24.0 to 9.25.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/443
+* chore(deps-dev): bump @eslint/js from 9.25.0 to 9.25.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/447
+* chore(deps-dev): bump eslint from 9.25.0 to 9.25.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/446
+* docs: remove reference to isemail - no longer used by @MikeMcC399 in https://github.com/tcort/markdown-link-check/pull/442
+* chore(deps-dev): bump @eslint/js from 9.25.1 to 9.26.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/450
+* chore(deps-dev): bump mocha from 11.1.0 to 11.2.2 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/451
+* chore(deps-dev): bump eslint from 9.25.1 to 9.26.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/449
+* chore(deps-dev): bump globals from 16.0.0 to 16.1.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/453
+* docs: update link to maintained github action by @gjermundgaraba in https://github.com/tcort/markdown-link-check/pull/454
+* chore(deps): bump undici from 6.21.1 to 6.21.3 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/455
+* chore(deps-dev): bump eslint from 9.26.0 to 9.27.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/461
+* chore(deps): bump commander from 13.1.0 to 14.0.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/460
+* chore(deps-dev): bump mocha from 11.2.2 to 11.3.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/459
+* chore(deps-dev): bump @eslint/js from 9.26.0 to 9.27.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/458
+* chore(deps-dev): bump globals from 16.1.0 to 16.2.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/465
+* chore(deps-dev): bump mocha from 11.3.0 to 11.5.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/464
+* chore(deps-dev): bump @eslint/js from 9.27.0 to 9.28.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/466
+* chore(deps-dev): bump eslint from 9.27.0 to 9.28.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/467
+* chore(admin): Add issue forms by @WillGibson in https://github.com/tcort/markdown-link-check/pull/423
+* chore(deps-dev): bump mocha from 11.5.0 to 11.6.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/468
+* chore(deps-dev): bump @eslint/js from 9.28.0 to 9.29.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/471
+* chore(deps-dev): bump eslint from 9.28.0 to 9.29.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/472
+* chore(deps-dev): bump mocha from 11.6.0 to 11.7.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/474
+* chore(deps-dev): bump mocha from 11.7.0 to 11.7.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/477
+* chore(deps-dev): bump eslint from 9.29.0 to 9.30.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/476
+* chore(deps-dev): bump eslint from 9.30.0 to 9.30.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/479
+* chore(deps-dev): bump globals from 16.2.0 to 16.3.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/480
+* chore(deps-dev): bump @eslint/js from 9.30.0 to 9.30.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/481
+* chore(deps-dev): bump @eslint/js from 9.30.1 to 9.31.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/482
+* ci: increase number of days before automatic closing by @smainil in https://github.com/tcort/markdown-link-check/pull/484
+* chore(deps): bump chalk from 5.4.1 to 5.5.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/489
+* chore(deps-dev): bump eslint from 9.30.1 to 9.32.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/487
+* chore(deps-dev): bump @eslint/js from 9.31.0 to 9.32.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/488
+* chore(deps): bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/494
+* chore(deps-dev): bump @eslint/js from 9.32.0 to 9.33.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/493
+* chore(deps-dev): bump eslint from 9.32.0 to 9.33.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/492
+* chore(deps): bump chalk from 5.5.0 to 5.6.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/496
+* chore(deps-dev): bump eslint from 9.33.0 to 9.34.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/498
+* chore(deps-dev): bump @eslint/js from 9.33.0 to 9.34.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/499
+* Implement JUnit reporter by @Gijsreyn in https://github.com/tcort/markdown-link-check/pull/486
+* chore(deps-dev): bump mocha from 11.7.1 to 11.7.2 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/505
+* chore(deps): bump actions/stale from 9 to 10 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/506
+* chore(deps): bump actions/setup-node from 4 to 5 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/503
+* chore(deps-dev): bump @eslint/js from 9.34.0 to 9.35.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/502
+* chore(deps-dev): bump eslint from 9.34.0 to 9.35.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/504
+* Remove @WillGibson from CODEOWNERS by @WillGibson in https://github.com/tcort/markdown-link-check/pull/507
+* fix: ensure correct pluralization of output messages by @G-Rath in https://github.com/tcort/markdown-link-check/pull/500
+* chore(deps): bump commander from 14.0.0 to 14.0.1 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/508
+* chore(deps): bump chalk from 5.6.0 to 5.6.2 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/510
+* chore(deps-dev): bump globals from 16.3.0 to 16.4.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/509
+* chore(deps): bump link-check from 5.4.0 to 5.5.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/515
+* chore(deps-dev): bump eslint from 9.35.0 to 9.36.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/514
+* chore(deps-dev): bump @eslint/js from 9.35.0 to 9.36.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/513
+* ci: remove Node.js 18 and 23, add 24 to test workflow by @MikeMcC399 in https://github.com/tcort/markdown-link-check/pull/512
+* Bump `link-check` to fix multiple email link handing by @DanielYang59 in https://github.com/tcort/markdown-link-check/pull/511
+* chore(deps-dev): bump @eslint/js from 9.36.0 to 9.37.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/518
+* chore(deps-dev): bump mocha from 11.7.2 to 11.7.4 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/516
+* chore(deps-dev): bump eslint from 9.36.0 to 9.37.0 by @dependabot[bot] in https://github.com/tcort/markdown-link-check/pull/517
+
 ## Version 3.13.7
 
 * Do not override reporter option if not defined in config file (issue #369) by @smainil in https://github.com/tcort/markdown-link-check/pull/372

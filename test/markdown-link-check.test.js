@@ -5,6 +5,7 @@ const path = require('path');
 const expect = require('expect.js');
 const http = require('http');
 const express = require('express');
+const child_process = require('child_process');
 const markdownLinkCheck = require('../');
 const dirname = process.platform === 'win32' ? __dirname.replace(/\\/g, '/') : __dirname;
 
@@ -50,6 +51,22 @@ describe('markdown-link-check', function () {
         });
         app.get('/foo/bar', function (req, res) {
             res.json({foo:'bar'});
+        });
+
+        app.use('/redirect-with-body-in-head', function (req, res) {
+            /* Don't judge me. I found at least one server on the
+             * Internet doing this and it triggered a bug. */
+            const body = 'Let me send you a body, although you only asked for a HEAD.';
+
+            const headers =
+                'HTTP/1.1 302 Found\r\n' +
+                'Connection: close\r\n' +
+                'Location: /foo/bar\r\n' +
+                `Content-Length: ${Buffer.byteLength(body)}\r\n` +
+                '\r\n';
+
+            res.socket.write(headers + body);
+            res.socket.destroy();
         });
 
         app.get('/basic-auth', function (req, res) {
@@ -109,6 +126,9 @@ describe('markdown-link-check', function () {
             expect(results).to.be.an('array');
 
             const expected = [
+                // redirect-with-body-in-head
+                { statusCode: 200, status: 'alive' },
+
                 // redirect-loop
                 { statusCode:   0, status:  'dead' },
 
@@ -145,8 +165,14 @@ describe('markdown-link-check', function () {
                 // valid e-mail
                 { statusCode: 200, status:  'alive' },
 
+                // valid e-mail with multiple recipients
+                { statusCode: 200, status: 'alive' },
+
                 // invalid e-mail
                 { statusCode: 400, status:  'dead' },
+
+                // invalid e-mail with multiple recipients
+                { statusCode: 400, status: 'dead' },
 
                 // invalid protocol
                 { statusCode: 500, status:  'error' },
@@ -475,6 +501,23 @@ describe('markdown-link-check', function () {
                 expect(results[1].status).to.be('dead');
                 done();
             });
+        });
+    });
+
+    describe("CLI", function () {
+        const cliPath = path.join(__dirname, '..', 'markdown-link-check');
+
+        it("exits with 0 if all links are ok", function () {
+            const { status, output } = child_process.spawnSync(process.execPath, [cliPath, path.join(__dirname, 'alive-links-only.md')]);
+            expect(status).to.be(0);
+            expect(output.toString()).to.contain('link checked.');
+        });
+
+        it("exits with 1 if any link is broken", function () {
+            this.timeout(60000)
+            const { status, output } = child_process.spawnSync(process.execPath, [cliPath, [path.join(__dirname, 'section-links.md')]]);
+            expect(status).to.be(1);
+            expect(output.toString()).to.contain('dead links found!');
         });
     });
 });
