@@ -248,7 +248,7 @@ function loadAllMarkdownFiles(rootFolder = '.') {
         const fullPath = path.join(rootFolder, file);
         if (fs.lstatSync(fullPath).isDirectory()) {
             files.push(...loadAllMarkdownFiles(fullPath));
-        } else if (fullPath.endsWith('.md')) {
+        } else if (fullPath.endsWith('.md') || fullPath.endsWith('.qmd')) {
             files.push(fullPath);
         }
     });
