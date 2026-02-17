@@ -170,7 +170,7 @@ describe('markdown-link-check', function () {
 
                 // invalid e-mail
                 { statusCode: 400, status:  'dead' },
-                
+
                 // invalid e-mail with multiple recipients
                 { statusCode: 400, status: 'dead' },
 
@@ -460,6 +460,47 @@ describe('markdown-link-check', function () {
                 { link: '#l-is-the-package-in-the-linux-distro-base-image', statusCode: 200, err: null, status: 'alive' },
             ]);
             done();
+        });
+    });
+
+    describe('project files', function () {
+        it('should pass for local file link when manifest is provided', function (done) {
+            const markdown = fs.readFileSync(path.join(dirname, 'project-files-test.md'), 'utf8');
+            const opts = {
+                projectFiles: [
+                    'test/project-files-test.md',
+                    'test/another-file.md'
+                ],
+                sourceFile: path.resolve(path.join(dirname, 'project-files-test.md'))
+            };
+
+            markdownLinkCheck(markdown, opts, function (err, results) {
+                expect(err).to.be(null);
+                expect(results).to.be.an('array');
+                expect(results).to.have.length(2);
+                expect(results[0].status).to.be('alive');
+                expect(results[0].link).to.be('./another-file.md');
+                expect(results[1].status).to.be('alive');
+                expect(results[1].link).to.be('./another-file.md#section');
+                done();
+            });
+        });
+
+        it('should fail for local file link when manifest is not provided', function (done) {
+            const markdown = fs.readFileSync(path.join(dirname, 'project-files-test.md'), 'utf8');
+            const opts = {
+                baseUrl: 'http://localhost:1234' // Provide a dummy base URL
+            };
+
+            markdownLinkCheck(markdown, opts, function (err, results) {
+                expect(err).to.be(null);
+                expect(results).to.be.an('array');
+                expect(results).to.have.length(2);
+                // Without the manifest, it tries to resolve them as web links and fails
+                expect(results[0].status).to.be('dead');
+                expect(results[1].status).to.be('dead');
+                done();
+            });
         });
     });
 
