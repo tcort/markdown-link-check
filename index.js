@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const async = require('async');
 const linkCheck = require('link-check');
 const LinkCheckResult = require('link-check').LinkCheckResult;
@@ -197,6 +198,35 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             const result = new LinkCheckResult(opts, sectionLink, sections.includes(sectionLink.substring(1)) ? 200 : 404, undefined);
             callback(null, result);
             return;
+        }
+
+        // Check for relative file paths if a file manifest is provided
+        if (opts.projectFiles && opts.sourceFile) {
+            const isAbsoluteUrl = /^[a-zA-Z][a-zA-Z.+-]*:/.test(link);
+
+            if (!isAbsoluteUrl && !link.startsWith('#')) {
+                const sourceDir = path.dirname(opts.sourceFile);
+
+                // The link may have a hash/anchor at the end, which should be ignored for file path resolution
+                const hashIndex = link.indexOf('#');
+                const linkPath = hashIndex === -1 ? link : link.substring(0, hashIndex);
+
+                const resolvedPath = path.resolve(sourceDir, linkPath);
+                const projectRoot = process.cwd();
+                const relativePath = path.relative(projectRoot, resolvedPath);
+
+                // Normalize path separators to handle cross-platform differences
+                const normalizedRelativePath = relativePath.replace(/\\/g, '/');
+                const normalizedProjectFiles = opts.projectFiles.map(p => p.replace(/\\/g, '/'));
+
+                if (normalizedProjectFiles.includes(normalizedRelativePath)) {
+                    // File exists in the project, so we'll treat the link as 'alive'
+                    const result = new LinkCheckResult(opts, link, 200, undefined);
+                    result.status = 'alive';
+                    callback(null, result);
+                    return; // Bypass the external linkCheck
+                }
+            }
         }
 
         let numCalls = 0;
