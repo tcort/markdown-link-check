@@ -43,7 +43,7 @@ function performSpecialReplacements(str, opts) {
 }
 
 function removeCodeBlocks(markdown) {
-    return markdown.replace(/^```[\S\s]+?^```$/gm, '');
+    return markdown.replace(/^\s+(`{3,}|~{3,})[\S\s]+?^\s+\1$/gm, '');
 }
 
 function extractHtmlSections(markdown) {
