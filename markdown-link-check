@@ -271,6 +271,7 @@ function getInputs() {
         .option('-i, --ignore <paths>', 'ignore input paths including an ignore path', commaSeparatedPathsList)
         .option('-a, --alive <code>', 'comma separated list of HTTP codes to be considered as alive', commaSeparatedCodesList)
         .option('-r, --retry', 'retry after the duration indicated in \'retry-after\' header when HTTP code is 429')
+        .option('--proxy-fallback', 'retry 403 links through proxy services')
         .option('--reporters <names>', 'specify reporters to use', commaSeparatedReportersList)
         .option('--projectBaseUrl <url>', 'the URL to use for {{BASEURL}} replacement')
         .option('--junit-output <file>', 'output file for JUnit XML report (only used with junit reporter)')
@@ -359,6 +360,7 @@ function getInputs() {
         input.opts.quiet = (program.opts().quiet === true);
         input.opts.verbose = (program.opts().verbose === true);
         input.opts.retryOn429 = (program.opts().retry === true);
+        input.opts.proxyFallback = (program.opts().proxyFallback === true);
         input.opts.aliveStatusCodes = program.opts().alive;
         input.opts.reporters = program.opts().reporters ?? [ reporters.default ];
         input.opts.junitOutput = program.opts().junitOutput;
@@ -437,6 +439,8 @@ async function processInput(filenameForOutput, stream, opts) {
         opts.fallbackRetryDelay = config.fallbackRetryDelay;
         opts.aliveStatusCodes = config.aliveStatusCodes;
         opts.reporters = config.reporters ?? opts.reporters;
+        opts.fallbackProxies = config.fallbackProxies;
+        opts.fallbackForCodes = config.fallbackForCodes;
     }
 
     await runMarkdownLinkCheck(filenameForOutput, markdown, opts);
