@@ -199,24 +199,67 @@ module.exports = function markdownLinkCheck(markdown, opts, callback) {
             return;
         }
 
-        let numCalls = 0;
-        linkCheck(link, opts, function (err, result) {
-            if (numCalls > 0) {
-                console.trace(`linkCheck called us back more than once for ${link}. This is likely due to a server answering HEAD with 302 and a body, against the HTTP spec. Ignoring.`);
+        // Proxy fallback configuration
+        const defaultProxies = [
+            { name: 'r.jina.ai', format: (url) => `https://r.jina.ai/${url}` },
+            { name: 'corsproxy.io', format: (url) => `https://corsproxy.io/?${encodeURIComponent(url)}` },
+            { name: 'allorigins', format: (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}` },
+        ];
+        const proxyFallbackEnabled = opts.proxyFallback || opts.fallbackProxies;
+        const proxies = opts.fallbackProxies || defaultProxies;
+        const fallbackCodes = opts.fallbackForCodes || [403];
+
+        let progressTicked = false;
+        let callbackCalled = false;
+
+        function safeCallback(err, result) {
+            if (callbackCalled) return;
+            callbackCalled = true;
+            callback(err, result);
+        }
+
+        function doLinkCheck(urlToCheck, cb) {
+            linkCheck(urlToCheck, opts, function (err, result) {
+                if (opts.showProgressBar && !progressTicked) {
+                    bar.tick();
+                    progressTicked = true;
+                }
+
+                if (err) {
+                    result = new LinkCheckResult(opts, urlToCheck, 500, err);
+                    result.status = 'error';
+                }
+
+                cb(err, result);
+            });
+        }
+
+        function tryProxies(originalLink, originalResult, proxyIndex) {
+            if (proxyIndex >= proxies.length) {
+                safeCallback(null, originalResult);
                 return;
             }
-            numCalls += 1;
 
-            if (opts.showProgressBar) {
-                bar.tick();
+            const proxy = proxies[proxyIndex];
+            const proxyUrl = proxy.format(originalLink);
+
+            doLinkCheck(proxyUrl, function (proxyErr, proxyResult) {
+                if (proxyResult && proxyResult.statusCode >= 200 && proxyResult.statusCode < 400) {
+                    const successResult = new LinkCheckResult(opts, originalLink, 200, undefined);
+                    successResult.proxyUsed = proxy.name;
+                    safeCallback(null, successResult);
+                } else {
+                    tryProxies(originalLink, originalResult, proxyIndex + 1);
+                }
+            });
+        }
+
+        doLinkCheck(link, function (err, result) {
+            if (proxyFallbackEnabled && result && fallbackCodes.includes(result.statusCode)) {
+                tryProxies(link, result, 0);
+            } else {
+                safeCallback(null, result);
             }
-
-            if (err) {
-                result = new LinkCheckResult(opts, link, 500, err);
-                result.status = 'error'; // custom status for errored links
-            }
-
-            callback(null, result);
         });
     }, callback);
 };
