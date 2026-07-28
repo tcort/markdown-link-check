@@ -1,5 +1,10 @@
 # Changes
 
+## Version 3.15.0
+
+* Improve code block removal by @vismam 
+* update dependencies
+
 ## Version 3.14.2
 
 * test: update content string by @uberjew666 in https://github.com/tcort/markdown-link-check/pull/521
