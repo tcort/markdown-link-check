@@ -8,6 +8,7 @@ const { promisify } = require('util');
 const markdownLinkCheck = promisify(require('.'));
 const needle = require('needle');
 const path = require('path');
+const { pathToFileURL } = require('url');
 const pkg = require('./package.json');
 const { Command } = require('commander');
 const program = new Command();
@@ -281,7 +282,9 @@ function getInputs() {
 
             if (!filenamesOrUrls.length) {
                 // read from stdin unless a filename is given
-                inputs.push(new Input(filenameForOutput, process.stdin, {}));
+                inputs.push(new Input(filenameForOutput, process.stdin, {
+                    baseUrl: pathToFileURL(process.cwd()).href
+                }));
             }
 
             function onError(error) {
@@ -367,8 +370,8 @@ function getInputs() {
             input.opts.config = config.trim();
         }
 
-        if (program.projectBaseUrl) {
-            input.opts.projectBaseUrl = `file://${program.projectBaseUrl}`;
+        if (program.opts().projectBaseUrl) {
+            input.opts.projectBaseUrl = program.opts().projectBaseUrl;
         } else {
             // set the default projectBaseUrl to the current working directory, so that `{{BASEURL}}` can be resolved to the project root.
             if (process.platform === 'win32') {
