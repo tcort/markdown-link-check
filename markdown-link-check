@@ -388,6 +388,7 @@ async function loadConfig(config) {
         fs.access(config, (fs.constants || fs).R_OK, function (err) {
             if (!err) {
                 let configStream = fs.createReadStream(config);
+                configStream.setEncoding('utf8');
                 let configData = '';
 
                 configStream.on('data', function (chunk) {
@@ -416,6 +417,7 @@ async function processInput(filenameForOutput, stream, opts) {
         return process.exit(1);
     });
 
+    stream.setEncoding('utf8');
     for await (const chunk of stream) {
         markdown += chunk.toString();
     }
