@@ -205,6 +205,17 @@ Options:
   -h, --help              display help for command
 ```
 
+When a replacement pattern uses `{{BASEURL}}`, pass `--projectBaseUrl` to
+check against a different project root. Supply a full URL, such as
+`file:///path/to/project` or `https://example.com/docs`; the URL is used
+without adding another scheme. If the option is omitted, the current working
+directory is used. Relative file links read from standard input also resolve
+against the current working directory.
+
+```shell
+markdown-link-check --config config.json --projectBaseUrl file:///path/to/project README.md
+```
+
 ##### Reporters
 
 `markdown-link-check` supports multiple output reporters to format the results of link checking:
