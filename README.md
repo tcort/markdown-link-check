@@ -125,7 +125,7 @@ You can write html comments to disable markdown-link-check for parts of the text
 
 var markdownLinkCheck = require('markdown-link-check');
 
-markdownLinkCheck('[example](http://example.com)', function (err, results) {
+markdownLinkCheck('[example](https://example.com/)', function (err, results) {
     if (err) {
         console.error('Error', err);
         return;
@@ -143,7 +143,7 @@ markdownLinkCheck('[example](http://example.com)', function (err, results) {
 
 var markdownLinkCheck = require('markdown-link-check');
 
-markdownLinkCheck('[example](http://example.com)', { httpHeaders: [{ urls: ['http://example.com'], headers: { 'Authorization': 'Basic Zm9vOmJhcg==' }}] }, function (err, results) {
+markdownLinkCheck('[example](https://example.com/)', { httpHeaders: [{ urls: ['https://example.com/'], headers: { 'Authorization': 'Basic Zm9vOmJhcg==' }}] }, function (err, results) {
     if (err) {
         console.error('Error', err);
         return;
@@ -276,7 +276,7 @@ This will output to both the console (default reporter) and generate a JUnit XML
   "projectBaseUrl":"${workspaceFolder}",
   "ignorePatterns": [
     {
-      "pattern": "^http://example.net"
+      "pattern": "^https://example\\.net/"
     }
   ],
   "replacementPatterns": [
@@ -300,7 +300,7 @@ This will output to both the console (default reporter) and generate a JUnit XML
   ],
   "httpHeaders": [
     {
-      "urls": ["https://example.com"],
+      "urls": ["https://example.com/"],
       "headers": {
         "Authorization": "Basic Zm9vOmJhcg==",
         "Foo": "Bar"
@@ -320,6 +320,32 @@ This will output to both the console (default reporter) and generate a JUnit XML
 ```shell
 npm test
 ```
+
+## Security Considerations
+
+Here are some tips to keep you safe:
+
+When specifying URL stems or patterns for matching URLs, such as in
+`ignorePatterns`, `httpHeaders`, and others, you should be careful to specify
+**exactly** what you intend. If you specify a `pattern` like
+`"^https://www.example.net"` it will match
+`https://www-example-net.another-site.test/index.html`. Be sure to escape
+regular expression operators such as the dot (`.`) unless you really do intend
+to match any character in that position. Additionally, unless you intend to
+match just part of a domain name, be sure to include a path element such as
+`/`.  If you're matching all routes on a particular host, specify a pattern
+like this: `"^https://www\\.example\\.net/"`. Similarly, the URL stems in
+`httpHeaders` should include a path element in most cases. For example:
+`"https://www.example.com/"`.
+
+This tool can be configured to access environment variables. This allows
+access tokens to be used in authentication headers without needing to store
+the tokens in plain text in a configuration file. You should not run this tool
+with untrusted configuration and secrets in the environment. For example, it
+would not be prudent to store the markdown-link-check configuration in a
+public repository which accepts pull requests that automatically invoke
+`markdown-link-check` in an environment where credentials are accessible
+without human review as the secrets could be sent to an unintended host.
 
 ## License
 
