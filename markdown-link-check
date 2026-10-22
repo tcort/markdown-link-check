@@ -120,7 +120,7 @@ const reporters = {
                     const errors = fileResults.filter(result => result.status === 'error').length;
                     const skipped = fileResults.filter(result => result.status === 'ignored').length;
                     
-                    totalTests += tests;
+                    totalTests += tests + (fileErr ? 1 : 0);
                     totalFailures += failures;
                     totalErrors += errors;
                     totalSkipped += skipped;
@@ -198,7 +198,7 @@ const reporters = {
                 }
                 
                 // Update totals in testsuites element
-                testsuites.att('tests', String(totalTests + totalErrors));
+                testsuites.att('tests', String(totalTests));
                 testsuites.att('failures', String(totalFailures));
                 testsuites.att('errors', String(totalErrors));
                 testsuites.att('skipped', String(totalSkipped));
